@@ -1,0 +1,10 @@
+{
+  "id": "command-center",
+  "name": "Command Center",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Glass-aesthetic personal productivity dashboard — MIT timer, time-block stones, and per-context tabs (9-to-5 / Side Project / Agents / Health / Inspired / Social).",
+  "author": "Taelo Kim",
+  "authorUrl": "https://taelokim.vercel.app",
+  "isDesktopOnly": true
+}

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Command Center — Caveman Rock</title>
+<style>
+  :root{
+    --bg:#2a2622;
+    --rock:#3a342e;
+    --rock-2:#473f37;
+    --carve:#1a1714;
+    --ink:#e0d4bd;
+    --ink-soft:#9b8c75;
+    --ember:#d97645;
+    --ember-2:#f0a258;
+    --bone:#e8dcc0;
+    --moss:#6f7d4a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,'SF Pro Text',Helvetica,sans-serif}
+  body{
+    background:
+      radial-gradient(800px 600px at 20% 0%, #3a322a 0%, transparent 60%),
+      radial-gradient(700px 600px at 90% 100%, #2c241c 0%, transparent 55%),
+      var(--bg);
+    background-attachment:fixed;min-height:100vh;
+    position:relative;
+  }
+  /* rock noise — layered conic + radial fragments */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+    background:
+      radial-gradient(circle at 15% 25%, rgba(255,220,180,.06) 0 6%, transparent 8%),
+      radial-gradient(circle at 70% 60%, rgba(255,220,180,.05) 0 5%, transparent 7%),
+      radial-gradient(circle at 40% 80%, rgba(255,220,180,.05) 0 4%, transparent 6%),
+      radial-gradient(circle at 85% 15%, rgba(0,0,0,.18) 0 4%, transparent 6%),
+      radial-gradient(circle at 25% 55%, rgba(0,0,0,.15) 0 3%, transparent 5%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;
+    background:
+      repeating-linear-gradient(73deg, transparent 0 7px, rgba(0,0,0,.6) 7px 8px),
+      repeating-linear-gradient(-21deg, transparent 0 11px, rgba(255,210,160,.05) 11px 12px);
+    mix-blend-mode:multiply;
+  }
+
+  .wrap{max-width:1280px;margin:0 auto;padding:28px 32px 60px;position:relative;z-index:1}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .mark{
+    width:46px;height:46px;border-radius:8px;
+    background:linear-gradient(180deg,#4a4138,#231e19);
+    border:1px solid #0c0a08;
+    display:grid;place-items:center;color:var(--ember-2);
+    box-shadow:inset 0 1px 0 rgba(255,210,160,.15), 0 6px 12px rgba(0,0,0,.45);
+  }
+  h1{font:700 22px/1 'Iowan Old Style','Charter',Georgia,serif;letter-spacing:1px;margin:0;color:var(--bone);text-transform:uppercase}
+  .sub{font-size:11px;color:var(--ink-soft);margin-top:5px;letter-spacing:1.2px;text-transform:uppercase}
+  .meta{text-align:right;font-size:12px;color:var(--ink-soft)}
+  .meta b{display:block;font:700 16px/1.2 'Iowan Old Style',serif;color:var(--bone);letter-spacing:.5px;text-transform:uppercase}
+
+  .slab{
+    background:linear-gradient(180deg,var(--rock-2),var(--rock));
+    border:1px solid var(--carve);
+    border-radius:8px;
+    padding:18px 18px 16px;
+    position:relative;overflow:hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255,220,180,.06),
+      inset 0 -1px 0 rgba(0,0,0,.4),
+      0 10px 24px -16px rgba(0,0,0,.7);
+  }
+  /* chisel-edge highlight */
+  .slab::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:
+      linear-gradient(135deg, rgba(255,220,180,.05) 0, transparent 25%),
+      linear-gradient(-45deg, rgba(0,0,0,.3) 0, transparent 30%);
+  }
+
+  .grid-3{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;margin-bottom:16px}
+  .label{font-size:10px;color:var(--ink-soft);letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px}
+  .big{font:700 32px/1 'Iowan Old Style',serif;color:var(--bone);letter-spacing:.5px}
+  .small{font-size:12px;color:var(--ink-soft);margin-top:4px}
+
+  /* HP bar — lava channel cut into the rock */
+  .hp{margin-top:14px}
+  .hp .track{
+    height:14px;border-radius:3px;
+    background:linear-gradient(180deg,#171410,#241f1a);
+    border:1px solid #0a0807;
+    box-shadow:inset 0 2px 4px rgba(0,0,0,.7);
+    overflow:hidden;position:relative;
+  }
+  .hp .fill{
+    height:100%;
+    background:linear-gradient(90deg,#8a3b1d,#d97645,#f0a258,#ffd29a,#f0a258,#d97645,#8a3b1d);
+    background-size:300% 100%;
+    animation:flow 5s linear infinite;
+    box-shadow:inset 0 1px 0 rgba(255,230,180,.5), 0 0 16px rgba(217,118,69,.5);
+  }
+  @keyframes flow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+  .hp .row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-top:6px;letter-spacing:.6px;text-transform:uppercase}
+
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#5a5048;margin-right:6px;vertical-align:middle}
+  .dot.live{background:var(--ember);box-shadow:0 0 0 0 rgba(217,118,69,.6);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,118,69,.55)}70%{box-shadow:0 0 0 10px rgba(217,118,69,0)}100%{box-shadow:0 0 0 0 rgba(217,118,69,0)}}
+
+  /* focus slab — torch-lit */
+  .focus{
+    background:
+      radial-gradient(400px 200px at 10% 50%, rgba(217,118,69,.25), transparent 70%),
+      linear-gradient(180deg,#3e342a,#221b15);
+    border:1px solid #0e0b08;
+    border-radius:8px;
+    padding:22px;
+    display:flex;gap:18px;align-items:center;margin-bottom:16px;
+    box-shadow:inset 0 1px 0 rgba(255,220,180,.08), 0 20px 40px -28px rgba(0,0,0,.7);
+    position:relative;overflow:hidden;
+  }
+  .focus .badge{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--ember-2);margin-bottom:6px}
+  .focus h2{margin:0;font:700 22px/1.25 'Iowan Old Style',serif;color:var(--bone);letter-spacing:.3px}
+  .focus p{margin:6px 0 0;color:#bda77a;font-size:13px;max-width:60ch}
+
+  .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+  .btn{
+    appearance:none;border:1px solid var(--carve);
+    background:linear-gradient(180deg,#403830,#2c2722);
+    border-radius:6px;padding:14px;text-align:left;cursor:pointer;
+    color:var(--ink);font:500 13px/1.3 inherit;
+    display:flex;flex-direction:column;gap:10px;min-height:96px;
+    box-shadow:inset 0 1px 0 rgba(255,220,180,.06), inset 0 -1px 0 rgba(0,0,0,.4), 0 6px 12px -8px rgba(0,0,0,.6);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);border-color:rgba(217,118,69,.5);box-shadow:inset 0 1px 0 rgba(255,220,180,.1), 0 0 18px -4px rgba(217,118,69,.35)}
+  .btn .ico{width:34px;height:34px}
+  .btn .t{font-weight:700;font-size:14px;color:var(--bone);letter-spacing:.4px;text-transform:uppercase}
+  .btn .desc{font-size:11px;color:var(--ink-soft);line-height:1.35;letter-spacing:.3px}
+
+  .bottom{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+  ul.feed{list-style:none;margin:0;padding:0}
+  ul.feed li{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,220,180,.08);font-size:13px}
+  ul.feed li:last-child{border-bottom:0}
+  .time{color:var(--ink-soft);font-variant-numeric:tabular-nums;width:64px;flex:none;text-transform:uppercase;letter-spacing:.5px;font-size:11px}
+  .pill{display:inline-block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ember-2);background:rgba(217,118,69,.12);border:1px solid rgba(217,118,69,.35);border-radius:3px;padding:2px 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="mark">
+        <!-- rune-style spear -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M4 20l16-16M14 4h6v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 16l-3 3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <h1>taelo · command center</h1>
+        <div class="sub">caveman rock · concept 03</div>
+      </div>
+    </div>
+    <div class="meta">
+      <b>Sat · May 16 2026</b>
+      <span><span class="dot"></span>0 agents · last sync 09:42</span>
+    </div>
+  </header>
+
+  <section class="grid-3">
+    <div class="slab">
+      <div class="label">YouTube uploads · May</div>
+      <div class="big">3<span style="color:var(--ink-soft);font-size:18px"> / 4 goal</span></div>
+      <div class="small">75% of monthly target · next drop in 3 days</div>
+      <div class="hp">
+        <div class="track"><div class="fill" style="width:75%"></div></div>
+        <div class="row"><span>monthly progress</span><span><b style="color:var(--bone)">75%</b></span></div>
+      </div>
+    </div>
+
+    <div class="slab">
+      <div class="label">Other socials · May</div>
+      <div class="big">12</div>
+      <div class="small">7 twitter · 3 ig reels · 2 linkedin</div>
+      <div class="hp">
+        <div class="track"><div class="fill" style="width:48%; background:linear-gradient(90deg,#3d4a1f,#6f7d4a,#a8b178,#6f7d4a,#3d4a1f); background-size:300% 100%"></div></div>
+        <div class="row"><span>vs weekly cadence</span><span><b style="color:var(--bone)">on pace</b></span></div>
+      </div>
+    </div>
+
+    <div class="slab">
+      <div class="label">Active agents</div>
+      <div class="big">0</div>
+      <div class="small"><span class="dot"></span>nothing running · queue empty</div>
+      <div class="hp">
+        <div class="track"><div class="fill" style="width:0%"></div></div>
+        <div class="row"><span>idle</span><span class="pill">ready</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="focus">
+    <svg width="58" height="58" viewBox="0 0 64 64" fill="none">
+      <defs>
+        <radialGradient id="flame" cx=".5" cy=".7" r=".7">
+          <stop offset="0" stop-color="#fff1c4"/>
+          <stop offset=".4" stop-color="#f0a258"/>
+          <stop offset=".75" stop-color="#d97645"/>
+          <stop offset="1" stop-color="#3a1c0e"/>
+        </radialGradient>
+      </defs>
+      <path d="M32 6c4 8 12 12 12 24a12 12 0 11-24 0c0-6 4-10 4-14 2 4 6 4 8-10z" fill="url(#flame)"/>
+      <path d="M28 44c0 4 2 8 4 8s4-4 4-8" stroke="#3a1c0e" stroke-width="1.2" fill="none"/>
+    </svg>
+    <div>
+      <div class="badge">today's #1 focus</div>
+      <h2>Finish Anthropic 50%-cut script — film tomorrow before story stales.</h2>
+      <p>2 trend reports backing the angle. Beat sheet half-drafted in <code style="color:var(--ember-2)">outputs/scripts/2026-05-15-anthropic-cuts-beats.md</code>.</p>
+    </div>
+  </div>
+
+  <section class="actions">
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><path d="M4 22l6-8 6 5 8-12" stroke="#d97645" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="7" r="3" fill="#f0a258"/></svg>
+      <div class="t">Trend brief</div>
+      <div class="desc">/trendscout · headless</div>
+    </button>
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10" stroke="#d97645" stroke-width="2.2"/><path d="M16 10v6l4 3" stroke="#d97645" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <div class="t">Today's focus</div>
+      <div class="desc">Recompute #1 · headless</div>
+    </button>
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><rect x="6" y="6" width="20" height="20" rx="2" stroke="#9b8c75" stroke-width="2"/><path d="M10 14h12M10 19h8" stroke="#9b8c75" stroke-width="2" stroke-linecap="round"/></svg>
+      <div class="t">Day-job to-dos</div>
+      <div class="desc">Office · interactive</div>
+    </button>
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><path d="M6 12l10-6 10 6v8l-10 6-10-6z" stroke="#d97645" stroke-width="2" stroke-linejoin="round"/><circle cx="16" cy="14" r="2" fill="#d97645"/></svg>
+      <div class="t">YT side-project</div>
+      <div class="desc">Channel · interactive</div>
+    </button>
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><path d="M5 27V13M12 27V7M19 27v-9M26 27V11" stroke="#6f7d4a" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <div class="t">Progress tracker</div>
+      <div class="desc">Goals vs reality</div>
+    </button>
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><path d="M4 20a12 12 0 0124-2" stroke="#d97645" stroke-width="2.2" stroke-linecap="round"/><circle cx="28" cy="22" r="3" fill="#f0a258"/><path d="M4 20l4-3M4 20l4 3" stroke="#d97645" stroke-width="2" stroke-linecap="round"/></svg>
+      <div class="t">Morning brief</div>
+      <div class="desc">gmail · cal · slack</div>
+    </button>
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><path d="M16 4v8M16 20v8M4 16h8M20 16h8" stroke="#9b8c75" stroke-width="2.2" stroke-linecap="round"/><circle cx="16" cy="16" r="3" fill="#d97645"/></svg>
+      <div class="t">Side-project</div>
+      <div class="desc">Surface stale</div>
+    </button>
+    <button class="btn">
+      <svg class="ico" viewBox="0 0 32 32" fill="none"><rect x="5" y="5" width="22" height="22" rx="2" stroke="#9b8c75" stroke-width="2"/><path d="M11 11l10 10M21 11L11 21" stroke="#d97645" stroke-width="2" stroke-linecap="round"/></svg>
+      <div class="t">Curate sessions</div>
+      <div class="desc">/curate-projects</div>
+    </button>
+  </section>
+
+  <section class="bottom">
+    <div class="slab">
+      <div class="label">What needs your attention</div>
+      <ul class="feed">
+        <li><span class="time">11:00</span><span>Day-job stand-up (recurring, calendar)</span></li>
+        <li><span class="time">14:00</span><span>Ship Anthropic 50%-cut script draft v2 — film tomorrow</span></li>
+        <li><span class="time">today</span><span>CTA on taelokim.com still points at Formspree — verify form is wired</span></li>
+        <li><span class="time">this wk</span><span>/catchup skill never built — Korean-language ask 2026-05-13</span></li>
+      </ul>
+    </div>
+    <div class="slab">
+      <div class="label">Recent activity</div>
+      <ul class="feed">
+        <li><span class="time">09:42</span><span>/curate-projects · 22 sessions compiled</span></li>
+        <li><span class="time">08:15</span><span>Trend report 2026-05-15 written</span></li>
+        <li><span class="time">yest</span><span>Anthropic-cut script beats drafted</span></li>
+        <li><span class="time">yest</span><span>Second-brain vault scaffolded</span></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

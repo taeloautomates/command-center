@@ -1,0 +1,6 @@
+node_modules/
+data.json
+*.log
+.DS_Store
+# main.js is intentionally COMMITTED so users can clone+enable without a build step.
+# Run `npm run build` to regenerate it after editing source.
