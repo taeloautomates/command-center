@@ -952,6 +952,74 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
+/* — Voice button + recording feedback toast — */
+.cc-root .cc-voice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(.22, .61, .36, 1);
+}
+.cc-root .cc-voice-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.96);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.cc-root .cc-voice-btn.recording {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 1);
+  animation: cc-voice-pulse 1.4s ease-in-out infinite;
+}
+.cc-root .cc-voice-btn.transcribing {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  cursor: wait;
+}
+.cc-root .cc-voice-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.cc-root .cc-voice-label {
+  font-weight: 500;
+}
+.cc-root .cc-voice-spin {
+  animation: cc-spin 1s linear infinite;
+}
+@keyframes cc-voice-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.32); }
+  50%      { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+}
+.cc-root .cc-voice-feedback {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  max-width: 340px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  font-size: 11px;
+  letter-spacing: -0.005em;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+  z-index: 100;
+  animation: cc-surface 240ms cubic-bezier(.22, .61, .36, 1) both;
+  backdrop-filter: blur(12px);
+  white-space: pre-wrap;
+}
+.cc-root .cc-voice-feedback.ok { border-left: 2px solid rgba(155, 210, 150, 0.86); }
+.cc-root .cc-voice-feedback.err { border-left: 2px solid rgba(224, 130, 140, 0.86); }
+
 /* — Standalone Terminal pane (its own Obsidian view) — */
 .cc-root.cc-terminal-standalone {
   display: flex;

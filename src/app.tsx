@@ -24,6 +24,7 @@ import {
 import { TrunkStrip } from "./trunk";
 import { useBallDrag, BallGhost, ballLabel } from "./car";
 import type { TrunkItem } from "./types";
+import { parseIntent } from "./voice-intent";
 
 /** Expand `~/` paths so the Terminal tab spawns in the right cwd. */
 function resolveCwd(p: string): string {
@@ -313,6 +314,66 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
     await Promise.all([saveMIT(bridge.app, placeholder), saveTrunk(bridge.app, newTrunk)]);
   };
 
+  // Voice command dispatcher. Returns a summary the button shows as a toast.
+  const dispatchVoice = async (transcript: string): Promise<{ ok: boolean; summary: string }> => {
+    const intent = parseIntent(transcript);
+    switch (intent.kind) {
+      case "place_block": {
+        await onAddBlock({
+          id: "b" + Math.random().toString(36).slice(2, 9),
+          brick: intent.brick,
+          startMin: intent.startMin,
+          durMin: intent.brick.dur,
+          surface: "9to5",
+        });
+        const t = `${String(Math.floor(intent.startMin / 60)).padStart(2, "0")}:${String(intent.startMin % 60).padStart(2, "0")}`;
+        return { ok: true, summary: `Blocked ${intent.brick.name} · ${intent.brick.dur}m at ${t}` };
+      }
+      case "set_mit": {
+        const newMIT = {
+          title: intent.title,
+          project: state.mit.project,
+          est: state.mit.est,
+          startedAt: new Date().toTimeString().slice(0, 5),
+        };
+        setState((s) => ({
+          ...s,
+          mit: newMIT,
+          timer: { totalSec: newMIT.est * 60, remainingSec: newMIT.est * 60, active: true, paused: false },
+        }));
+        await saveMIT(bridge.app, newMIT);
+        return { ok: true, summary: `Front Seat: "${intent.title}"` };
+      }
+      case "add_trunk": {
+        await addTrunkItem(intent.title);
+        return { ok: true, summary: `Trunk: "${intent.title}"` };
+      }
+      case "brain_dump": {
+        await submitBrainDump(intent.text);
+        return { ok: true, summary: `Brain dump: "${intent.text}"` };
+      }
+      case "timer": {
+        if (intent.action === "pause") { onTogglePause(); return { ok: true, summary: "Timer paused" }; }
+        if (intent.action === "resume") { onTogglePause(); return { ok: true, summary: "Timer resumed" }; }
+        if (intent.action === "add5") { onAdd5(); return { ok: true, summary: "+5 min added" }; }
+        if (intent.action === "done") { onDone(); return { ok: true, summary: "Task marked done" }; }
+        return { ok: false, summary: "Unknown timer action" };
+      }
+      case "switch_tab": {
+        setTab(intent.tab);
+        return { ok: true, summary: `→ ${intent.tab}` };
+      }
+      case "open_terminal": {
+        // Fire an event the plugin's main.ts handler can intercept to open the terminal view.
+        window.dispatchEvent(new CustomEvent("cc-open-terminal"));
+        return { ok: true, summary: "Opening Claude Code…" };
+      }
+      case "unknown":
+      default:
+        return { ok: false, summary: `Heard "${transcript}" — didn't match an intent` };
+    }
+  };
+
   // Drag-and-drop bridge: refs for hit-testing + the swap callbacks.
   const seatRef = React.useRef<HTMLDivElement | null>(null);
   const trunkRef = React.useRef<HTMLDivElement | null>(null);
@@ -348,6 +409,7 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
           focusMode={focusMode} setFocusMode={setFocusMode}
           onRefresh={refreshLive} refreshing={refreshing}
           loadedAt={live.loadedAt}
+          onVoice={dispatchVoice}
         />
 
         {/* Front Seat + Trunk only show on "driving" tabs — the ones where

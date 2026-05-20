@@ -3,6 +3,7 @@ import { GlassCard, Row, Col, Dot } from "./ui";
 import { FocusIcon, SyncIcon } from "./icons";
 import type { TabId } from "./types";
 import { timeAgo } from "./data-sources/fs-helpers";
+import { VoiceButton } from "./voice-button";
 
 const TABS: TabId[] = ["9-to-5", "Side Project", "Health", "Inspired", "Social"];
 
@@ -63,7 +64,7 @@ function Monogram() {
 }
 
 export function TopBar({
-  tab, setTab, focusMode, setFocusMode, onRefresh, refreshing, loadedAt,
+  tab, setTab, focusMode, setFocusMode, onRefresh, refreshing, loadedAt, onVoice,
 }: {
   tab: TabId;
   setTab: (t: TabId) => void;
@@ -72,6 +73,7 @@ export function TopBar({
   onRefresh?: () => void;
   refreshing?: boolean;
   loadedAt?: number;
+  onVoice?: (transcript: string) => Promise<{ ok: boolean; summary: string }>;
 }) {
   const [, tick] = React.useReducer((x: number) => x + 1, 0);
   React.useEffect(() => {
@@ -103,7 +105,8 @@ export function TopBar({
         </div>
       </div>
 
-      <Row gap={10} justify="flex-end" style={{ width: 280 }}>
+      <Row gap={10} justify="flex-end" style={{ width: 320 }}>
+        {onVoice && <VoiceButton onTranscript={onVoice} />}
         <LiveDateChip />
         <button
           aria-label="Focus mode"

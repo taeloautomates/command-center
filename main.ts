@@ -42,6 +42,12 @@ export default class CommandCenterPlugin extends Plugin {
       name: "Open Command Center · Terminal (Claude Code)",
       callback: () => this.activateTerminal(),
     });
+
+    // Voice command bridge — the dashboard fires `cc-open-terminal` when the
+    // user says "open terminal" / "open Claude".
+    const openTerminalHandler = () => this.activateTerminal();
+    window.addEventListener("cc-open-terminal", openTerminalHandler);
+    this.register(() => window.removeEventListener("cc-open-terminal", openTerminalHandler));
   }
 
   async onunload() {
