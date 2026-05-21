@@ -22819,10 +22819,10 @@ var require_react_dom_development = __commonJS({
         var setErrorHandler = null;
         var setSuspenseHandler = null;
         {
-          var copyWithDeleteImpl = function(obj, path3, index2) {
-            var key = path3[index2];
+          var copyWithDeleteImpl = function(obj, path4, index2) {
+            var key = path4[index2];
             var updated = isArray(obj) ? obj.slice() : assign({}, obj);
-            if (index2 + 1 === path3.length) {
+            if (index2 + 1 === path4.length) {
               if (isArray(updated)) {
                 updated.splice(key, 1);
               } else {
@@ -22830,11 +22830,11 @@ var require_react_dom_development = __commonJS({
               }
               return updated;
             }
-            updated[key] = copyWithDeleteImpl(obj[key], path3, index2 + 1);
+            updated[key] = copyWithDeleteImpl(obj[key], path4, index2 + 1);
             return updated;
           };
-          var copyWithDelete = function(obj, path3) {
-            return copyWithDeleteImpl(obj, path3, 0);
+          var copyWithDelete = function(obj, path4) {
+            return copyWithDeleteImpl(obj, path4, 0);
           };
           var copyWithRenameImpl = function(obj, oldPath, newPath, index2) {
             var oldKey = oldPath[index2];
@@ -22872,17 +22872,17 @@ var require_react_dom_development = __commonJS({
             }
             return copyWithRenameImpl(obj, oldPath, newPath, 0);
           };
-          var copyWithSetImpl = function(obj, path3, index2, value) {
-            if (index2 >= path3.length) {
+          var copyWithSetImpl = function(obj, path4, index2, value) {
+            if (index2 >= path4.length) {
               return value;
             }
-            var key = path3[index2];
+            var key = path4[index2];
             var updated = isArray(obj) ? obj.slice() : assign({}, obj);
-            updated[key] = copyWithSetImpl(obj[key], path3, index2 + 1, value);
+            updated[key] = copyWithSetImpl(obj[key], path4, index2 + 1, value);
             return updated;
           };
-          var copyWithSet = function(obj, path3, value) {
-            return copyWithSetImpl(obj, path3, 0, value);
+          var copyWithSet = function(obj, path4, value) {
+            return copyWithSetImpl(obj, path4, 0, value);
           };
           var findHook = function(fiber, id) {
             var currentHook2 = fiber.memoizedState;
@@ -22892,10 +22892,10 @@ var require_react_dom_development = __commonJS({
             }
             return currentHook2;
           };
-          overrideHookState = function(fiber, id, path3, value) {
+          overrideHookState = function(fiber, id, path4, value) {
             var hook = findHook(fiber, id);
             if (hook !== null) {
-              var newState = copyWithSet(hook.memoizedState, path3, value);
+              var newState = copyWithSet(hook.memoizedState, path4, value);
               hook.memoizedState = newState;
               hook.baseState = newState;
               fiber.memoizedProps = assign({}, fiber.memoizedProps);
@@ -22905,10 +22905,10 @@ var require_react_dom_development = __commonJS({
               }
             }
           };
-          overrideHookStateDeletePath = function(fiber, id, path3) {
+          overrideHookStateDeletePath = function(fiber, id, path4) {
             var hook = findHook(fiber, id);
             if (hook !== null) {
-              var newState = copyWithDelete(hook.memoizedState, path3);
+              var newState = copyWithDelete(hook.memoizedState, path4);
               hook.memoizedState = newState;
               hook.baseState = newState;
               fiber.memoizedProps = assign({}, fiber.memoizedProps);
@@ -22931,8 +22931,8 @@ var require_react_dom_development = __commonJS({
               }
             }
           };
-          overrideProps = function(fiber, path3, value) {
-            fiber.pendingProps = copyWithSet(fiber.memoizedProps, path3, value);
+          overrideProps = function(fiber, path4, value) {
+            fiber.pendingProps = copyWithSet(fiber.memoizedProps, path4, value);
             if (fiber.alternate) {
               fiber.alternate.pendingProps = fiber.pendingProps;
             }
@@ -22941,8 +22941,8 @@ var require_react_dom_development = __commonJS({
               scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
             }
           };
-          overridePropsDeletePath = function(fiber, path3) {
-            fiber.pendingProps = copyWithDelete(fiber.memoizedProps, path3);
+          overridePropsDeletePath = function(fiber, path4) {
+            fiber.pendingProps = copyWithDelete(fiber.memoizedProps, path4);
             if (fiber.alternate) {
               fiber.alternate.pendingProps = fiber.pendingProps;
             }
@@ -34253,8 +34253,8 @@ startedAt: "11:02"
 
 Edit /watch tutorial \u2014 final cut pass
 `;
-async function ensureFile3(app, path3, seed) {
-  const np = (0, import_obsidian6.normalizePath)(path3);
+async function ensureFile3(app, path4, seed) {
+  const np = (0, import_obsidian6.normalizePath)(path4);
   let f = app.vault.getAbstractFileByPath(np);
   if (f instanceof import_obsidian6.TFile)
     return f;
@@ -34282,13 +34282,13 @@ function parseTodos(content) {
   }
   return out;
 }
-async function loadTodos(app, path3, seed) {
-  const file = await ensureFile3(app, path3, seed);
+async function loadTodos(app, path4, seed) {
+  const file = await ensureFile3(app, path4, seed);
   const content = await app.vault.read(file);
   return parseTodos(content);
 }
-async function saveTodos(app, path3, todos) {
-  const np = (0, import_obsidian6.normalizePath)(path3);
+async function saveTodos(app, path4, todos) {
+  const np = (0, import_obsidian6.normalizePath)(path4);
   const file = app.vault.getAbstractFileByPath(np);
   if (!(file instanceof import_obsidian6.TFile))
     return;
@@ -34354,8 +34354,8 @@ async function loadMIT(app) {
   const title = body.trim().split(/\r?\n/).find((l) => l.trim().length > 0)?.trim() ?? "Your next task";
   return { title, project, est, startedAt };
 }
-function isCommandCenterPath(path3) {
-  return path3 === TODOS_SIDE_PROJECT || path3 === TODOS_EOD || path3 === MIT_FILE || path3 === TRUNK_FILE || path3 === BRAINDUMP_FILE;
+function isCommandCenterPath(path4) {
+  return path4 === TODOS_SIDE_PROJECT || path4 === TODOS_EOD || path4 === MIT_FILE || path4 === TRUNK_FILE || path4 === BRAINDUMP_FILE;
 }
 var SEED_TRUNK = `# Trunk
 
@@ -34765,29 +34765,86 @@ function cleanTitle(raw) {
 
 // src/data-sources/ai-bridge.ts
 var import_child_process = require("child_process");
-function findClaudeBinary() {
-  return process.env.CLAUDE_BIN || "claude";
+var fs3 = __toESM(require("fs"));
+var path3 = __toESM(require("path"));
+var os3 = __toESM(require("os"));
+function commonBinDirs() {
+  const home = os3.homedir();
+  return [
+    `${home}/.local/bin`,
+    `${home}/.claude/local`,
+    `${home}/.bun/bin`,
+    `${home}/.npm-global/bin`,
+    `${home}/.volta/bin`,
+    `${home}/.nvm/current/bin`,
+    "/opt/homebrew/bin",
+    "/usr/local/bin",
+    "/usr/bin",
+    "/bin"
+  ];
+}
+function augmentedEnv() {
+  const existing = (process.env.PATH || "").split(":").filter(Boolean);
+  const merged = Array.from(/* @__PURE__ */ new Set([...commonBinDirs(), ...existing])).join(":");
+  return { ...process.env, PATH: merged };
+}
+var cachedClaudePath = null;
+async function resolveClaudeBinary() {
+  if (cachedClaudePath)
+    return cachedClaudePath;
+  if (process.env.CLAUDE_BIN && fs3.existsSync(process.env.CLAUDE_BIN)) {
+    cachedClaudePath = process.env.CLAUDE_BIN;
+    return cachedClaudePath;
+  }
+  for (const dir of commonBinDirs()) {
+    const candidate = path3.join(dir, "claude");
+    try {
+      if (fs3.existsSync(candidate)) {
+        cachedClaudePath = candidate;
+        return candidate;
+      }
+    } catch {
+    }
+  }
+  const loginPath = await new Promise((resolve) => {
+    const sh = (0, import_child_process.spawn)("/bin/zsh", ["-lc", "command -v claude"], { env: augmentedEnv() });
+    let out = "";
+    sh.stdout.on("data", (d) => out += d.toString());
+    sh.on("close", (code) => {
+      const found = out.trim();
+      resolve(code === 0 && found ? found : null);
+    });
+    sh.on("error", () => resolve(null));
+  });
+  if (loginPath) {
+    cachedClaudePath = loginPath;
+    return loginPath;
+  }
+  throw new Error(
+    "Could not find the `claude` binary. Install Claude Code (https://docs.claude.com/en/docs/claude-code) and sign in. If it's installed at a non-standard path, set CLAUDE_BIN in your environment."
+  );
 }
 async function askClaude(prompt, opts = {}) {
+  const bin = await resolveClaudeBinary();
   const args = ["-p", prompt, "--output-format", "text"];
   if (opts.systemPrompt)
     args.push("--append-system-prompt", opts.systemPrompt);
   return new Promise((resolve, reject) => {
-    const proc = (0, import_child_process.spawn)(findClaudeBinary(), args, {
+    const proc = (0, import_child_process.spawn)(bin, args, {
       cwd: opts.cwd,
-      env: { ...process.env }
+      env: augmentedEnv()
     });
     let out = "";
     let err = "";
     const timer = setTimeout(() => {
       proc.kill();
-      reject(new Error("Claude call timed out \u2014 is `claude` on the PATH and signed in?"));
+      reject(new Error("Claude call timed out \u2014 is `claude` signed in? Try running it manually from the Terminal pane."));
     }, opts.timeoutMs ?? 6e4);
     proc.stdout.on("data", (d) => out += d.toString());
     proc.stderr.on("data", (d) => err += d.toString());
     proc.on("error", (e) => {
       clearTimeout(timer);
-      reject(new Error(`Could not spawn claude: ${e.message}. Install Claude Code and sign in.`));
+      reject(new Error(`Could not spawn claude (${bin}): ${e.message}.`));
     });
     proc.on("close", (code) => {
       clearTimeout(timer);
@@ -35102,13 +35159,13 @@ function PlanTodayModal({
 }
 
 // src/data-sources/agents.ts
-var fs3 = __toESM(require("fs/promises"));
+var fs4 = __toESM(require("fs/promises"));
 var CONTENT_ENGINE_DIR = "~/.claude/projects/-Users-ek-Desktop-Content-engine/";
 var ACTIVE_WINDOW_MS = 10 * 60 * 1e3;
 var RECENT_WINDOW_MS = 24 * 60 * 60 * 1e3;
 async function readFirstUserText(filepath) {
   try {
-    const content = await fs3.readFile(filepath, "utf8");
+    const content = await fs4.readFile(filepath, "utf8");
     for (const line of content.split(/\r?\n/)) {
       if (!line.trim())
         continue;
@@ -35138,7 +35195,7 @@ async function readFirstUserText(filepath) {
 }
 async function readDuration(filepath) {
   try {
-    const content = await fs3.readFile(filepath, "utf8");
+    const content = await fs4.readFile(filepath, "utf8");
     let first = 0;
     let last = 0;
     let count = 0;
@@ -36405,7 +36462,7 @@ function TabTerminal({ cwd }) {
         cols: term.cols,
         rows: term.rows,
         cwd,
-        env: { ...process.env, TERM: "xterm-256color", FORCE_COLOR: "1" }
+        env: { ...augmentedEnv(), TERM: "xterm-256color", FORCE_COLOR: "1" }
       });
       ptyRef.current = pty;
       setStatus("running");

@@ -3,6 +3,7 @@ import { GlassCard, Row, Col, Label } from "./ui";
 import { TerminalIcon } from "./icons";
 import { Terminal as XTerm, ITerminalOptions } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
+import { augmentedEnv } from "./data-sources/ai-bridge";
 
 /**
  * Terminal tab — embeds a real interactive PTY-backed shell inside the
@@ -103,7 +104,7 @@ export function TabTerminal({ cwd }: { cwd: string }) {
         cols: term.cols,
         rows: term.rows,
         cwd,
-        env: { ...process.env, TERM: "xterm-256color", FORCE_COLOR: "1" },
+        env: { ...augmentedEnv(), TERM: "xterm-256color", FORCE_COLOR: "1" },
       });
       ptyRef.current = pty;
       setStatus("running");

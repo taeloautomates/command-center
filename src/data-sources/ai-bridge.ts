@@ -9,13 +9,82 @@
  * Latency: ~4-12s per call depending on prompt + output size. Acceptable
  * for ritual buttons ("Plan today", "Close day") that fire on demand.
  * Not acceptable for snappy voice commands.
+ *
+ * macOS PATH gotcha: Obsidian launched from Finder/Spotlight gets a minimal
+ * PATH that doesn't include ~/.local/bin or /opt/homebrew/bin, so plain
+ * `spawn("claude", ...)` returns ENOENT. We resolve the binary the first
+ * time we're called — checking common install paths, then falling back to
+ * a login-shell `command -v claude` — and cache the result.
  */
 
 import { spawn } from "child_process";
+import * as fs from "fs";
+import * as path from "path";
+import * as os from "os";
 
-function findClaudeBinary(): string {
-  // Prefer the user's installed claude; falls back to PATH lookup at spawn time.
-  return process.env.CLAUDE_BIN || "claude";
+/* ─── PATH resolution ─────────────────────────────────────────── */
+
+function commonBinDirs(): string[] {
+  const home = os.homedir();
+  return [
+    `${home}/.local/bin`,
+    `${home}/.claude/local`,
+    `${home}/.bun/bin`,
+    `${home}/.npm-global/bin`,
+    `${home}/.volta/bin`,
+    `${home}/.nvm/current/bin`,
+    "/opt/homebrew/bin",
+    "/usr/local/bin",
+    "/usr/bin",
+    "/bin",
+  ];
+}
+
+/** Augment PATH so subprocesses can find tools the user installed in their shell. */
+export function augmentedEnv(): NodeJS.ProcessEnv {
+  const existing = (process.env.PATH || "").split(":").filter(Boolean);
+  const merged = Array.from(new Set([...commonBinDirs(), ...existing])).join(":");
+  return { ...process.env, PATH: merged };
+}
+
+let cachedClaudePath: string | null = null;
+
+/** Find an absolute path to `claude`. Cached after first success. */
+export async function resolveClaudeBinary(): Promise<string> {
+  if (cachedClaudePath) return cachedClaudePath;
+  if (process.env.CLAUDE_BIN && fs.existsSync(process.env.CLAUDE_BIN)) {
+    cachedClaudePath = process.env.CLAUDE_BIN;
+    return cachedClaudePath;
+  }
+  // Fast path: try common install locations directly.
+  for (const dir of commonBinDirs()) {
+    const candidate = path.join(dir, "claude");
+    try {
+      if (fs.existsSync(candidate)) {
+        cachedClaudePath = candidate;
+        return candidate;
+      }
+    } catch {}
+  }
+  // Slow path: ask the user's login shell where claude is.
+  const loginPath = await new Promise<string | null>((resolve) => {
+    const sh = spawn("/bin/zsh", ["-lc", "command -v claude"], { env: augmentedEnv() });
+    let out = "";
+    sh.stdout.on("data", (d) => (out += d.toString()));
+    sh.on("close", (code) => {
+      const found = out.trim();
+      resolve(code === 0 && found ? found : null);
+    });
+    sh.on("error", () => resolve(null));
+  });
+  if (loginPath) {
+    cachedClaudePath = loginPath;
+    return loginPath;
+  }
+  throw new Error(
+    "Could not find the `claude` binary. Install Claude Code (https://docs.claude.com/en/docs/claude-code) " +
+    "and sign in. If it's installed at a non-standard path, set CLAUDE_BIN in your environment."
+  );
 }
 
 export type ClaudeCallOpts = {
@@ -25,25 +94,26 @@ export type ClaudeCallOpts = {
 };
 
 export async function askClaude(prompt: string, opts: ClaudeCallOpts = {}): Promise<string> {
+  const bin = await resolveClaudeBinary();
   const args = ["-p", prompt, "--output-format", "text"];
   if (opts.systemPrompt) args.push("--append-system-prompt", opts.systemPrompt);
 
   return new Promise((resolve, reject) => {
-    const proc = spawn(findClaudeBinary(), args, {
+    const proc = spawn(bin, args, {
       cwd: opts.cwd,
-      env: { ...process.env },
+      env: augmentedEnv(),
     });
     let out = "";
     let err = "";
     const timer = setTimeout(() => {
       proc.kill();
-      reject(new Error("Claude call timed out — is `claude` on the PATH and signed in?"));
+      reject(new Error("Claude call timed out — is `claude` signed in? Try running it manually from the Terminal pane."));
     }, opts.timeoutMs ?? 60_000);
     proc.stdout.on("data", (d) => (out += d.toString()));
     proc.stderr.on("data", (d) => (err += d.toString()));
     proc.on("error", (e) => {
       clearTimeout(timer);
-      reject(new Error(`Could not spawn claude: ${e.message}. Install Claude Code and sign in.`));
+      reject(new Error(`Could not spawn claude (${bin}): ${e.message}.`));
     });
     proc.on("close", (code) => {
       clearTimeout(timer);
