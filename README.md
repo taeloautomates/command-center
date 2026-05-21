@@ -140,10 +140,6 @@ src/
 - **Apple Silicon and Intel** prebuilds for node-pty are included.
 - On first run, macOS will prompt for Calendar permission when the first time-block is dropped — approve once, never asked again.
 
-## Credit
-
-The idea for running Claude Code natively inside an Obsidian vault came from [Cole Medin's](https://www.youtube.com/@ColeMedinAI) video on Obsidian vault structure for AI agents — go subscribe to him, he has the best take on this.
-
 ## License
 
 MIT. See [LICENSE](LICENSE).
