@@ -25,6 +25,8 @@ import { TrunkStrip } from "./trunk";
 import { useBallDrag, BallGhost, ballLabel } from "./car";
 import type { TrunkItem } from "./types";
 import { parseIntent } from "./voice-intent";
+import { planToday, brickForKey, type DayPlan, type PlannedBlock } from "./data-sources/plan-today";
+import { PlanTodayModal } from "./plan-today-modal";
 
 /** Expand `~/` paths so the Terminal tab spawns in the right cwd. */
 function resolveCwd(p: string): string {
@@ -368,10 +370,69 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
         window.dispatchEvent(new CustomEvent("cc-open-terminal"));
         return { ok: true, summary: "Opening Claude Code…" };
       }
+      case "plan_today": {
+        runPlanToday();
+        return { ok: true, summary: "Asking Claude to plan your day…" };
+      }
       case "unknown":
       default:
         return { ok: false, summary: `Heard "${transcript}" — didn't match an intent` };
     }
+  };
+
+  // ── /today ritual ──
+  const [planState, setPlanState] = React.useState<"closed" | "loading" | "ready" | "error">("closed");
+  const [plan, setPlan] = React.useState<DayPlan | null>(null);
+  const [planError, setPlanError] = React.useState<string>("");
+
+  const runPlanToday = React.useCallback(async () => {
+    setPlanState("loading");
+    setPlan(null);
+    setPlanError("");
+    try {
+      const result = await planToday({
+        mit: state.mit,
+        trunk,
+        calendarEvents: live.calendarEvents,
+        brainDump,
+        nowHour: new Date().getHours(),
+      });
+      setPlan(result);
+      setPlanState("ready");
+    } catch (e: any) {
+      setPlanError(e?.message ?? String(e));
+      setPlanState("error");
+    }
+  }, [state.mit, trunk, live.calendarEvents, brainDump]);
+
+  const applyPlanMIT = async () => {
+    if (!plan) return;
+    const newMIT = {
+      title: plan.mit,
+      project: plan.project,
+      est: plan.estMin,
+      startedAt: new Date().toTimeString().slice(0, 5),
+    };
+    setState((s) => ({
+      ...s,
+      mit: newMIT,
+      timer: { totalSec: plan.estMin * 60, remainingSec: plan.estMin * 60, active: true, paused: false },
+    }));
+    await saveMIT(bridge.app, newMIT);
+  };
+
+  const applyPlanBlock = async (b: PlannedBlock) => {
+    const brick = brickForKey(b.brick);
+    if (!brick) return;
+    const dur = b.durationMin ?? brick.dur;
+    const startMin = Math.round(b.startHour * 60);
+    await onAddBlock({
+      id: "b" + Math.random().toString(36).slice(2, 9),
+      brick: { ...brick, dur },
+      startMin,
+      durMin: dur,
+      surface: "9to5",
+    });
   };
 
   // Drag-and-drop bridge: refs for hit-testing + the swap callbacks.
@@ -403,6 +464,16 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
 
   return (
     <div className="cc-stage">
+      {planState !== "closed" && (
+        <PlanTodayModal
+          state={planState === "loading" ? "loading" : planState === "error" ? "error" : "ready"}
+          plan={plan}
+          error={planError}
+          onApplyMIT={applyPlanMIT}
+          onApplyBlock={applyPlanBlock}
+          onClose={() => setPlanState("closed")}
+        />
+      )}
       <div className="cc-frame">
         <TopBar
           tab={currentTab} setTab={setTab}
@@ -434,6 +505,7 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
                   e,
                 )
               }
+              onPlanToday={runPlanToday}
             />
 
             <TrunkStrip

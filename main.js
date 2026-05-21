@@ -1088,7 +1088,7 @@ var require_react_development = __commonJS({
           }
           return dispatcher.useContext(Context);
         }
-        function useState11(initialState) {
+        function useState12(initialState) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useState(initialState);
         }
@@ -1100,7 +1100,7 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useRef(initialValue);
         }
-        function useEffect9(create, deps) {
+        function useEffect10(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useEffect(create, deps);
         }
@@ -1883,7 +1883,7 @@ var require_react_development = __commonJS({
         exports.useContext = useContext;
         exports.useDebugValue = useDebugValue;
         exports.useDeferredValue = useDeferredValue;
-        exports.useEffect = useEffect9;
+        exports.useEffect = useEffect10;
         exports.useId = useId2;
         exports.useImperativeHandle = useImperativeHandle;
         exports.useInsertionEffect = useInsertionEffect;
@@ -1891,7 +1891,7 @@ var require_react_development = __commonJS({
         exports.useMemo = useMemo2;
         exports.useReducer = useReducer2;
         exports.useRef = useRef8;
-        exports.useState = useState11;
+        exports.useState = useState12;
         exports.useSyncExternalStore = useSyncExternalStore;
         exports.useTransition = useTransition;
         exports.version = ReactVersion;
@@ -2387,9 +2387,9 @@ var require_react_dom_development = __commonJS({
         if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
         }
-        var React16 = require_react();
+        var React17 = require_react();
         var Scheduler = require_scheduler();
-        var ReactSharedInternals = React16.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+        var ReactSharedInternals = React17.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         var suppressWarning = false;
         function setSuppressWarning(newSuppressWarning) {
           {
@@ -2438,7 +2438,7 @@ var require_react_dom_development = __commonJS({
         var HostPortal = 4;
         var HostComponent = 5;
         var HostText = 6;
-        var Fragment5 = 7;
+        var Fragment6 = 7;
         var Mode = 8;
         var ContextConsumer = 9;
         var ContextProvider = 10;
@@ -3594,7 +3594,7 @@ var require_react_dom_development = __commonJS({
               return "DehydratedFragment";
             case ForwardRef:
               return getWrappedName$1(type, type.render, "ForwardRef");
-            case Fragment5:
+            case Fragment6:
               return "Fragment";
             case HostComponent:
               return type;
@@ -3994,7 +3994,7 @@ var require_react_dom_development = __commonJS({
           {
             if (props.value == null) {
               if (typeof props.children === "object" && props.children !== null) {
-                React16.Children.forEach(props.children, function(child) {
+                React17.Children.forEach(props.children, function(child) {
                   if (child == null) {
                     return;
                   }
@@ -11995,7 +11995,7 @@ var require_react_dom_development = __commonJS({
             }
           }
           function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-            if (current2 === null || current2.tag !== Fragment5) {
+            if (current2 === null || current2.tag !== Fragment6) {
               var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
               created.return = returnFiber;
               return created;
@@ -12398,7 +12398,7 @@ var require_react_dom_development = __commonJS({
               if (child.key === key) {
                 var elementType = element.type;
                 if (elementType === REACT_FRAGMENT_TYPE) {
-                  if (child.tag === Fragment5) {
+                  if (child.tag === Fragment6) {
                     deleteRemainingChildren(returnFiber, child.sibling);
                     var existing = useFiber(child, element.props.children);
                     existing.return = returnFiber;
@@ -17875,7 +17875,7 @@ var require_react_dom_development = __commonJS({
               var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
               return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
             }
-            case Fragment5:
+            case Fragment6:
               return updateFragment(current2, workInProgress2, renderLanes2);
             case Mode:
               return updateMode(current2, workInProgress2, renderLanes2);
@@ -18148,7 +18148,7 @@ var require_react_dom_development = __commonJS({
             case SimpleMemoComponent:
             case FunctionComponent:
             case ForwardRef:
-            case Fragment5:
+            case Fragment6:
             case Mode:
             case Profiler:
             case ContextConsumer:
@@ -22407,7 +22407,7 @@ var require_react_dom_development = __commonJS({
           return fiber;
         }
         function createFiberFromFragment(elements, mode, lanes, key) {
-          var fiber = createFiber(Fragment5, elements, key, mode);
+          var fiber = createFiber(Fragment6, elements, key, mode);
           fiber.lanes = lanes;
           return fiber;
         }
@@ -23563,7 +23563,7 @@ var require_react_jsx_runtime_development = __commonJS({
     if (true) {
       (function() {
         "use strict";
-        var React16 = require_react();
+        var React17 = require_react();
         var REACT_ELEMENT_TYPE = Symbol.for("react.element");
         var REACT_PORTAL_TYPE = Symbol.for("react.portal");
         var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -23589,7 +23589,7 @@ var require_react_jsx_runtime_development = __commonJS({
           }
           return null;
         }
-        var ReactSharedInternals = React16.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+        var ReactSharedInternals = React17.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         function error(format) {
           {
             {
@@ -24439,11 +24439,11 @@ var require_react_jsx_runtime_development = __commonJS({
             return jsxWithValidation(type, props, key, false);
           }
         }
-        var jsx20 = jsxWithValidationDynamic;
-        var jsxs17 = jsxWithValidationStatic;
+        var jsx21 = jsxWithValidationDynamic;
+        var jsxs18 = jsxWithValidationStatic;
         exports.Fragment = REACT_FRAGMENT_TYPE;
-        exports.jsx = jsx20;
-        exports.jsxs = jsxs17;
+        exports.jsx = jsx21;
+        exports.jsxs = jsxs18;
       })();
     }
   }
@@ -31005,11 +31005,11 @@ var import_obsidian13 = require("obsidian");
 
 // src/view.tsx
 var import_obsidian11 = require("obsidian");
-var React13 = __toESM(require_react());
+var React14 = __toESM(require_react());
 var import_client = __toESM(require_client());
 
 // src/app.tsx
-var React12 = __toESM(require_react());
+var React13 = __toESM(require_react());
 
 // src/topbar.tsx
 var React2 = __toESM(require_react());
@@ -32068,7 +32068,8 @@ function MITBanner({
   onDone,
   seatRef,
   isDropTarget,
-  onPointerDownSeat
+  onPointerDownSeat,
+  onPlanToday
 }) {
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;
@@ -32098,9 +32099,23 @@ function MITBanner({
           ] }),
           active && paused && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.38)", letterSpacing: 0.14, textTransform: "uppercase", fontWeight: 500 }, children: "belt slack \xB7 paused" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "mono tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: [
-          progress,
-          "%"
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Row, { gap: 8, align: "center", children: [
+          onPlanToday && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+            "button",
+            {
+              className: "cc-plan-today-btn",
+              onClick: onPlanToday,
+              title: "Ask Claude to plan your day",
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { "aria-hidden": "true", children: "\u2600" }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "plan today" })
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "mono tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: [
+            progress,
+            "%"
+          ] })
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { style: {
@@ -34682,6 +34697,9 @@ function parseIntent(transcript) {
   if (!t)
     return { kind: "unknown", raw: transcript };
   const lower = t.toLowerCase();
+  if (/\b(plan|design)\s+(my\s+)?(today|day)\b/.test(lower) || /\bwhat\s+should\s+i\s+(focus|work)\s+on\b/.test(lower) || /\bclaude.*(plan|figure\s+out).*(day|today)\b/.test(lower) || /^plan\s+today$/.test(lower) || /^plan\s+my\s+day$/.test(lower)) {
+    return { kind: "plan_today" };
+  }
   if (/\b(pause|hold)\b.*\b(timer|focus|clock)\b/.test(lower) || /^pause$/.test(lower)) {
     return { kind: "timer", action: "pause" };
   }
@@ -34743,6 +34761,344 @@ function parseIntent(transcript) {
 }
 function cleanTitle(raw) {
   return raw.trim().replace(/^(that|to|this is|it is)\s+/i, "").replace(/[.!?]+\s*$/g, "").replace(/\s+/g, " ");
+}
+
+// src/data-sources/ai-bridge.ts
+var import_child_process = require("child_process");
+function findClaudeBinary() {
+  return process.env.CLAUDE_BIN || "claude";
+}
+async function askClaude(prompt, opts = {}) {
+  const args = ["-p", prompt, "--output-format", "text"];
+  if (opts.systemPrompt)
+    args.push("--append-system-prompt", opts.systemPrompt);
+  return new Promise((resolve, reject) => {
+    const proc = (0, import_child_process.spawn)(findClaudeBinary(), args, {
+      cwd: opts.cwd,
+      env: { ...process.env }
+    });
+    let out = "";
+    let err = "";
+    const timer = setTimeout(() => {
+      proc.kill();
+      reject(new Error("Claude call timed out \u2014 is `claude` on the PATH and signed in?"));
+    }, opts.timeoutMs ?? 6e4);
+    proc.stdout.on("data", (d) => out += d.toString());
+    proc.stderr.on("data", (d) => err += d.toString());
+    proc.on("error", (e) => {
+      clearTimeout(timer);
+      reject(new Error(`Could not spawn claude: ${e.message}. Install Claude Code and sign in.`));
+    });
+    proc.on("close", (code) => {
+      clearTimeout(timer);
+      if (code !== 0)
+        reject(new Error(err.trim() || `claude exited ${code}`));
+      else
+        resolve(out.trim());
+    });
+  });
+}
+async function askClaudeJSON(prompt, opts = {}) {
+  const full = prompt + "\n\nReply with ONLY a single JSON object. No prose, no markdown, no code fence.";
+  const text = await askClaude(full, opts);
+  return parseLooseJSON(text);
+}
+function parseLooseJSON(text) {
+  let s = text.trim();
+  const fence = s.match(/^```(?:json)?\s*\n([\s\S]*?)\n```\s*$/);
+  if (fence)
+    s = fence[1].trim();
+  const first = s.indexOf("{");
+  const last = s.lastIndexOf("}");
+  if (first >= 0 && last > first)
+    s = s.slice(first, last + 1);
+  return JSON.parse(s);
+}
+
+// src/data-sources/plan-today.ts
+var BRICK_PRESETS2 = {
+  "deep work": { id: "deepwork", name: "Deep work", dur: 90, glyph: "\u25A0" },
+  "reading": { id: "reading", name: "Reading", dur: 45, glyph: "\u25A4" },
+  "run": { id: "run", name: "Run", dur: 45, glyph: "\u25B6" },
+  "walk": { id: "walk", name: "Walk", dur: 30, glyph: "\u2197" },
+  "stretch": { id: "stretch", name: "Stretch", dur: 20, glyph: "~" },
+  "instrument": { id: "instrument", name: "Instrument", dur: 60, glyph: "\u266A" }
+};
+function fmtDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function fmtTime2(d) {
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+function buildPrompt(ctx) {
+  const now = /* @__PURE__ */ new Date();
+  const today = fmtDate(now);
+  const nowTime = fmtTime2(now);
+  const cal = ctx.calendarEvents.filter((e) => fmtDate(e.start) === today).map((e) => `  \u2022 ${fmtTime2(e.start)}\u2013${fmtTime2(e.end)}  ${e.title}  (${e.calendar})`).join("\n") || "  (none)";
+  const trunk = ctx.trunk.slice(0, 12).map((t) => `  \u2022 ${t.title}${t.project ? ` \xB7 ${t.project}` : ""}${t.estMin ? ` \xB7 ${t.estMin}m` : ""}`).join("\n") || "  (empty)";
+  const dump = ctx.brainDump.slice(0, 10).map((b) => `  \u2022 [${b.ts}] ${b.text}`).join("\n") || "  (empty)";
+  const brickKeys = Object.keys(BRICK_PRESETS2).join(", ");
+  return `
+You are planning Taelo's day. He's an ADHD solo operator who runs a YouTube
+channel, a SaaS side project, and a 9-to-5. He needs ONE clear front-seat
+task and a few well-placed time blocks. Be decisive. No fluff.
+
+# Context
+
+Date: ${today}
+Current time: ${nowTime}
+
+Currently in the Front Seat:
+  \u2022 "${ctx.mit.title}" \u2014 ${ctx.mit.project} \xB7 est ${ctx.mit.est}m \xB7 started ${ctx.mit.startedAt}
+
+Today's calendar (meetings \u2014 don't schedule on top of these):
+${cal}
+
+Trunk (deferred tasks waiting):
+${trunk}
+
+Recent brain dump (ideas, last few entries):
+${dump}
+
+# Your task
+
+Pick ONE front-seat task for the rest of today. Pick what genuinely moves
+the needle, not the easiest one. If the current MIT is still right, keep it.
+If the trunk has something more urgent or higher-leverage, propose that.
+
+Then suggest 1-3 time blocks for the rest of the day. Schedule around the
+meetings above. Don't pile work on top of meetings. Prefer afternoon focus
+blocks if mornings are taken.
+
+Available time-block types (use one of these strings exactly for "brick"):
+${brickKeys}
+
+Estimate must fit a single focused session (25, 45, 60, 90 minutes \u2014 Pomodoro
+style, NOT all day).
+
+# Output schema
+
+{
+  "mit": "string \u2014 the proposed task title, \u2264 60 chars",
+  "project": "string \u2014 short project tag, \u2264 24 chars (e.g. 'side-project', '9-to-5', 'youtube', 'health')",
+  "estMin": number (25 | 45 | 60 | 90),
+  "blocks": [
+    {
+      "brick": "one of: ${brickKeys}",
+      "startHour": number (24h, e.g. 14 for 2pm; .5 allowed for half-hour),
+      "durationMin": number (optional override),
+      "why": "one short sentence"
+    }
+  ],
+  "reasoning": "one paragraph, \u2264 60 words, why this MIT + these blocks make sense given today's context",
+  "framing": "optional one-liner mood/posture for the day, \u2264 12 words"
+}
+`.trim();
+}
+async function planToday(ctx) {
+  const prompt = buildPrompt(ctx);
+  return askClaudeJSON(prompt, { timeoutMs: 45e3 });
+}
+function brickForKey(key) {
+  const k = key?.toLowerCase().trim() ?? "";
+  return BRICK_PRESETS2[k] ?? null;
+}
+
+// src/plan-today-modal.tsx
+var React12 = __toESM(require_react());
+var import_jsx_runtime16 = __toESM(require_jsx_runtime());
+function PlanTodayModal({
+  state,
+  plan,
+  error,
+  onApplyMIT,
+  onApplyBlock,
+  onClose
+}) {
+  React12.useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+  const [appliedMIT, setAppliedMIT] = React12.useState(false);
+  const [appliedBlocks, setAppliedBlocks] = React12.useState(/* @__PURE__ */ new Set());
+  const handleApplyAll = () => {
+    if (!plan)
+      return;
+    if (!appliedMIT) {
+      onApplyMIT();
+      setAppliedMIT(true);
+    }
+    plan.blocks.forEach((b, i) => {
+      if (!appliedBlocks.has(i))
+        onApplyBlock(b);
+    });
+    setAppliedBlocks(new Set(plan.blocks.map((_, i) => i)));
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "cc-modal-backdrop", onClick: onClose, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "cc-modal", onClick: (e) => e.stopPropagation(), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 16 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { gap: 10, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "cc-sun-glyph", "aria-hidden": "true", children: "\u2600" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 2, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Label, { children: "Plan today \xB7 Claude" }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.42)", letterSpacing: -5e-3 }, children: "Reading your calendar, trunk, and brain dump." })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "cc-modal-close", onClick: onClose, "aria-label": "Close", children: "\xD7" })
+    ] }),
+    state === "loading" && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 14, style: { alignItems: "center", padding: "32px 12px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "cc-think-dots", "aria-hidden": "true", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", {})
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.62)", letterSpacing: -5e-3 }, children: "Claude is thinking through your day\u2026" }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)" }, children: "this can take 5\u201315 seconds" })
+    ] }),
+    state === "error" && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 10, style: { padding: "20px 8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { fontSize: 13, color: "rgba(255,255,255,0.86)", lineHeight: 1.45 }, children: "Couldn't reach Claude." }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "mono", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", lineHeight: 1.45, whiteSpace: "pre-wrap" }, children: error }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.42)", marginTop: 6 }, children: [
+        "Make sure ",
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "mono", children: "claude" }),
+        " is on your PATH and signed in. Try opening the Terminal tab and running ",
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "mono", children: "claude" }),
+        " manually."
+      ] })
+    ] }),
+    state === "ready" && plan && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
+      plan.framing && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: {
+        padding: "10px 14px",
+        marginBottom: 14,
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 8,
+        fontSize: 13,
+        fontStyle: "italic",
+        letterSpacing: -5e-3,
+        color: "rgba(255,255,255,0.86)",
+        fontFamily: "Georgia, 'Times New Roman', serif"
+      }, children: [
+        '"',
+        plan.framing,
+        '"'
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 6, style: { marginBottom: 16 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Label, { children: "Front Seat" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: {
+          padding: "14px 16px",
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.10)",
+          borderRadius: 10
+        }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { justify: "space-between", align: "flex-start", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 4, style: { flex: 1 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { fontSize: 16, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.3 }, children: plan.mit }),
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { gap: 8, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.62)" }, children: plan.project }),
+              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { color: "rgba(255,255,255,0.18)" }, children: "\xB7" }),
+              /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: [
+                plan.estMin,
+                "m"
+              ] })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+            "button",
+            {
+              className: "pill" + (appliedMIT ? " ghost" : " solid"),
+              onClick: () => {
+                if (!appliedMIT) {
+                  onApplyMIT();
+                  setAppliedMIT(true);
+                }
+              },
+              disabled: appliedMIT,
+              style: { padding: "4px 12px", fontSize: 10, flexShrink: 0 },
+              children: appliedMIT ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { gap: 4, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(CheckIcon, { size: 10, opacity: 0.78 }),
+                " ",
+                /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "buckled in" })
+              ] }) : "Buckle in"
+            }
+          )
+        ] }) })
+      ] }),
+      plan.blocks.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 6, style: { marginBottom: 16 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Label, { children: "Suggested time blocks" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Col, { gap: 6, children: plan.blocks.map((b, i) => {
+          const brick = brickForKey(b.brick);
+          const dur = b.durationMin ?? brick?.dur ?? 45;
+          const startH = Math.floor(b.startHour);
+          const startM = Math.round((b.startHour - startH) * 60);
+          const isApplied = appliedBlocks.has(i);
+          return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { gap: 10, align: "center", style: {
+            padding: "10px 12px",
+            background: "rgba(255,255,255,0.025)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 8
+          }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: {
+              width: 26,
+              height: 26,
+              borderRadius: 6,
+              flexShrink: 0,
+              background: "linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.30))",
+              border: "1px solid rgba(255,255,255,0.12)",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 14,
+              color: "rgba(255,255,255,0.92)"
+            }, children: brick?.glyph ?? "\xB7" }),
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 2, style: { flex: 1, minWidth: 0 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { style: { fontSize: 12, fontWeight: 500, color: "rgba(255,255,255,0.92)" }, children: [
+                brick?.name ?? b.brick,
+                " \xB7 ",
+                dur,
+                "m"
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", letterSpacing: -5e-3, lineHeight: 1.4 }, children: b.why })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "mono tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", minWidth: 48, textAlign: "right" }, children: [
+              String(startH).padStart(2, "0"),
+              ":",
+              String(startM).padStart(2, "0")
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+              "button",
+              {
+                className: "pill" + (isApplied ? " ghost" : ""),
+                onClick: () => {
+                  if (isApplied)
+                    return;
+                  onApplyBlock(b);
+                  setAppliedBlocks((s) => /* @__PURE__ */ new Set([...s, i]));
+                },
+                disabled: isApplied || !brick,
+                style: { padding: "3px 9px", fontSize: 9, flexShrink: 0 },
+                title: !brick ? `Unknown brick "${b.brick}"` : "",
+                children: isApplied ? "placed" : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { gap: 3, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(PlusIcon, { size: 9, opacity: 0.78 }),
+                  " ",
+                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "place" })
+                ] })
+              }
+            )
+          ] }, i);
+        }) })
+      ] }),
+      plan.reasoning && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Col, { gap: 6, style: { marginBottom: 14 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Label, { children: "Why" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.78)", lineHeight: 1.5, letterSpacing: -5e-3 }, children: plan.reasoning })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row, { justify: "space-between", style: { marginTop: 18, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "pill ghost", onClick: onClose, style: { padding: "5px 14px" }, children: "Dismiss" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "pill solid", onClick: handleApplyAll, style: { padding: "5px 14px" }, children: "Apply all" })
+      ] })
+    ] })
+  ] }) });
 }
 
 // src/data-sources/agents.ts
@@ -35204,7 +35560,7 @@ async function fetchICalEvents(url, name) {
 }
 
 // src/data-sources/apple-calendar.ts
-var import_child_process = require("child_process");
+var import_child_process2 = require("child_process");
 var SCRIPT_CREATE = `
 function run(argv) {
   const [calName, title, startISO, endISO, notes] = argv;
@@ -35248,7 +35604,7 @@ function run() {
 `.trim();
 function osascript(script, args = [], timeoutMs = 3e4) {
   return new Promise((resolve, reject) => {
-    const proc = (0, import_child_process.spawn)("osascript", ["-l", "JavaScript", "-", ...args]);
+    const proc = (0, import_child_process2.spawn)("osascript", ["-l", "JavaScript", "-", ...args]);
     let out = "";
     let err = "";
     const timer = setTimeout(() => {
@@ -35470,7 +35826,7 @@ async function tryFetch(id) {
 }
 
 // src/app.tsx
-var import_jsx_runtime16 = __toESM(require_jsx_runtime());
+var import_jsx_runtime17 = __toESM(require_jsx_runtime());
 var EMPTY_LIVE = {
   sessions: [],
   trending: null,
@@ -35486,15 +35842,15 @@ var EMPTY_LIVE = {
   loadedAt: 0
 };
 function CommandCenterApp({ bridge }) {
-  const [state, setState] = React12.useState(DEFAULT_STATE);
-  const [sideTodos, setSideTodos] = React12.useState([]);
-  const [eodTodos, setEodTodos] = React12.useState([]);
-  const [trunk, setTrunk] = React12.useState([]);
-  const [brainDump, setBrainDump] = React12.useState([]);
-  const [live, setLive] = React12.useState(EMPTY_LIVE);
-  const [refreshing, setRefreshing] = React12.useState(false);
-  const [hydrated, setHydrated] = React12.useState(false);
-  const refreshLive = React12.useCallback(async () => {
+  const [state, setState] = React13.useState(DEFAULT_STATE);
+  const [sideTodos, setSideTodos] = React13.useState([]);
+  const [eodTodos, setEodTodos] = React13.useState([]);
+  const [trunk, setTrunk] = React13.useState([]);
+  const [brainDump, setBrainDump] = React13.useState([]);
+  const [live, setLive] = React13.useState(EMPTY_LIVE);
+  const [refreshing, setRefreshing] = React13.useState(false);
+  const [hydrated, setHydrated] = React13.useState(false);
+  const refreshLive = React13.useCallback(async () => {
     setRefreshing(true);
     try {
       const [sessions, trending, quotes, manual, news, reddit, tweets, artwork, songs, bookmarks] = await Promise.all([
@@ -35515,7 +35871,7 @@ function CommandCenterApp({ bridge }) {
       setRefreshing(false);
     }
   }, [bridge]);
-  React12.useEffect(() => {
+  React13.useEffect(() => {
     let cancelled = false;
     (async () => {
       const [pluginData, sp, eod, mit2, trunkItems, dump] = await Promise.all([
@@ -35542,18 +35898,18 @@ function CommandCenterApp({ bridge }) {
       cancelled = true;
     };
   }, [bridge, refreshLive]);
-  React12.useEffect(() => {
+  React13.useEffect(() => {
     if (!hydrated)
       return;
     const id = setInterval(refreshLive, 60 * 1e3);
     return () => clearInterval(id);
   }, [hydrated, refreshLive]);
-  React12.useEffect(() => {
+  React13.useEffect(() => {
     if (!hydrated)
       return;
     bridge.savePluginData(state);
   }, [state, hydrated, bridge]);
-  React12.useEffect(() => {
+  React13.useEffect(() => {
     const handler = async (file) => {
       if (!file || !isCommandCenterPath(file.path))
         return;
@@ -35570,7 +35926,7 @@ function CommandCenterApp({ bridge }) {
     vault.on("modify", handler);
     return () => vault.off("modify", handler);
   }, [bridge]);
-  React12.useEffect(() => {
+  React13.useEffect(() => {
     const { active, paused } = state.timer;
     if (!active || paused)
       return;
@@ -35762,13 +36118,69 @@ function CommandCenterApp({ bridge }) {
         window.dispatchEvent(new CustomEvent("cc-open-terminal"));
         return { ok: true, summary: "Opening Claude Code\u2026" };
       }
+      case "plan_today": {
+        runPlanToday();
+        return { ok: true, summary: "Asking Claude to plan your day\u2026" };
+      }
       case "unknown":
       default:
         return { ok: false, summary: `Heard "${transcript}" \u2014 didn't match an intent` };
     }
   };
-  const seatRef = React12.useRef(null);
-  const trunkRef = React12.useRef(null);
+  const [planState, setPlanState] = React13.useState("closed");
+  const [plan, setPlan] = React13.useState(null);
+  const [planError, setPlanError] = React13.useState("");
+  const runPlanToday = React13.useCallback(async () => {
+    setPlanState("loading");
+    setPlan(null);
+    setPlanError("");
+    try {
+      const result = await planToday({
+        mit: state.mit,
+        trunk,
+        calendarEvents: live.calendarEvents,
+        brainDump,
+        nowHour: (/* @__PURE__ */ new Date()).getHours()
+      });
+      setPlan(result);
+      setPlanState("ready");
+    } catch (e) {
+      setPlanError(e?.message ?? String(e));
+      setPlanState("error");
+    }
+  }, [state.mit, trunk, live.calendarEvents, brainDump]);
+  const applyPlanMIT = async () => {
+    if (!plan)
+      return;
+    const newMIT = {
+      title: plan.mit,
+      project: plan.project,
+      est: plan.estMin,
+      startedAt: (/* @__PURE__ */ new Date()).toTimeString().slice(0, 5)
+    };
+    setState((s) => ({
+      ...s,
+      mit: newMIT,
+      timer: { totalSec: plan.estMin * 60, remainingSec: plan.estMin * 60, active: true, paused: false }
+    }));
+    await saveMIT(bridge.app, newMIT);
+  };
+  const applyPlanBlock = async (b) => {
+    const brick = brickForKey(b.brick);
+    if (!brick)
+      return;
+    const dur = b.durationMin ?? brick.dur;
+    const startMin = Math.round(b.startHour * 60);
+    await onAddBlock({
+      id: "b" + Math.random().toString(36).slice(2, 9),
+      brick: { ...brick, dur },
+      startMin,
+      durMin: dur,
+      surface: "9to5"
+    });
+  };
+  const seatRef = React13.useRef(null);
+  const trunkRef = React13.useRef(null);
   const { drag: ballDrag, startDrag: startBallDrag, hoverTarget } = useBallDrag({
     seatRef,
     trunkRef,
@@ -35792,68 +36204,82 @@ function CommandCenterApp({ bridge }) {
   };
   const { timer, mit, currentTab, focusMode, placedBlocks, healthMode } = state;
   const progress = timer.active ? Math.round((timer.totalSec - timer.remainingSec) / timer.totalSec * 100) : 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "cc-stage", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "cc-frame", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-      TopBar,
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "cc-stage", children: [
+    planState !== "closed" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+      PlanTodayModal,
       {
-        tab: currentTab,
-        setTab,
-        focusMode,
-        setFocusMode,
-        onRefresh: refreshLive,
-        refreshing,
-        loadedAt: live.loadedAt,
-        onVoice: dispatchVoice
+        state: planState === "loading" ? "loading" : planState === "error" ? "error" : "ready",
+        plan,
+        error: planError,
+        onApplyMIT: applyPlanMIT,
+        onApplyBlock: applyPlanBlock,
+        onClose: () => setPlanState("closed")
       }
     ),
-    (currentTab === "9-to-5" || currentTab === "Side Project") && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-        MITBanner,
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "cc-frame", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        TopBar,
         {
-          task: mit,
-          active: timer.active,
-          paused: timer.paused,
-          progress,
-          remaining: timer.remainingSec,
-          total: timer.totalSec,
-          onTogglePause,
-          onAdd5,
-          onDone,
-          seatRef,
-          isDropTarget: hoverTarget === "seat" && ballDrag?.source === "trunk",
-          onPointerDownSeat: (e) => startBallDrag(
-            { id: "seat", label: ballLabel({ title: mit.title, project: mit.project }), title: mit.title, source: "seat" },
-            e
-          )
+          tab: currentTab,
+          setTab,
+          focusMode,
+          setFocusMode,
+          onRefresh: refreshLive,
+          refreshing,
+          loadedAt: live.loadedAt,
+          onVoice: dispatchVoice
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-        TrunkStrip,
-        {
-          items: trunk,
-          onPromote: promoteFromTrunk,
-          onAdd: addTrunkItem,
-          onRemove: removeTrunkItem,
-          trunkRef,
-          isDropTarget: hoverTarget === "trunk" && ballDrag?.source === "seat",
-          onPointerDownBall: (args, e) => startBallDrag({ ...args, source: "trunk" }, e),
-          draggingId: ballDrag?.source === "trunk" ? ballDrag.id : void 0
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BallGhost, { drag: ballDrag })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: [
-      currentTab === "Side Project" && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(TabSideProject, { todos: sideTodos, toggleTodo: toggleSideTodo, trending: live.trending, manual: live.manual, news: live.news, reddit: live.reddit, tweets: live.tweets }),
-      currentTab === "9-to-5" && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(TabNineToFive, { eod: eodTodos, toggleEod, placedBlocks, onAddBlock, onRemoveBlock, manual: live.manual, calendarEvents: live.calendarEvents }),
-      currentTab === "Health" && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(TabHealth, { mode: healthMode, setMode: setHealthMode }),
-      currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks }),
-      currentTab === "Social" && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(TabSocial, { manual: live.manual })
-    ] }, currentTab)
-  ] }) });
+      (currentTab === "9-to-5" || currentTab === "Side Project") && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          MITBanner,
+          {
+            task: mit,
+            active: timer.active,
+            paused: timer.paused,
+            progress,
+            remaining: timer.remainingSec,
+            total: timer.totalSec,
+            onTogglePause,
+            onAdd5,
+            onDone,
+            seatRef,
+            isDropTarget: hoverTarget === "seat" && ballDrag?.source === "trunk",
+            onPointerDownSeat: (e) => startBallDrag(
+              { id: "seat", label: ballLabel({ title: mit.title, project: mit.project }), title: mit.title, source: "seat" },
+              e
+            ),
+            onPlanToday: runPlanToday
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          TrunkStrip,
+          {
+            items: trunk,
+            onPromote: promoteFromTrunk,
+            onAdd: addTrunkItem,
+            onRemove: removeTrunkItem,
+            trunkRef,
+            isDropTarget: hoverTarget === "trunk" && ballDrag?.source === "seat",
+            onPointerDownBall: (args, e) => startBallDrag({ ...args, source: "trunk" }, e),
+            draggingId: ballDrag?.source === "trunk" ? ballDrag.id : void 0
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(BallGhost, { drag: ballDrag })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: [
+        currentTab === "Side Project" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabSideProject, { todos: sideTodos, toggleTodo: toggleSideTodo, trending: live.trending, manual: live.manual, news: live.news, reddit: live.reddit, tweets: live.tweets }),
+        currentTab === "9-to-5" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabNineToFive, { eod: eodTodos, toggleEod, placedBlocks, onAddBlock, onRemoveBlock, manual: live.manual, calendarEvents: live.calendarEvents }),
+        currentTab === "Health" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabHealth, { mode: healthMode, setMode: setHealthMode }),
+        currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks }),
+        currentTab === "Social" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabSocial, { manual: live.manual })
+      ] }, currentTab)
+    ] })
+  ] });
 }
 
 // src/view.tsx
-var import_jsx_runtime17 = __toESM(require_jsx_runtime());
+var import_jsx_runtime18 = __toESM(require_jsx_runtime());
 var COMMAND_CENTER_VIEW = "command-center-view";
 var CommandCenterView = class extends import_obsidian11.ItemView {
   constructor(leaf, plugin) {
@@ -35876,7 +36302,7 @@ var CommandCenterView = class extends import_obsidian11.ItemView {
     container.addClass("cc-root");
     this.root = (0, import_client.createRoot)(container);
     this.root.render(
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(React13.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(CommandCenterApp, { bridge: {
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(React14.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(CommandCenterApp, { bridge: {
         app: this.app,
         loadPluginData: async () => await this.plugin.loadData() ?? {},
         savePluginData: async (s) => {
@@ -35893,14 +36319,14 @@ var CommandCenterView = class extends import_obsidian11.ItemView {
 
 // src/terminal-view.tsx
 var import_obsidian12 = require("obsidian");
-var React15 = __toESM(require_react());
+var React16 = __toESM(require_react());
 var import_client2 = __toESM(require_client());
 
 // src/tab-terminal.tsx
-var React14 = __toESM(require_react());
+var React15 = __toESM(require_react());
 var import_xterm = __toESM(require_xterm());
 var import_xterm_addon_fit = __toESM(require_xterm_addon_fit());
-var import_jsx_runtime18 = __toESM(require_jsx_runtime());
+var import_jsx_runtime19 = __toESM(require_jsx_runtime());
 function loadNodePty() {
   try {
     const nodePty = window.require?.("node-pty");
@@ -35948,15 +36374,15 @@ var XTERM_OPTIONS = {
   }
 };
 function TabTerminal({ cwd }) {
-  const containerRef = React14.useRef(null);
-  const termRef = React14.useRef(null);
-  const fitRef = React14.useRef(null);
-  const ptyRef = React14.useRef(null);
-  const [launcher, setLauncher] = React14.useState(LAUNCHERS[0]);
-  const [status, setStatus] = React14.useState("idle");
-  const [errMsg, setErrMsg] = React14.useState("");
-  const [restartKey, setRestartKey] = React14.useState(0);
-  React14.useEffect(() => {
+  const containerRef = React15.useRef(null);
+  const termRef = React15.useRef(null);
+  const fitRef = React15.useRef(null);
+  const ptyRef = React15.useRef(null);
+  const [launcher, setLauncher] = React15.useState(LAUNCHERS[0]);
+  const [status, setStatus] = React15.useState("idle");
+  const [errMsg, setErrMsg] = React15.useState("");
+  const [restartKey, setRestartKey] = React15.useState(0);
+  React15.useEffect(() => {
     if (!containerRef.current)
       return;
     const nodePty = loadNodePty();
@@ -36029,16 +36455,16 @@ function TabTerminal({ cwd }) {
   }, [launcher, restartKey, cwd]);
   const restart = () => setRestartKey((k) => k + 1);
   const focusTerm = () => termRef.current?.focus();
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(GlassCard, { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 10 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Row, { gap: 10, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TerminalIcon, { size: 14, opacity: 0.7 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Label, { children: "Terminal" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { style: { color: "rgba(255,255,255,0.16)", fontSize: 10 }, children: "\xB7" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.42)", letterSpacing: 0.04 }, children: cwd })
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(GlassCard, { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 10 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { gap: 10, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(TerminalIcon, { size: 14, opacity: 0.7 }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Label, { children: "Terminal" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { color: "rgba(255,255,255,0.16)", fontSize: 10 }, children: "\xB7" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.42)", letterSpacing: 0.04 }, children: cwd })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Row, { gap: 6, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "seg", role: "tablist", style: { padding: 2 }, children: LAUNCHERS.map((l) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { gap: 6, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "seg", role: "tablist", style: { padding: 2 }, children: LAUNCHERS.map((l) => /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
           "button",
           {
             role: "tab",
@@ -36050,7 +36476,7 @@ function TabTerminal({ cwd }) {
           },
           l.id
         )) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
           "button",
           {
             className: "pill",
@@ -36062,7 +36488,7 @@ function TabTerminal({ cwd }) {
         )
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
       "div",
       {
         ref: containerRef,
@@ -36071,23 +36497,23 @@ function TabTerminal({ cwd }) {
         style: { flex: 1, minHeight: 0, background: "#0A0A0B", borderRadius: 8, padding: 10, border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Row, { justify: "space-between", align: "center", style: { marginTop: 8 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Row, { gap: 6, align: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { justify: "space-between", align: "center", style: { marginTop: 8 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { gap: 6, align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: {
           width: 7,
           height: 7,
           borderRadius: 50,
           background: status === "running" ? "rgba(155,210,150,0.86)" : status === "exited" ? "rgba(255,255,255,0.32)" : status === "error" ? "rgba(224,130,140,0.86)" : "rgba(255,255,255,0.18)",
           boxShadow: status === "running" ? "0 0 8px rgba(155,210,150,0.5)" : "none"
         } }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.62)", letterSpacing: 0.06, textTransform: "uppercase" }, children: status === "running" ? `${launcher.cmd} \xB7 live` : status })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.62)", letterSpacing: 0.06, textTransform: "uppercase" }, children: status === "running" ? `${launcher.cmd} \xB7 live` : status })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)" }, children: [
         "click to focus \xB7 keys go straight to ",
         launcher.cmd
       ] })
     ] }),
-    errMsg && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { style: {
+    errMsg && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: {
       marginTop: 8,
       padding: "8px 10px",
       background: "rgba(255,255,255,0.03)",
@@ -36101,7 +36527,7 @@ function TabTerminal({ cwd }) {
 }
 
 // src/terminal-view.tsx
-var import_jsx_runtime19 = __toESM(require_jsx_runtime());
+var import_jsx_runtime20 = __toESM(require_jsx_runtime());
 var COMMAND_CENTER_TERMINAL_VIEW = "command-center-terminal-view";
 var CommandCenterTerminalView = class extends import_obsidian12.ItemView {
   constructor(leaf, plugin) {
@@ -36139,7 +36565,7 @@ var CommandCenterTerminalView = class extends import_obsidian12.ItemView {
     this.cwd = cwd;
     this.root = (0, import_client2.createRoot)(container);
     this.root.render(
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(React15.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(TabTerminal, { cwd: this.cwd }) })
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(React16.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(TabTerminal, { cwd: this.cwd }) })
     );
   }
   async onClose() {

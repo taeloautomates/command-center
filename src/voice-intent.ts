@@ -26,6 +26,7 @@ export type VoiceIntent =
   | { kind: "timer"; action: "pause" | "resume" | "done" | "add5" }
   | { kind: "switch_tab"; tab: TabId }
   | { kind: "open_terminal" }
+  | { kind: "plan_today" }
   | { kind: "unknown"; raw: string };
 
 const TABS_BY_KEYWORD: Record<string, TabId> = {
@@ -118,6 +119,17 @@ export function parseIntent(transcript: string): VoiceIntent {
   const t = transcript.trim();
   if (!t) return { kind: "unknown", raw: transcript };
   const lower = t.toLowerCase();
+
+  // ── Plan today / AI ritual ──
+  if (
+    /\b(plan|design)\s+(my\s+)?(today|day)\b/.test(lower) ||
+    /\bwhat\s+should\s+i\s+(focus|work)\s+on\b/.test(lower) ||
+    /\bclaude.*(plan|figure\s+out).*(day|today)\b/.test(lower) ||
+    /^plan\s+today$/.test(lower) ||
+    /^plan\s+my\s+day$/.test(lower)
+  ) {
+    return { kind: "plan_today" };
+  }
 
   // ── Timer controls ──
   if (/\b(pause|hold)\b.*\b(timer|focus|clock)\b/.test(lower) || /^pause$/.test(lower)) {

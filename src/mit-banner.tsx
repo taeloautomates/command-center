@@ -9,6 +9,7 @@ export function MITBanner({
   task, active, paused, progress, remaining, total,
   onTogglePause, onAdd5, onDone,
   seatRef, isDropTarget, onPointerDownSeat,
+  onPlanToday,
 }: {
   task: MIT;
   active: boolean;
@@ -22,6 +23,7 @@ export function MITBanner({
   seatRef?: React.RefObject<HTMLDivElement | null>;
   isDropTarget?: boolean;
   onPointerDownSeat?: (e: React.PointerEvent) => void;
+  onPlanToday?: () => void;
 }) {
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;
@@ -62,9 +64,21 @@ export function MITBanner({
               <span style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", letterSpacing: 0.14, textTransform: "uppercase", fontWeight: 500 }}>belt slack · paused</span>
             )}
           </Row>
-          <span className="mono tabular" style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>
-            {progress}%
-          </span>
+          <Row gap={8} align="center">
+            {onPlanToday && (
+              <button
+                className="cc-plan-today-btn"
+                onClick={onPlanToday}
+                title="Ask Claude to plan your day"
+              >
+                <span aria-hidden="true">☀</span>
+                <span>plan today</span>
+              </button>
+            )}
+            <span className="mono tabular" style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>
+              {progress}%
+            </span>
+          </Row>
         </Row>
 
         <div style={{
