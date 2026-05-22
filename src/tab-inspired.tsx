@@ -12,8 +12,30 @@ import { pickDailyBookmarks } from "./data-sources/bookmarks";
 import type { AppleNote } from "./data-sources/apple-notes";
 import { showAppleNote, notesAge } from "./data-sources/apple-notes";
 import type { TodaysStory } from "./data-sources/today-story";
-import { upscaleWikiThumb } from "./data-sources/today-story";
 import type { LanguagesOfTheDay } from "./data-sources/languages";
+
+/**
+ * Speak a phrase via the browser's Web Speech API. Free, offline, built
+ * into Electron — no external service or API key.
+ *
+ * macOS ships native voices for both fr-FR (Thomas, Audrey) and zh-CN
+ * (Tingting, Sinji), so the result sounds reasonable out of the box.
+ */
+function speak(text: string, lang: "fr-FR" | "zh-CN") {
+  if (typeof window === "undefined" || !window.speechSynthesis) return;
+  // Cancel any in-flight utterance so rapid clicks don't queue up.
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang;
+  u.rate = 0.85;    // slower for learners
+  u.pitch = 1.0;
+  // Prefer a native voice for the language if one is installed.
+  const voices = window.speechSynthesis.getVoices();
+  const match = voices.find((v) => v.lang === lang)
+             || voices.find((v) => v.lang?.startsWith(lang.split("-")[0]));
+  if (match) u.voice = match;
+  window.speechSynthesis.speak(u);
+}
 
 /* ── Hero: Creative Spark + Quote of the Day ─────────────────────
    The Inspired tab's centerpiece. Left half is a real artwork pulled from
@@ -67,7 +89,7 @@ function CreativeSparkHero({ artwork, quote }: { artwork: Artwork | null; quote:
               className="mono"
               style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 }}
             >
-              {artwork.museum === "Met" ? "metmuseum.org" : artwork.museum === "Art Institute of Chicago" ? "artic.edu" : "clevelandart.org"} ↗
+              {artwork.museum === "Met" ? "metmuseum.org" : "clevelandart.org"} ↗
             </a>
           )}
         </Row>
@@ -391,9 +413,10 @@ function TodaysStoryCard({ story }: { story: TodaysStory | null }) {
         {story.thumbnail && (
           <a href={story.url} target="_blank" rel="noopener noreferrer" style={{ flexShrink: 0, lineHeight: 0 }}>
             <img
-              src={upscaleWikiThumb(story.thumbnail, 240)}
+              src={story.thumbnail}
               alt={story.subject}
               loading="lazy"
+              referrerPolicy="no-referrer"
               style={{
                 width: 96, height: 120, objectFit: "cover",
                 borderRadius: 4, border: "1px solid rgba(255,255,255,0.06)",
@@ -423,50 +446,98 @@ function TodaysStoryCard({ story }: { story: TodaysStory | null }) {
   );
 }
 
+function SpeakerIcon({ size = 14, opacity = 0.62 }: { size?: number; opacity?: number }) {
+  // Simple monochrome speaker glyph — matches the rest of the icon set.
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+      style={{ opacity, color: "rgba(255,255,255,1)" }}>
+      <path d="M3 6h2l3.5-3v10L5 10H3z" />
+      <path d="M11 5.5c1 .8 1.5 1.8 1.5 2.5s-.5 1.7-1.5 2.5" />
+      <path d="M13 3.5c2 1.2 3 3 3 4.5s-1 3.3-3 4.5" opacity={0.5} />
+    </svg>
+  );
+}
+
 function LanguagesCard({ languages }: { languages: LanguagesOfTheDay }) {
   const fr = languages.french[0];
   const zh = languages.chinese[0];
+  const [active, setActive] = React.useState<"fr" | "zh" | null>(null);
+
+  const playFr = () => {
+    if (!fr) return;
+    setActive("fr");
+    speak(fr.text, "fr-FR");
+    setTimeout(() => setActive(null), 1500);
+  };
+  const playZh = () => {
+    if (!zh) return;
+    setActive("zh");
+    speak(zh.text, "zh-CN");
+    setTimeout(() => setActive(null), 1500);
+  };
+
   return (
     <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
       <Row justify="space-between" align="center" style={{ marginBottom: 12 }}>
         <Label>Learn · today</Label>
         <span className="mono" style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }}>
-          edit · languages.md
+          tap to hear · languages.md
         </span>
       </Row>
       <Col gap={14} style={{ flex: 1, minHeight: 0, justifyContent: "space-evenly" }}>
         {/* French */}
         {fr ? (
-          <Col gap={4}>
-            <Row gap={8} align="center">
+          <div
+            onClick={playFr}
+            title="Click to hear pronunciation"
+            style={{
+              padding: "8px 10px", marginLeft: -10, marginRight: -10, borderRadius: 8,
+              cursor: "pointer",
+              background: active === "fr" ? "rgba(255,255,255,0.05)" : "transparent",
+              transition: "background 200ms",
+            }}
+          >
+            <Row gap={8} align="center" style={{ marginBottom: 4 }}>
               <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
                 Français
               </span>
               <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
+              <SpeakerIcon size={12} opacity={active === "fr" ? 1 : 0.42} />
             </Row>
             <span style={{ fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.2 }}>
               {fr.text}
             </span>
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4 }}>
+            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4, marginTop: 4 }}>
               {fr.meaning}
-            </span>
+            </div>
             {fr.note && (
-              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }}>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }}>
                 {fr.note}
-              </span>
+              </div>
             )}
-          </Col>
+          </div>
         ) : (
           <span style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>No French phrases yet — add some to languages.md</span>
         )}
         {/* Chinese */}
         {zh ? (
-          <Col gap={4}>
-            <Row gap={8} align="center">
+          <div
+            onClick={playZh}
+            title="Click to hear pronunciation"
+            style={{
+              padding: "8px 10px", marginLeft: -10, marginRight: -10, borderRadius: 8,
+              cursor: "pointer",
+              background: active === "zh" ? "rgba(255,255,255,0.05)" : "transparent",
+              transition: "background 200ms",
+            }}
+          >
+            <Row gap={8} align="center" style={{ marginBottom: 4 }}>
               <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
                 中文
               </span>
               <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
+              <SpeakerIcon size={12} opacity={active === "zh" ? 1 : 0.42} />
             </Row>
             <Row gap={10} align="baseline">
               <span style={{ fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: 0.02, lineHeight: 1.1 }}>
@@ -478,15 +549,15 @@ function LanguagesCard({ languages }: { languages: LanguagesOfTheDay }) {
                 </span>
               )}
             </Row>
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4 }}>
+            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4, marginTop: 4 }}>
               {zh.meaning}
-            </span>
+            </div>
             {zh.note && (
-              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }}>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }}>
                 {zh.note}
-              </span>
+              </div>
             )}
-          </Col>
+          </div>
         ) : (
           <span style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>No Chinese phrases yet — add some to languages.md</span>
         )}

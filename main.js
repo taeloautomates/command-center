@@ -1088,7 +1088,7 @@ var require_react_development = __commonJS({
           }
           return dispatcher.useContext(Context);
         }
-        function useState13(initialState) {
+        function useState14(initialState) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useState(initialState);
         }
@@ -1891,7 +1891,7 @@ var require_react_development = __commonJS({
         exports.useMemo = useMemo2;
         exports.useReducer = useReducer2;
         exports.useRef = useRef8;
-        exports.useState = useState13;
+        exports.useState = useState14;
         exports.useSyncExternalStore = useSyncExternalStore;
         exports.useTransition = useTransition;
         exports.version = ReactVersion;
@@ -34458,74 +34458,22 @@ function notesAge(ms) {
   return `${Math.floor(ms / 864e5 / 30)}mo`;
 }
 
-// src/data-sources/today-story.ts
-var import_obsidian8 = require("obsidian");
-var CACHE_TTL_MS3 = 60 * 60 * 1e3;
-var cache3 = null;
-function dailyHash(date = /* @__PURE__ */ new Date()) {
-  const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  let h = 0;
-  for (let i = 0; i < key.length; i++)
-    h = h * 31 + key.charCodeAt(i) | 0;
-  return Math.abs(h);
-}
-async function loadTodaysStory() {
-  const now = /* @__PURE__ */ new Date();
-  const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-  if (cache3 && cache3.dateKey === dateKey && Date.now() - cache3.fetchedAt < CACHE_TTL_MS3) {
-    return cache3.story;
-  }
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const dd = String(now.getDate()).padStart(2, "0");
-  try {
-    const res = await (0, import_obsidian8.requestUrl)({
-      url: `https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/${mm}/${dd}`,
-      throw: false
-    });
-    if (res.status >= 400) {
-      cache3 = { story: null, fetchedAt: Date.now(), dateKey };
-      return null;
-    }
-    const events = res.json?.selected ?? [];
-    const eligible = [];
-    for (const e of events) {
-      const pages = e.pages ?? [];
-      const withThumb = pages.find((p) => p.thumbnail?.source);
-      if (withThumb && withThumb.extract) {
-        eligible.push({ event: e, page: withThumb });
-      }
-    }
-    if (eligible.length === 0) {
-      cache3 = { story: null, fetchedAt: Date.now(), dateKey };
-      return null;
-    }
-    const picked = eligible[dailyHash(now) % eligible.length];
-    const story = {
-      year: String(picked.event.year ?? ""),
-      text: stripParenPictured(String(picked.event.text ?? "")).trim(),
-      subject: picked.page.titles?.normalized || picked.page.title || "",
-      extract: String(picked.page.extract ?? "").trim(),
-      thumbnail: picked.page.thumbnail?.source,
-      url: picked.page.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(picked.page.title || "")}`
-    };
-    cache3 = { story, fetchedAt: Date.now(), dateKey };
-    return story;
-  } catch (e) {
-    console.warn("[command-center] today-story load failed:", e);
-    return null;
-  }
-}
-function stripParenPictured(s) {
-  return s.replace(/\s*\(pictured\)\s*/gi, " ").replace(/\s{2,}/g, " ");
-}
-function upscaleWikiThumb(url, px = 600) {
-  if (!url)
-    return url;
-  return url.replace(/\/(\d+)px-/, `/${px}px-`);
-}
-
 // src/tab-inspired.tsx
 var import_jsx_runtime13 = __toESM(require_jsx_runtime());
+function speak(text, lang) {
+  if (typeof window === "undefined" || !window.speechSynthesis)
+    return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang;
+  u.rate = 0.85;
+  u.pitch = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const match = voices.find((v) => v.lang === lang) || voices.find((v) => v.lang?.startsWith(lang.split("-")[0]));
+  if (match)
+    u.voice = match;
+  window.speechSynthesis.speak(u);
+}
 function CreativeSparkHero({ artwork, quote }) {
   return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: {
     padding: 0,
@@ -34571,7 +34519,7 @@ function CreativeSparkHero({ artwork, quote }) {
             className: "mono",
             style: { fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 },
             children: [
-              artwork.museum === "Met" ? "metmuseum.org" : artwork.museum === "Art Institute of Chicago" ? "artic.edu" : "clevelandart.org",
+              artwork.museum === "Met" ? "metmuseum.org" : "clevelandart.org",
               " \u2197"
             ]
           }
@@ -34826,9 +34774,10 @@ function TodaysStoryCard({ story }) {
       story.thumbnail && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("a", { href: story.url, target: "_blank", rel: "noopener noreferrer", style: { flexShrink: 0, lineHeight: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
         "img",
         {
-          src: upscaleWikiThumb(story.thumbnail, 240),
+          src: story.thumbnail,
           alt: story.subject,
           loading: "lazy",
+          referrerPolicy: "no-referrer",
           style: {
             width: 96,
             height: 120,
@@ -34865,36 +34814,106 @@ function TodaysStoryCard({ story }) {
     ] })
   ] });
 }
+function SpeakerIcon({ size = 14, opacity = 0.62 }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+    "svg",
+    {
+      width: size,
+      height: size,
+      viewBox: "0 0 16 16",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "1.5",
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      style: { opacity, color: "rgba(255,255,255,1)" },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("path", { d: "M3 6h2l3.5-3v10L5 10H3z" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("path", { d: "M11 5.5c1 .8 1.5 1.8 1.5 2.5s-.5 1.7-1.5 2.5" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("path", { d: "M13 3.5c2 1.2 3 3 3 4.5s-1 3.3-3 4.5", opacity: 0.5 })
+      ]
+    }
+  );
+}
 function LanguagesCard({ languages }) {
   const fr = languages.french[0];
   const zh = languages.chinese[0];
+  const [active, setActive] = React9.useState(null);
+  const playFr = () => {
+    if (!fr)
+      return;
+    setActive("fr");
+    speak(fr.text, "fr-FR");
+    setTimeout(() => setActive(null), 1500);
+  };
+  const playZh = () => {
+    if (!zh)
+      return;
+    setActive("zh");
+    speak(zh.text, "zh-CN");
+    setTimeout(() => setActive(null), 1500);
+  };
   return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Learn \xB7 today" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }, children: "edit \xB7 languages.md" })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }, children: "tap to hear \xB7 languages.md" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 14, style: { flex: 1, minHeight: 0, justifyContent: "space-evenly" }, children: [
-      fr ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 4, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "Fran\xE7ais" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.2 }, children: fr.text }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4 }, children: fr.meaning }),
-        fr.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }, children: fr.note })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No French phrases yet \u2014 add some to languages.md" }),
-      zh ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 4, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "\u4E2D\u6587" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 10, align: "baseline", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: 0.02, lineHeight: 1.1 }, children: zh.text }),
-          zh.pronunciation && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", letterSpacing: 0.02 }, children: zh.pronunciation })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4 }, children: zh.meaning }),
-        zh.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }, children: zh.note })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No Chinese phrases yet \u2014 add some to languages.md" })
+      fr ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+        "div",
+        {
+          onClick: playFr,
+          title: "Click to hear pronunciation",
+          style: {
+            padding: "8px 10px",
+            marginLeft: -10,
+            marginRight: -10,
+            borderRadius: 8,
+            cursor: "pointer",
+            background: active === "fr" ? "rgba(255,255,255,0.05)" : "transparent",
+            transition: "background 200ms"
+          },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", style: { marginBottom: 4 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "Fran\xE7ais" }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SpeakerIcon, { size: 12, opacity: active === "fr" ? 1 : 0.42 })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.2 }, children: fr.text }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4, marginTop: 4 }, children: fr.meaning }),
+            fr.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }, children: fr.note })
+          ]
+        }
+      ) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No French phrases yet \u2014 add some to languages.md" }),
+      zh ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+        "div",
+        {
+          onClick: playZh,
+          title: "Click to hear pronunciation",
+          style: {
+            padding: "8px 10px",
+            marginLeft: -10,
+            marginRight: -10,
+            borderRadius: 8,
+            cursor: "pointer",
+            background: active === "zh" ? "rgba(255,255,255,0.05)" : "transparent",
+            transition: "background 200ms"
+          },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", style: { marginBottom: 4 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "\u4E2D\u6587" }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SpeakerIcon, { size: 12, opacity: active === "zh" ? 1 : 0.42 })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 10, align: "baseline", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: 0.02, lineHeight: 1.1 }, children: zh.text }),
+              zh.pronunciation && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", letterSpacing: 0.02 }, children: zh.pronunciation })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4, marginTop: 4 }, children: zh.meaning }),
+            zh.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }, children: zh.note })
+          ]
+        }
+      ) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No Chinese phrases yet \u2014 add some to languages.md" })
     ] })
   ] });
 }
@@ -34938,9 +34957,9 @@ function TabInspired({
 var React10 = __toESM(require_react());
 
 // src/data-sources/youtube.ts
-var import_obsidian9 = require("obsidian");
-var CACHE_TTL_MS4 = 10 * 60 * 1e3;
-var cache4 = null;
+var import_obsidian8 = require("obsidian");
+var CACHE_TTL_MS3 = 10 * 60 * 1e3;
+var cache3 = null;
 function normalizeHandle(input) {
   const s = input.trim();
   if (!s)
@@ -34951,7 +34970,7 @@ function normalizeHandle(input) {
 }
 async function fetchJSON(url) {
   try {
-    const res = await (0, import_obsidian9.requestUrl)({ url, throw: false });
+    const res = await (0, import_obsidian8.requestUrl)({ url, throw: false });
     if (res.status >= 400) {
       console.warn("[command-center] YouTube API error", res.status, res.text?.slice(0, 200));
       return null;
@@ -34965,8 +34984,8 @@ async function fetchJSON(url) {
 async function loadYouTubeChannel(apiKey, handleOrId) {
   if (!apiKey || !handleOrId)
     return null;
-  if (cache4 && Date.now() - cache4.fetchedAt < CACHE_TTL_MS4)
-    return cache4;
+  if (cache3 && Date.now() - cache3.fetchedAt < CACHE_TTL_MS3)
+    return cache3;
   const { handle, channelId } = normalizeHandle(handleOrId);
   const idParam = channelId ? `id=${encodeURIComponent(channelId)}` : `forHandle=${encodeURIComponent(handle)}`;
   const chData = await fetchJSON(
@@ -35009,7 +35028,7 @@ async function loadYouTubeChannel(apiKey, handleOrId) {
       };
     });
   }
-  cache4 = {
+  cache3 = {
     subs: parseInt(item.statistics?.subscriberCount ?? "0", 10),
     totalViews: parseInt(item.statistics?.viewCount ?? "0", 10),
     totalVideos: parseInt(item.statistics?.videoCount ?? "0", 10),
@@ -35018,7 +35037,7 @@ async function loadYouTubeChannel(apiKey, handleOrId) {
     recentUploads: uploads,
     fetchedAt: Date.now()
   };
-  return cache4;
+  return cache3;
 }
 function fmtCount(n) {
   if (!Number.isFinite(n))
@@ -35290,7 +35309,7 @@ var DEFAULT_STATE = {
 };
 
 // src/persistence.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 var TODOS_SIDE_PROJECT = "command-center/todos/side-project.md";
 var TODOS_EOD = "command-center/todos/eod.md";
 var MIT_FILE = "command-center/mit.md";
@@ -35323,9 +35342,9 @@ startedAt: "11:02"
 Edit /watch tutorial \u2014 final cut pass
 `;
 async function ensureFile4(app, path4, seed) {
-  const np = (0, import_obsidian10.normalizePath)(path4);
+  const np = (0, import_obsidian9.normalizePath)(path4);
   let f = app.vault.getAbstractFileByPath(np);
-  if (f instanceof import_obsidian10.TFile)
+  if (f instanceof import_obsidian9.TFile)
     return f;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
@@ -35357,9 +35376,9 @@ async function loadTodos(app, path4, seed) {
   return parseTodos(content);
 }
 async function saveTodos(app, path4, todos) {
-  const np = (0, import_obsidian10.normalizePath)(path4);
+  const np = (0, import_obsidian9.normalizePath)(path4);
   const file = app.vault.getAbstractFileByPath(np);
-  if (!(file instanceof import_obsidian10.TFile))
+  if (!(file instanceof import_obsidian9.TFile))
     return;
   const content = await app.vault.read(file);
   const lines = content.split(/\r?\n/);
@@ -35504,9 +35523,9 @@ async function loadTrunk(app) {
   return parseTrunk(content);
 }
 async function saveTrunk(app, items) {
-  const np = (0, import_obsidian10.normalizePath)(TRUNK_FILE);
+  const np = (0, import_obsidian9.normalizePath)(TRUNK_FILE);
   const file = app.vault.getAbstractFileByPath(np);
-  if (!(file instanceof import_obsidian10.TFile))
+  if (!(file instanceof import_obsidian9.TFile))
     return;
   await app.vault.modify(file, serializeTrunk(items));
 }
@@ -35556,7 +35575,7 @@ async function appendBrainDump(app, text) {
   await app.vault.modify(file, lines.join("\n"));
 }
 async function saveMIT(app, mit) {
-  const np = (0, import_obsidian10.normalizePath)(MIT_FILE);
+  const np = (0, import_obsidian9.normalizePath)(MIT_FILE);
   const file = app.vault.getAbstractFileByPath(np);
   const body = `---
 project: ${mit.project}
@@ -35566,7 +35585,7 @@ startedAt: "${mit.startedAt}"
 
 ${mit.title}
 `;
-  if (file instanceof import_obsidian10.TFile)
+  if (file instanceof import_obsidian9.TFile)
     await app.vault.modify(file, body);
   else {
     const folder = np.substring(0, np.lastIndexOf("/"));
@@ -36495,7 +36514,7 @@ async function loadTrendReport() {
 }
 
 // src/data-sources/manual.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 var MANUAL_FILE = "command-center/manual.md";
 var DEFAULT_MANUAL = {
   youtube: {
@@ -36631,9 +36650,9 @@ Leave \`token\` blank to hide the Slack card.
 - **lookbackHours** \u2014 how far back to scan (default 24).
 `;
 async function ensureFile5(app) {
-  const np = (0, import_obsidian11.normalizePath)(MANUAL_FILE);
+  const np = (0, import_obsidian10.normalizePath)(MANUAL_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian11.TFile)
+  if (existing instanceof import_obsidian10.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
@@ -36772,7 +36791,7 @@ async function loadManual(app) {
 }
 
 // src/data-sources/ical.ts
-var import_obsidian12 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 function parseICalDate(s) {
   const clean = s.replace(/[^\dTZ]/g, "");
   if (clean.length === 8) {
@@ -36850,7 +36869,7 @@ async function fetchICalEvents(url, name) {
   if (!url)
     return [];
   try {
-    const res = await (0, import_obsidian12.requestUrl)({ url, throw: false });
+    const res = await (0, import_obsidian11.requestUrl)({ url, throw: false });
     if (res.status >= 400)
       return [];
     return parseICal(res.text, name);
@@ -36938,7 +36957,7 @@ async function deleteAppleCalendarEvent(calendar, uid) {
 }
 
 // src/data-sources/tweets.ts
-var import_obsidian13 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 var TWEETS_FILE = "command-center/tweets.md";
 var SEED5 = `# Tweets
 
@@ -36964,9 +36983,9 @@ var SEED5 = `# Tweets
 \u2014 @karpathy \xB7 2d \xB7 https://x.com/karpathy/status/example4
 `;
 async function ensureFile6(app) {
-  const np = (0, import_obsidian13.normalizePath)(TWEETS_FILE);
+  const np = (0, import_obsidian12.normalizePath)(TWEETS_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian13.TFile)
+  if (existing instanceof import_obsidian12.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
@@ -37030,7 +37049,7 @@ async function loadTweets(app) {
 }
 
 // src/data-sources/art.ts
-var import_obsidian14 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 var MET_IDS = [
   // Hokusai
   45434,
@@ -37071,61 +37090,42 @@ var MET_IDS = [
   11788
   // Madame X
 ];
-var ARTIC_IDS = [
-  16568,
-  // Seurat — A Sunday on La Grande Jatte
-  28560,
-  // Hopper — Nighthawks
-  111628,
-  // Wood — American Gothic
-  20684,
-  // Caillebotte — Paris Street; Rainy Day
-  28067,
-  // Degas — The Millinery Shop
-  16571,
-  // Renoir — Two Sisters (On the Terrace)
-  102611,
-  // Hokusai — Under the Wave (Artic also has it)
-  4884,
-  // O'Keeffe — Sky Above Clouds IV
-  64818,
-  // Picasso — The Old Guitarist
-  111456,
-  // Magritte — Time Transfixed
-  37833,
-  // Toulouse-Lautrec — At the Moulin Rouge
-  16487
-  // Cassatt — The Child's Bath
-];
 var CMA_IDS = [
-  151662,
-  // Caravaggio — The Crucifixion of Saint Andrew
-  93897,
+  135382,
+  // Monet — The Red Kerchief
+  136510,
   // Monet — Water Lilies (Agapanthus)
-  92938,
-  // Picasso — La Vie
-  94979,
+  95272,
+  // Monet — Gardener's House at Antibes
+  125249,
+  // Van Gogh — The Large Plane Trees (Road Menders at Saint-Rémy)
+  135299,
+  // Van Gogh — Adeline Ravoux
+  111385,
+  // Picasso — The Frugal Meal
+  98627,
+  // Rodin — The Age of Bronze
+  122351,
   // Turner — The Burning of the Houses of Lords and Commons
-  92246,
-  // van Gogh — The Large Plane Trees (Road Menders at Saint-Rémy)
-  149860,
-  // Hokusai — A Tour of the Waterfalls of the Provinces
-  118454,
-  // Rodin — The Thinker
-  100997,
-  // Magritte — The Treachery of Images (variant)
-  133987,
-  // Klimt — drawings
-  124190
-  // Whistler — Nocturne in Black and Gold
+  131338,
+  // Turner — Flüelen, from the Lake of Lucerne
+  111654,
+  // Hokusai — South Wind, Clear Sky (Red Fuji)
+  146909,
+  // Klimt — Hermine Gallia
+  121188,
+  // Renoir — Romaine Lacaux
+  101646,
+  // Cassatt — After the Bath
+  121035
+  // Cassatt — In the Omnibus
 ];
 var SOURCES = [
   { key: "met", ids: MET_IDS },
-  { key: "artic", ids: ARTIC_IDS },
   { key: "cma", ids: CMA_IDS }
 ];
 var TOTAL_POOL = SOURCES.reduce((n, s) => n + s.ids.length, 0);
-function dailyHash2(date = /* @__PURE__ */ new Date()) {
+function dailyHash(date = /* @__PURE__ */ new Date()) {
   const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   let h = 0;
   for (let i = 0; i < key.length; i++)
@@ -37137,7 +37137,7 @@ function rotationOrder() {
   for (const s of SOURCES)
     for (const id of s.ids)
       flat.push({ key: s.key, id });
-  const start = dailyHash2() % flat.length;
+  const start = dailyHash() % flat.length;
   return [...flat.slice(start), ...flat.slice(0, start)];
 }
 async function loadDailyArtwork() {
@@ -37152,15 +37152,13 @@ async function loadDailyArtwork() {
 async function fetchOne(key, id) {
   if (key === "met")
     return fetchMet(id);
-  if (key === "artic")
-    return fetchArtic(id);
   if (key === "cma")
     return fetchCMA(id);
   return null;
 }
 async function fetchMet(id) {
   try {
-    const res = await (0, import_obsidian14.requestUrl)({
+    const res = await (0, import_obsidian13.requestUrl)({
       url: `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`,
       throw: false
     });
@@ -37186,48 +37184,9 @@ async function fetchMet(id) {
     return null;
   }
 }
-async function fetchArtic(id) {
-  try {
-    const fields = [
-      "id",
-      "title",
-      "artist_display",
-      "date_display",
-      "medium_display",
-      "image_id",
-      "is_public_domain",
-      "place_of_origin"
-    ].join(",");
-    const res = await (0, import_obsidian14.requestUrl)({
-      url: `https://api.artic.edu/api/v1/artworks/${id}?fields=${fields}`,
-      throw: false
-    });
-    if (res.status >= 400)
-      return null;
-    const d = res.json?.data;
-    if (!d?.image_id || d.is_public_domain === false)
-      return null;
-    const img = `https://www.artic.edu/iiif/2/${d.image_id}/full/843,/0/default.jpg`;
-    const hi = `https://www.artic.edu/iiif/2/${d.image_id}/full/1686,/0/default.jpg`;
-    return {
-      id: `artic-${id}`,
-      title: d.title || "(untitled)",
-      artist: d.artist_display || "\u2014",
-      date: d.date_display || "\u2014",
-      medium: d.medium_display || "",
-      imageUrl: img,
-      imageUrlHighRes: hi,
-      sourceUrl: `https://www.artic.edu/artworks/${id}`,
-      culture: d.place_of_origin || void 0,
-      museum: "Art Institute of Chicago"
-    };
-  } catch {
-    return null;
-  }
-}
 async function fetchCMA(id) {
   try {
-    const res = await (0, import_obsidian14.requestUrl)({
+    const res = await (0, import_obsidian13.requestUrl)({
       url: `https://openaccess-api.clevelandart.org/api/artworks/${id}`,
       throw: false
     });
@@ -37255,6 +37214,67 @@ async function fetchCMA(id) {
   } catch {
     return null;
   }
+}
+
+// src/data-sources/today-story.ts
+var import_obsidian14 = require("obsidian");
+var CACHE_TTL_MS4 = 60 * 60 * 1e3;
+var cache4 = null;
+function dailyHash2(date = /* @__PURE__ */ new Date()) {
+  const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  let h = 0;
+  for (let i = 0; i < key.length; i++)
+    h = h * 31 + key.charCodeAt(i) | 0;
+  return Math.abs(h);
+}
+async function loadTodaysStory() {
+  const now = /* @__PURE__ */ new Date();
+  const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  if (cache4 && cache4.dateKey === dateKey && Date.now() - cache4.fetchedAt < CACHE_TTL_MS4) {
+    return cache4.story;
+  }
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  try {
+    const res = await (0, import_obsidian14.requestUrl)({
+      url: `https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/${mm}/${dd}`,
+      throw: false
+    });
+    if (res.status >= 400) {
+      cache4 = { story: null, fetchedAt: Date.now(), dateKey };
+      return null;
+    }
+    const events = res.json?.selected ?? [];
+    const eligible = [];
+    for (const e of events) {
+      const pages = e.pages ?? [];
+      const withThumb = pages.find((p) => p.thumbnail?.source);
+      if (withThumb && withThumb.extract) {
+        eligible.push({ event: e, page: withThumb });
+      }
+    }
+    if (eligible.length === 0) {
+      cache4 = { story: null, fetchedAt: Date.now(), dateKey };
+      return null;
+    }
+    const picked = eligible[dailyHash2(now) % eligible.length];
+    const story = {
+      year: String(picked.event.year ?? ""),
+      text: stripParenPictured(String(picked.event.text ?? "")).trim(),
+      subject: picked.page.titles?.normalized || picked.page.title || "",
+      extract: String(picked.page.extract ?? "").trim(),
+      thumbnail: picked.page.thumbnail?.source,
+      url: picked.page.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(picked.page.title || "")}`
+    };
+    cache4 = { story, fetchedAt: Date.now(), dateKey };
+    return story;
+  } catch (e) {
+    console.warn("[command-center] today-story load failed:", e);
+    return null;
+  }
+}
+function stripParenPictured(s) {
+  return s.replace(/\s*\(pictured\)\s*/gi, " ").replace(/\s{2,}/g, " ");
 }
 
 // src/data-sources/languages.ts

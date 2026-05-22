@@ -1,17 +1,19 @@
 /**
  * Daily artwork feed — Creative Spark hero on the Inspired tab.
  *
- * Three rotating sources, all auth-free public-domain APIs:
+ * Two rotating sources, both auth-free public-domain APIs with hotlinkable
+ * images (verified working from Electron renderer):
  *   • The Metropolitan Museum of Art (metmuseum.github.io, CC0)
- *   • The Art Institute of Chicago (api.artic.edu, CC0)
  *   • The Cleveland Museum of Art (openaccess-api.clevelandart.org, CC0)
  *
- * Each museum has a curated short list of famous works. The daily index
- * decides which museum AND which piece in one deterministic pass — same
- * piece all day, different piece tomorrow.
+ * (Art Institute of Chicago has a great open API but their IIIF image
+ *  endpoint sits behind Cloudflare's bot protection and returns 403 to
+ *  hotlinks from non-browser clients. Skipped until they whitelist
+ *  direct embeds.)
  *
- * If the picked source fails (network, deprecated ID, image missing), we
- * walk forward through the union until something works.
+ * Each museum has a curated short list of famous works. The daily hash
+ * picks one piece across the unioned pool — same piece all day, different
+ * piece tomorrow. Falls forward if any single piece's API/image fails.
  */
 
 import { requestUrl } from "obsidian";
@@ -26,7 +28,7 @@ export type Artwork = {
   imageUrlHighRes?: string;
   sourceUrl: string;
   culture?: string;
-  museum: "Met" | "Art Institute of Chicago" | "Cleveland Museum of Art";
+  museum: "Met" | "Cleveland Museum of Art";
 };
 
 /* ─── Curated pools ─────────────────────────────────────────────── */
@@ -58,43 +60,33 @@ const MET_IDS = [
   11788,    // Madame X
 ];
 
-const ARTIC_IDS = [
-  16568,    // Seurat — A Sunday on La Grande Jatte
-  28560,    // Hopper — Nighthawks
-  111628,   // Wood — American Gothic
-  20684,    // Caillebotte — Paris Street; Rainy Day
-  28067,    // Degas — The Millinery Shop
-  16571,    // Renoir — Two Sisters (On the Terrace)
-  102611,   // Hokusai — Under the Wave (Artic also has it)
-  4884,     // O'Keeffe — Sky Above Clouds IV
-  64818,    // Picasso — The Old Guitarist
-  111456,   // Magritte — Time Transfixed
-  37833,    // Toulouse-Lautrec — At the Moulin Rouge
-  16487,    // Cassatt — The Child's Bath
-];
-
-// Cleveland Museum of Art works (Open Access, CC0). Numeric "accession_id" used as path.
+// Cleveland Museum of Art works (Open Access, CC0). All IDs verified via
+// the search API; images served by openaccess-cdn.clevelandart.org hotlink
+// fine into Obsidian.
 const CMA_IDS = [
-  151662,   // Caravaggio — The Crucifixion of Saint Andrew
-  93897,    // Monet — Water Lilies (Agapanthus)
-  92938,    // Picasso — La Vie
-  94979,    // Turner — The Burning of the Houses of Lords and Commons
-  92246,    // van Gogh — The Large Plane Trees (Road Menders at Saint-Rémy)
-  149860,   // Hokusai — A Tour of the Waterfalls of the Provinces
-  118454,   // Rodin — The Thinker
-  100997,   // Magritte — The Treachery of Images (variant)
-  133987,   // Klimt — drawings
-  124190,   // Whistler — Nocturne in Black and Gold
+  135382,   // Monet — The Red Kerchief
+  136510,   // Monet — Water Lilies (Agapanthus)
+  95272,    // Monet — Gardener's House at Antibes
+  125249,   // Van Gogh — The Large Plane Trees (Road Menders at Saint-Rémy)
+  135299,   // Van Gogh — Adeline Ravoux
+  111385,   // Picasso — The Frugal Meal
+  98627,    // Rodin — The Age of Bronze
+  122351,   // Turner — The Burning of the Houses of Lords and Commons
+  131338,   // Turner — Flüelen, from the Lake of Lucerne
+  111654,   // Hokusai — South Wind, Clear Sky (Red Fuji)
+  146909,   // Klimt — Hermine Gallia
+  121188,   // Renoir — Romaine Lacaux
+  101646,   // Cassatt — After the Bath
+  121035,   // Cassatt — In the Omnibus
 ];
 
 /* ─── Daily picker ──────────────────────────────────────────────── */
 
-type SourceKey = "met" | "artic" | "cma";
+type SourceKey = "met" | "cma";
 
 const SOURCES: { key: SourceKey; ids: number[] }[] = [
-  { key: "met",   ids: MET_IDS },
-  { key: "artic", ids: ARTIC_IDS },
-  { key: "cma",   ids: CMA_IDS },
+  { key: "met", ids: MET_IDS },
+  { key: "cma", ids: CMA_IDS },
 ];
 
 const TOTAL_POOL = SOURCES.reduce((n, s) => n + s.ids.length, 0);
@@ -125,7 +117,6 @@ export async function loadDailyArtwork(): Promise<Artwork | null> {
 
 async function fetchOne(key: SourceKey, id: number): Promise<Artwork | null> {
   if (key === "met") return fetchMet(id);
-  if (key === "artic") return fetchArtic(id);
   if (key === "cma") return fetchCMA(id);
   return null;
 }
@@ -153,36 +144,6 @@ async function fetchMet(id: number): Promise<Artwork | null> {
       sourceUrl: d.objectURL || `https://www.metmuseum.org/art/collection/search/${id}`,
       culture: d.culture || undefined,
       museum: "Met",
-    };
-  } catch { return null; }
-}
-
-async function fetchArtic(id: number): Promise<Artwork | null> {
-  try {
-    const fields = [
-      "id", "title", "artist_display", "date_display", "medium_display",
-      "image_id", "is_public_domain", "place_of_origin",
-    ].join(",");
-    const res = await requestUrl({
-      url: `https://api.artic.edu/api/v1/artworks/${id}?fields=${fields}`,
-      throw: false,
-    });
-    if (res.status >= 400) return null;
-    const d = res.json?.data;
-    if (!d?.image_id || d.is_public_domain === false) return null;
-    const img = `https://www.artic.edu/iiif/2/${d.image_id}/full/843,/0/default.jpg`;
-    const hi = `https://www.artic.edu/iiif/2/${d.image_id}/full/1686,/0/default.jpg`;
-    return {
-      id: `artic-${id}`,
-      title: d.title || "(untitled)",
-      artist: d.artist_display || "—",
-      date: d.date_display || "—",
-      medium: d.medium_display || "",
-      imageUrl: img,
-      imageUrlHighRes: hi,
-      sourceUrl: `https://www.artic.edu/artworks/${id}`,
-      culture: d.place_of_origin || undefined,
-      museum: "Art Institute of Chicago",
     };
   } catch { return null; }
 }
