@@ -1,92 +1,132 @@
 /**
- * Languages of the day — French + Chinese phrase pairs, daily-rotated.
+ * Languages of the day — French + Chinese, with each split into a single
+ * vocabulary item AND a full phrase/sentence. Four picks shown per day.
  *
- * Source: `command-center/languages.md` in the vault. User-editable —
- * add phrases over time and the rotation gets richer.
+ * Source: `command-center/languages.md`. User-editable. The dashboard
+ * rotates a fresh quartet daily (each track independently).
  *
- * File format (markdown table or simple block list):
+ * Sections (case-insensitive):
+ *   ## French Words
+ *   ## French Phrases
+ *   ## Chinese Words
+ *   ## Chinese Phrases
  *
- *   ## French
- *   - bonjour | hello | greeting
- *   - se débrouiller | to figure it out, to manage | useful verb
+ * Line format inside any section:
+ *   `- text | meaning | optional note`
  *
- *   ## Chinese
- *   - 你好 (nǐ hǎo) | hello | greeting
- *   - 加油 (jiā yóu) | keep going / go for it | motivational
- *
- * One line per phrase. Pipe-separated. Sections are headed by `## French`
- * or `## Chinese` (case-insensitive). Trailing notes column is optional.
+ * For Chinese, embed pinyin in parens after the characters so the
+ * dashboard can display pronunciation:
+ *   `- 加油 (jiā yóu) | keep going | motivational`
  */
 
 import { App, normalizePath, TFile } from "obsidian";
 
 export type Phrase = {
-  text: string;             // the phrase in its native script
-  pronunciation?: string;   // for Chinese, the pinyin (already in text or split)
+  text: string;             // the phrase in its native script (no pinyin)
+  pronunciation?: string;   // pinyin for Chinese, parsed from parens
   meaning: string;
   note?: string;
 };
 
 export type LanguagesOfTheDay = {
-  french: Phrase[];
-  chinese: Phrase[];
+  frenchWord: Phrase | null;
+  frenchPhrase: Phrase | null;
+  chineseWord: Phrase | null;
+  chinesePhrase: Phrase | null;
 };
 
 export const LANGUAGES_FILE = "command-center/languages.md";
 
 const SEED = `# Languages
 
-One phrase per line. Pipe-separated: \`phrase | meaning | optional note\`.
-Add as many as you want — the dashboard rotates a fresh pair daily.
+Two tracks per language: single words/expressions, and full phrases/sentences.
+The dashboard shows one of each daily — four total. Click any row in the
+Inspired tab to hear it spoken.
 
-For Chinese, include the pinyin in parentheses after the characters so the
-dashboard can show pronunciation: \`你好 (nǐ hǎo) | hello | greeting\`.
+Format: \`- text | meaning | optional note\`. For Chinese, put the pinyin in
+parens after the characters: \`- 加油 (jiā yóu) | keep going | motivational\`.
 
-## French
+## French Words
 
-- bonjour | hello | greeting
-- merci beaucoup | thank you very much | polite
-- comment ça va ? | how are you? | casual
-- je vais bien | I'm doing well | response
-- on y va | let's go | colloquial
-- à plus tard | see you later | parting
 - ça marche | sounds good, that works | agreement
-- pas de souci | no worries | reassurance
-- je ne sais pas | I don't know | useful
-- au fait | by the way | conversation
 - du coup | so, therefore | filler
-- bien sûr | of course | agreement
-- petit à petit | little by little | rhythm
-- ça vaut le coup | it's worth it | reflective
-- se débrouiller | to manage, figure it out | verb
-- en fait | actually, in fact | filler
-- je vous en prie | you're welcome / please | formal
-- tant pis | too bad, oh well | acceptance
-- d'accord | okay, agreed | agreement
-- à tout à l'heure | see you in a bit | parting
+- bof | meh | dismissive
+- bref | in short | conversation
+- voilà | there you go | confirmation
+- enfin | finally / well, anyway | filler
+- carrément | totally, absolutely | emphasis
+- franchement | honestly | candor
+- d'ailleurs | by the way | conversation
+- pourtant | yet, however | contrast
+- quand même | still, anyway | resignation
+- chouette | nice, cool | casual
+- ouais | yeah | casual
+- nickel | perfect | satisfaction
+- débrouillard | resourceful | personality
+- ras-le-bol | fed up | emotion
+- bouquin | book | slang
+- truc | thing, stuff | filler
+- gosse | kid | casual
+- bosser | to work hard | slang verb
 
-## Chinese
+## French Phrases
 
-- 你好 (nǐ hǎo) | hello | greeting
-- 谢谢 (xiè xie) | thank you | polite
-- 不客气 (bú kè qi) | you're welcome | response
+- Je ne sais pas par où commencer. | I don't know where to start. | overwhelmed
+- Petit à petit, l'oiseau fait son nid. | Little by little, the bird builds its nest. | proverb
+- Ça vaut le coup d'essayer. | It's worth a try. | encouragement
+- On verra bien. | We'll see. | wait-and-see
+- Je vais y réfléchir. | I'll think about it. | useful
+- Ce n'est pas la peine. | It's not worth the trouble. | dismissal
+- Je m'en occupe. | I'll take care of it. | commitment
+- Tu as raison. | You're right. | agreement
+- À quoi bon ? | What's the point? | resignation
+- Ça me fait plaisir. | It makes me happy. / I'm glad. | warmth
+- Il faut que je m'y mette. | I need to get to it. | self-talk
+- Chaque chose en son temps. | Everything in its own time. | patience
+- On n'est jamais mieux servi que par soi-même. | If you want something done right, do it yourself. | proverb
+- Je suis crevé. | I'm exhausted. | feeling
+- Reste sur tes gardes. | Stay on your guard. | warning
+
+## Chinese Words
+
 - 加油 (jiā yóu) | keep going / go for it | motivational
-- 我不知道 (wǒ bù zhī dào) | I don't know | useful
-- 慢慢来 (màn màn lái) | take your time | calming
-- 没问题 (méi wèn tí) | no problem | reassurance
-- 一步一步 (yí bù yí bù) | step by step | rhythm
-- 怎么了 (zěn me le) | what's up / what happened? | casual
-- 真的吗 (zhēn de ma) | really? | reaction
-- 听起来不错 (tīng qǐ lái bú cuò) | sounds good | agreement
-- 我同意 (wǒ tóng yì) | I agree | useful
-- 再见 (zài jiàn) | goodbye | parting
-- 明天见 (míng tiān jiàn) | see you tomorrow | parting
-- 别担心 (bié dān xīn) | don't worry | reassurance
-- 我懂了 (wǒ dǒng le) | I get it / I understand now | useful
 - 努力 (nǔ lì) | to work hard, effort | virtue
-- 加倍努力 (jiā bèi nǔ lì) | redouble your efforts | motivational
-- 万事开头难 (wàn shì kāi tóu nán) | all beginnings are hard | proverb
+- 慢慢 (màn màn) | slowly | rhythm
+- 厉害 (lì hài) | impressive, formidable | praise
+- 当然 (dāng rán) | of course | agreement
+- 其实 (qí shí) | actually | filler
+- 也许 (yě xǔ) | maybe, perhaps | hedge
+- 麻烦 (má fán) | trouble, hassle | useful
+- 习惯 (xí guàn) | habit, to be used to | concept
+- 机会 (jī huì) | opportunity | concept
+- 经验 (jīng yàn) | experience | concept
+- 简单 (jiǎn dān) | simple | adjective
+- 复杂 (fù zá) | complicated | adjective
+- 坚持 (jiān chí) | to persist | virtue
+- 放松 (fàng sōng) | to relax | self-care
+- 顺便 (shùn biàn) | by the way | conversation
+- 大概 (dà gài) | approximately, probably | hedge
+- 真的 (zhēn de) | really, truly | emphasis
+- 突然 (tū rán) | suddenly | time
+- 重要 (zhòng yào) | important | adjective
+
+## Chinese Phrases
+
 - 千里之行，始于足下 (qiān lǐ zhī xíng, shǐ yú zú xià) | a thousand-mile journey begins with a single step | proverb
+- 万事开头难 (wàn shì kāi tóu nán) | all beginnings are hard | proverb
+- 慢慢来，别急 (màn màn lái, bié jí) | take your time, don't rush | calming
+- 我尽力了 (wǒ jìn lì le) | I did my best | reflection
+- 你说得对 (nǐ shuō de duì) | you're right | agreement
+- 我们谈一谈吧 (wǒ men tán yì tán ba) | let's talk it over | useful
+- 这是个好主意 (zhè shì ge hǎo zhǔ yi) | that's a good idea | praise
+- 我需要休息一下 (wǒ xū yào xiū xi yí xià) | I need to take a break | self-care
+- 没什么大不了的 (méi shén me dà bù liǎo de) | it's no big deal | reassurance
+- 让我想一想 (ràng wǒ xiǎng yi xiǎng) | let me think about it | useful
+- 一步一个脚印 (yí bù yí ge jiǎo yìn) | one step at a time, leaving a footprint each time | proverb
+- 失败是成功之母 (shī bài shì chéng gōng zhī mǔ) | failure is the mother of success | proverb
+- 我有点紧张 (wǒ yǒu diǎn jǐn zhāng) | I'm a little nervous | feeling
+- 你能帮我一下吗 (nǐ néng bāng wǒ yí xià ma) | can you help me? | useful
+- 别担心，会好的 (bié dān xīn, huì hǎo de) | don't worry, it'll be okay | reassurance
 `;
 
 async function ensureFile(app: App): Promise<TFile> {
@@ -100,18 +140,23 @@ async function ensureFile(app: App): Promise<TFile> {
   return app.vault.create(np, SEED);
 }
 
-function parseFile(text: string): { french: Phrase[]; chinese: Phrase[] } {
+type SectionKey = "frWords" | "frPhrases" | "zhWords" | "zhPhrases";
+
+function parseFile(text: string): Record<SectionKey, Phrase[]> {
+  const out: Record<SectionKey, Phrase[]> = {
+    frWords: [], frPhrases: [], zhWords: [], zhPhrases: [],
+  };
   const lines = text.split(/\r?\n/);
-  let section: "french" | "chinese" | null = null;
-  const french: Phrase[] = [];
-  const chinese: Phrase[] = [];
+  let section: SectionKey | null = null;
   for (const raw of lines) {
     const line = raw.trim();
-    const heading = line.match(/^##\s+(\w+)/i);
-    if (heading) {
-      const h = heading[1].toLowerCase();
-      if (h === "french") section = "french";
-      else if (h === "chinese") section = "chinese";
+    const h = line.match(/^##\s+(.+)$/i);
+    if (h) {
+      const t = h[1].toLowerCase();
+      if (t.startsWith("french") && t.includes("word")) section = "frWords";
+      else if (t.startsWith("french") && t.includes("phrase")) section = "frPhrases";
+      else if (t.startsWith("chinese") && t.includes("word")) section = "zhWords";
+      else if (t.startsWith("chinese") && t.includes("phrase")) section = "zhPhrases";
       else section = null;
       continue;
     }
@@ -123,17 +168,16 @@ function parseFile(text: string): { french: Phrase[]; chinese: Phrase[] } {
     const phraseRaw = parts[0];
     const meaning = parts[1];
     const note = parts[2] || undefined;
-    // For Chinese, split out pinyin if it's in (parens) inside the text.
     let text = phraseRaw;
     let pronunciation: string | undefined;
     const pin = phraseRaw.match(/^(\S.*?)\s*\(([^)]+)\)\s*$/);
-    if (pin && section === "chinese") {
+    if (pin && (section === "zhWords" || section === "zhPhrases")) {
       text = pin[1].trim();
       pronunciation = pin[2].trim();
     }
-    (section === "french" ? french : chinese).push({ text, pronunciation, meaning, note });
+    out[section].push({ text, pronunciation, meaning, note });
   }
-  return { french, chinese };
+  return out;
 }
 
 function dailyHash(seed: string, date = new Date()): number {
@@ -143,20 +187,24 @@ function dailyHash(seed: string, date = new Date()): number {
   return Math.abs(h);
 }
 
-/**
- * Pick one French + one Chinese phrase for today. Deterministic per-date so
- * the surface stays stable; both languages rotate independently.
- */
+function pickDaily<T>(arr: T[], seed: string): T | null {
+  if (arr.length === 0) return null;
+  return arr[dailyHash(seed) % arr.length];
+}
+
 export async function loadLanguagesOfTheDay(app: App): Promise<LanguagesOfTheDay> {
   try {
     const file = await ensureFile(app);
     const text = await app.vault.read(file);
-    const { french, chinese } = parseFile(text);
-    const pickFr = french.length ? [french[dailyHash("fr") % french.length]] : [];
-    const pickZh = chinese.length ? [chinese[dailyHash("zh") % chinese.length]] : [];
-    return { french: pickFr, chinese: pickZh };
+    const parsed = parseFile(text);
+    return {
+      frenchWord:    pickDaily(parsed.frWords,    "fr-word"),
+      frenchPhrase:  pickDaily(parsed.frPhrases,  "fr-phrase"),
+      chineseWord:   pickDaily(parsed.zhWords,    "zh-word"),
+      chinesePhrase: pickDaily(parsed.zhPhrases,  "zh-phrase"),
+    };
   } catch (e) {
     console.warn("[command-center] languages load failed:", e);
-    return { french: [], chinese: [] };
+    return { frenchWord: null, frenchPhrase: null, chineseWord: null, chinesePhrase: null };
   }
 }

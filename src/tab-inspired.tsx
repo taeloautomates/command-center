@@ -11,8 +11,8 @@ import type { Bookmark } from "./data-sources/bookmarks";
 import { pickDailyBookmarks } from "./data-sources/bookmarks";
 import type { AppleNote } from "./data-sources/apple-notes";
 import { showAppleNote, notesAge } from "./data-sources/apple-notes";
-import type { TodaysStory } from "./data-sources/today-story";
-import type { LanguagesOfTheDay } from "./data-sources/languages";
+import type { InspiringStory } from "./data-sources/inspiring-stories";
+import type { LanguagesOfTheDay, Phrase } from "./data-sources/languages";
 
 /**
  * Speak a phrase via the browser's Web Speech API. Free, offline, built
@@ -381,67 +381,77 @@ function AppleNotesCard({ notes }: { notes: AppleNote[] }) {
   );
 }
 
-function TodaysStoryCard({ story }: { story: TodaysStory | null }) {
+function InspiringStoryCard({ story }: { story: InspiringStory | null }) {
   if (!story) {
     return (
       <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
-        <Label>Today in history</Label>
+        <Label>Story · today</Label>
         <div style={{ marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.42)" }}>
-          Loading…
+          Add stories to <span className="mono">command-center/inspiring-stories.md</span>
         </div>
       </GlassCard>
     );
   }
   return (
-    <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
-      <Row justify="space-between" align="center" style={{ marginBottom: 10 }}>
-        <Row gap={8} align="center">
-          <Label>Today in history</Label>
-          <span className="tabular" style={{ fontSize: 11, color: "rgba(255,255,255,0.62)", fontWeight: 600 }}>
-            {story.year}
-          </span>
-        </Row>
-        <a
-          href={story.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mono"
-          style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 }}
-        >wikipedia ↗</a>
+    <GlassCard style={{ padding: 18, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
+      <Row justify="space-between" align="center" style={{ marginBottom: 12 }}>
+        <Label>Story · today</Label>
+        <span className="mono" style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }}>
+          edit · inspiring-stories.md
+        </span>
       </Row>
-      <Row gap={12} align="start" style={{ flex: 1, minHeight: 0 }}>
-        {story.thumbnail && (
-          <a href={story.url} target="_blank" rel="noopener noreferrer" style={{ flexShrink: 0, lineHeight: 0 }}>
-            <img
-              src={story.thumbnail}
-              alt={story.subject}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              style={{
-                width: 96, height: 120, objectFit: "cover",
-                borderRadius: 4, border: "1px solid rgba(255,255,255,0.06)",
-              }}
-            />
-          </a>
+
+      {/* Subject + hook */}
+      <Col gap={4} style={{ marginBottom: 10 }}>
+        <span style={{ fontSize: 17, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.25 }}>
+          {story.subject}
+        </span>
+        {story.hook && (
+          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4, fontStyle: "italic" }}>
+            {story.hook}
+          </span>
         )}
-        <Col gap={6} style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.005, lineHeight: 1.3 }}>
-            {story.subject}
-          </span>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.78)", letterSpacing: -0.005, lineHeight: 1.45,
-            display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden",
-          }}>
-            {story.text}
-          </span>
-          <span style={{
-            fontSize: 11, color: "rgba(255,255,255,0.58)", letterSpacing: -0.005, lineHeight: 1.5,
-            fontStyle: "italic",
-            display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden",
-          }}>
-            {story.extract}
-          </span>
-        </Col>
-      </Row>
+        {(story.field || story.era) && (
+          <Row gap={8} style={{ marginTop: 2 }}>
+            {story.field && (
+              <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
+                {story.field}
+              </span>
+            )}
+            {story.field && story.era && (
+              <span style={{ color: "rgba(255,255,255,0.18)", fontSize: 9 }}>·</span>
+            )}
+            {story.era && (
+              <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
+                {story.era}
+              </span>
+            )}
+          </Row>
+        )}
+      </Col>
+
+      {/* Body — scrollable so a longer story doesn't overflow the card */}
+      <Col gap={8} style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+        {story.body.map((p, i) => (
+          <p key={i} style={{
+            margin: 0, fontSize: 12, color: "rgba(255,255,255,0.86)",
+            lineHeight: 1.55, letterSpacing: -0.003,
+          }}>{p}</p>
+        ))}
+      </Col>
+
+      {/* Lesson — pull-quote, serif italic */}
+      {story.lesson && (
+        <div style={{
+          marginTop: 12, padding: "10px 14px",
+          borderLeft: "2px solid rgba(255,255,255,0.32)",
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          fontSize: 12, fontStyle: "italic",
+          color: "rgba(255,255,255,0.86)", lineHeight: 1.5,
+        }}>
+          {story.lesson}
+        </div>
+      )}
     </GlassCard>
   );
 }
@@ -459,109 +469,112 @@ function SpeakerIcon({ size = 14, opacity = 0.62 }: { size?: number; opacity?: n
   );
 }
 
-function LanguagesCard({ languages }: { languages: LanguagesOfTheDay }) {
-  const fr = languages.french[0];
-  const zh = languages.chinese[0];
-  const [active, setActive] = React.useState<"fr" | "zh" | null>(null);
+/** A single clickable, speakable phrase row used inside LanguagesCard. */
+function PhraseRow({
+  phrase, lang, kind, large,
+}: {
+  phrase: Phrase | null;
+  lang: "fr-FR" | "zh-CN";
+  kind: "word" | "phrase";
+  large?: boolean;            // word rows render their text bigger
+}) {
+  const [active, setActive] = React.useState(false);
+  if (!phrase) return null;
 
-  const playFr = () => {
-    if (!fr) return;
-    setActive("fr");
-    speak(fr.text, "fr-FR");
-    setTimeout(() => setActive(null), 1500);
+  const onClick = () => {
+    setActive(true);
+    speak(phrase.text, lang);
+    setTimeout(() => setActive(false), 1500);
   };
-  const playZh = () => {
-    if (!zh) return;
-    setActive("zh");
-    speak(zh.text, "zh-CN");
-    setTimeout(() => setActive(null), 1500);
-  };
+
+  // Chinese characters look better at higher size; pinyin sits inline.
+  const textSize = large
+    ? (lang === "zh-CN" ? 22 : 18)
+    : (lang === "zh-CN" ? 16 : 14);
 
   return (
-    <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
-      <Row justify="space-between" align="center" style={{ marginBottom: 12 }}>
+    <div
+      onClick={onClick}
+      title="Click to hear pronunciation"
+      style={{
+        padding: "6px 8px", marginLeft: -8, marginRight: -8, borderRadius: 6,
+        cursor: "pointer",
+        background: active ? "rgba(255,255,255,0.05)" : "transparent",
+        transition: "background 200ms",
+      }}
+    >
+      <Row gap={6} align="center" style={{ marginBottom: 2 }}>
+        <span className="mono" style={{ fontSize: 8, letterSpacing: 0.14, color: "rgba(255,255,255,0.32)", textTransform: "uppercase", fontWeight: 600 }}>
+          {kind}
+        </span>
+        <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.04)" }} />
+        <SpeakerIcon size={11} opacity={active ? 1 : 0.38} />
+      </Row>
+      <Row gap={8} align="baseline" style={{ flexWrap: "wrap" }}>
+        <span style={{ fontSize: textSize, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: lang === "zh-CN" ? 0.02 : -0.008, lineHeight: 1.2 }}>
+          {phrase.text}
+        </span>
+        {phrase.pronunciation && (
+          <span className="mono" style={{ fontSize: 11, color: "rgba(255,255,255,0.58)", letterSpacing: 0.02 }}>
+            {phrase.pronunciation}
+          </span>
+        )}
+      </Row>
+      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.72)", letterSpacing: -0.003, lineHeight: 1.4, marginTop: 2 }}>
+        {phrase.meaning}
+      </div>
+      {phrase.note && (
+        <div style={{ fontSize: 9, color: "rgba(255,255,255,0.38)", fontStyle: "italic", marginTop: 1 }}>
+          {phrase.note}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LanguagesCard({ languages }: { languages: LanguagesOfTheDay }) {
+  const empty = !languages.frenchWord && !languages.frenchPhrase && !languages.chineseWord && !languages.chinesePhrase;
+  return (
+    <GlassCard style={{ padding: 14, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
+      <Row justify="space-between" align="center" style={{ marginBottom: 10 }}>
         <Label>Learn · today</Label>
-        <span className="mono" style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }}>
+        <span className="mono" style={{ fontSize: 9, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }}>
           tap to hear · languages.md
         </span>
       </Row>
-      <Col gap={14} style={{ flex: 1, minHeight: 0, justifyContent: "space-evenly" }}>
-        {/* French */}
-        {fr ? (
-          <div
-            onClick={playFr}
-            title="Click to hear pronunciation"
-            style={{
-              padding: "8px 10px", marginLeft: -10, marginRight: -10, borderRadius: 8,
-              cursor: "pointer",
-              background: active === "fr" ? "rgba(255,255,255,0.05)" : "transparent",
-              transition: "background 200ms",
-            }}
-          >
-            <Row gap={8} align="center" style={{ marginBottom: 4 }}>
-              <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
-                Français
-              </span>
-              <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
-              <SpeakerIcon size={12} opacity={active === "fr" ? 1 : 0.42} />
-            </Row>
-            <span style={{ fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.2 }}>
-              {fr.text}
+      {empty ? (
+        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.42)", marginTop: 8 }}>
+          Add phrases to <span className="mono">command-center/languages.md</span> under the
+          <span className="mono"> ## French Words</span>, <span className="mono">## French Phrases</span>,
+          <span className="mono"> ## Chinese Words</span>, <span className="mono">## Chinese Phrases</span> sections.
+        </div>
+      ) : (
+        <div style={{
+          flex: 1, minHeight: 0, overflowY: "auto",
+          display: "grid", gridTemplateColumns: "1fr", gap: 10,
+        }}>
+          {/* French block — heading + word + phrase */}
+          <div>
+            <span className="mono" style={{ fontSize: 10, letterSpacing: 0.14, color: "rgba(255,255,255,0.62)", textTransform: "uppercase", fontWeight: 700 }}>
+              Français
             </span>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4, marginTop: 4 }}>
-              {fr.meaning}
-            </div>
-            {fr.note && (
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }}>
-                {fr.note}
-              </div>
-            )}
+            <Col gap={4} style={{ marginTop: 4 }}>
+              <PhraseRow phrase={languages.frenchWord}   lang="fr-FR" kind="word"   large />
+              <PhraseRow phrase={languages.frenchPhrase} lang="fr-FR" kind="phrase" />
+            </Col>
           </div>
-        ) : (
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>No French phrases yet — add some to languages.md</span>
-        )}
-        {/* Chinese */}
-        {zh ? (
-          <div
-            onClick={playZh}
-            title="Click to hear pronunciation"
-            style={{
-              padding: "8px 10px", marginLeft: -10, marginRight: -10, borderRadius: 8,
-              cursor: "pointer",
-              background: active === "zh" ? "rgba(255,255,255,0.05)" : "transparent",
-              transition: "background 200ms",
-            }}
-          >
-            <Row gap={8} align="center" style={{ marginBottom: 4 }}>
-              <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
-                中文
-              </span>
-              <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
-              <SpeakerIcon size={12} opacity={active === "zh" ? 1 : 0.42} />
-            </Row>
-            <Row gap={10} align="baseline">
-              <span style={{ fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: 0.02, lineHeight: 1.1 }}>
-                {zh.text}
-              </span>
-              {zh.pronunciation && (
-                <span className="mono" style={{ fontSize: 11, color: "rgba(255,255,255,0.62)", letterSpacing: 0.02 }}>
-                  {zh.pronunciation}
-                </span>
-              )}
-            </Row>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4, marginTop: 4 }}>
-              {zh.meaning}
-            </div>
-            {zh.note && (
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }}>
-                {zh.note}
-              </div>
-            )}
+          {/* Chinese block */}
+          <div>
+            <span className="mono" style={{ fontSize: 10, letterSpacing: 0.14, color: "rgba(255,255,255,0.62)", textTransform: "uppercase", fontWeight: 700 }}>
+              中文
+            </span>
+            <Col gap={4} style={{ marginTop: 4 }}>
+              <PhraseRow phrase={languages.chineseWord}   lang="zh-CN" kind="word"   large />
+              <PhraseRow phrase={languages.chinesePhrase} lang="zh-CN" kind="phrase" />
+            </Col>
           </div>
-        ) : (
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>No Chinese phrases yet — add some to languages.md</span>
-        )}
-      </Col>
+        </div>
+      )}
     </GlassCard>
   );
 }
@@ -576,7 +589,7 @@ export function TabInspired({
   songs: Song[];
   bookmarks: Bookmark[];
   appleNotes: AppleNote[];
-  story: TodaysStory | null;
+  story: InspiringStory | null;
   languages: LanguagesOfTheDay;
 }) {
   const dailyQuote = React.useMemo(() => pickDailyQuote(quotes), [quotes]);
@@ -602,7 +615,7 @@ export function TabInspired({
         gridTemplateRows: "1fr 1fr 1fr",
         gap: 12,
       }}>
-        <TodaysStoryCard story={story} />
+        <InspiringStoryCard story={story} />
         <LanguagesCard languages={languages} />
         <AppleNotesCard notes={appleNotes} />
         <MusicCard songs={songs} />

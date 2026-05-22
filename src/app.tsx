@@ -53,7 +53,7 @@ import { loadBookmarks, Bookmark } from "./data-sources/bookmarks";
 import { loadYouTubeChannel, YouTubeStats } from "./data-sources/youtube";
 import { loadSlackBriefing, SlackBriefing } from "./data-sources/slack";
 import { loadAppleNotes, AppleNote } from "./data-sources/apple-notes";
-import { loadTodaysStory, TodaysStory } from "./data-sources/today-story";
+import { loadInspiringStory, InspiringStory } from "./data-sources/inspiring-stories";
 import { loadLanguagesOfTheDay, LanguagesOfTheDay } from "./data-sources/languages";
 
 export type LiveData = {
@@ -71,7 +71,7 @@ export type LiveData = {
   youtube: YouTubeStats | null;
   slack: SlackBriefing | null;
   appleNotes: AppleNote[];
-  todaysStory: TodaysStory | null;
+  story: InspiringStory | null;
   languages: LanguagesOfTheDay;
   activityToday: ActivityEntry[];
   loadedAt: number;
@@ -81,7 +81,8 @@ const EMPTY_LIVE: LiveData = {
   sessions: [], trending: null, quotes: [], manual: DEFAULT_MANUAL,
   calendarEvents: [], news: [], reddit: [], tweets: [], artwork: null,
   songs: [], bookmarks: [], youtube: null, slack: null, appleNotes: [],
-  todaysStory: null, languages: { french: [], chinese: [] },
+  story: null,
+  languages: { frenchWord: null, frenchPhrase: null, chineseWord: null, chinesePhrase: null },
   activityToday: [], loadedAt: 0,
 };
 
@@ -116,9 +117,9 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
         loadTopSongs(8),
         loadBookmarks(bridge.app),
       ]);
-      const [appleNotes, todaysStory, languages] = await Promise.all([
+      const [appleNotes, story, languages] = await Promise.all([
         loadAppleNotes(8),
-        loadTodaysStory(),
+        loadInspiringStory(bridge.app),
         loadLanguagesOfTheDay(bridge.app),
       ]);
       // Manual-config-dependent fetches go second so we have the API keys / URLs.
@@ -134,7 +135,7 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
           : Promise.resolve(null),
       ]);
       const activityToday = await loadTodaysActivity(bridge.app);
-      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, todaysStory, languages, activityToday, loadedAt: Date.now() });
+      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, story, languages, activityToday, loadedAt: Date.now() });
     } finally {
       setRefreshing(false);
     }
@@ -641,7 +642,7 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
           {/* Agents tab removed. Terminal lives in its own pane now — open via
               the "Open Command Center Terminal" ribbon icon or command. */}
           {currentTab === "Health"       && <TabHealth mode={healthMode} setMode={setHealthMode} />}
-          {currentTab === "Inspired"     && <TabInspired quotes={live.quotes} brainDump={brainDump} onBrainDump={submitBrainDump} artwork={live.artwork} songs={live.songs} bookmarks={live.bookmarks} appleNotes={live.appleNotes} story={live.todaysStory} languages={live.languages} />}
+          {currentTab === "Inspired"     && <TabInspired quotes={live.quotes} brainDump={brainDump} onBrainDump={submitBrainDump} artwork={live.artwork} songs={live.songs} bookmarks={live.bookmarks} appleNotes={live.appleNotes} story={live.story} languages={live.languages} />}
           {currentTab === "Social"       && <TabSocial manual={live.manual} youtube={live.youtube} />}
         </div>
       </div>

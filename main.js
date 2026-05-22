@@ -34745,73 +34745,47 @@ function AppleNotesCard({ notes }) {
     )) })
   ] });
 }
-function TodaysStoryCard({ story }) {
+function InspiringStoryCard({ story }) {
   if (!story) {
     return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Today in history" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.42)" }, children: "Loading\u2026" })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Story \xB7 today" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.42)" }, children: [
+        "Add stories to ",
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", children: "command-center/inspiring-stories.md" })
+      ] })
     ] });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 10 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Today in history" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", fontWeight: 600 }, children: story.year })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-        "a",
-        {
-          href: story.url,
-          target: "_blank",
-          rel: "noopener noreferrer",
-          className: "mono",
-          style: { fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 },
-          children: "wikipedia \u2197"
-        }
-      )
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 18, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Story \xB7 today" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }, children: "edit \xB7 inspiring-stories.md" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 12, align: "start", style: { flex: 1, minHeight: 0 }, children: [
-      story.thumbnail && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("a", { href: story.url, target: "_blank", rel: "noopener noreferrer", style: { flexShrink: 0, lineHeight: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-        "img",
-        {
-          src: story.thumbnail,
-          alt: story.subject,
-          loading: "lazy",
-          referrerPolicy: "no-referrer",
-          style: {
-            width: 96,
-            height: 120,
-            objectFit: "cover",
-            borderRadius: 4,
-            border: "1px solid rgba(255,255,255,0.06)"
-          }
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 6, style: { flex: 1, minWidth: 0, overflow: "hidden" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -5e-3, lineHeight: 1.3 }, children: story.subject }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
-          fontSize: 12,
-          color: "rgba(255,255,255,0.78)",
-          letterSpacing: -5e-3,
-          lineHeight: 1.45,
-          display: "-webkit-box",
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden"
-        }, children: story.text }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
-          fontSize: 11,
-          color: "rgba(255,255,255,0.58)",
-          letterSpacing: -5e-3,
-          lineHeight: 1.5,
-          fontStyle: "italic",
-          display: "-webkit-box",
-          WebkitLineClamp: 4,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden"
-        }, children: story.extract })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 4, style: { marginBottom: 10 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 17, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.25 }, children: story.subject }),
+      story.hook && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 13, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4, fontStyle: "italic" }, children: story.hook }),
+      (story.field || story.era) && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, style: { marginTop: 2 }, children: [
+        story.field && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: story.field }),
+        story.field && story.era && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "rgba(255,255,255,0.18)", fontSize: 9 }, children: "\xB7" }),
+        story.era && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: story.era })
       ] })
-    ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Col, { gap: 8, style: { flex: 1, minHeight: 0, overflowY: "auto" }, children: story.body.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: {
+      margin: 0,
+      fontSize: 12,
+      color: "rgba(255,255,255,0.86)",
+      lineHeight: 1.55,
+      letterSpacing: -3e-3
+    }, children: p }, i)) }),
+    story.lesson && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
+      marginTop: 12,
+      padding: "10px 14px",
+      borderLeft: "2px solid rgba(255,255,255,0.32)",
+      fontFamily: "Georgia, 'Times New Roman', serif",
+      fontSize: 12,
+      fontStyle: "italic",
+      color: "rgba(255,255,255,0.86)",
+      lineHeight: 1.5
+    }, children: story.lesson })
   ] });
 }
 function SpeakerIcon({ size = 14, opacity = 0.62 }) {
@@ -34835,85 +34809,92 @@ function SpeakerIcon({ size = 14, opacity = 0.62 }) {
     }
   );
 }
+function PhraseRow({
+  phrase,
+  lang,
+  kind,
+  large
+}) {
+  const [active, setActive] = React9.useState(false);
+  if (!phrase)
+    return null;
+  const onClick = () => {
+    setActive(true);
+    speak(phrase.text, lang);
+    setTimeout(() => setActive(false), 1500);
+  };
+  const textSize = large ? lang === "zh-CN" ? 22 : 18 : lang === "zh-CN" ? 16 : 14;
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+    "div",
+    {
+      onClick,
+      title: "Click to hear pronunciation",
+      style: {
+        padding: "6px 8px",
+        marginLeft: -8,
+        marginRight: -8,
+        borderRadius: 6,
+        cursor: "pointer",
+        background: active ? "rgba(255,255,255,0.05)" : "transparent",
+        transition: "background 200ms"
+      },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 6, align: "center", style: { marginBottom: 2 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 8, letterSpacing: 0.14, color: "rgba(255,255,255,0.32)", textTransform: "uppercase", fontWeight: 600 }, children: kind }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.04)" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SpeakerIcon, { size: 11, opacity: active ? 1 : 0.38 })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "baseline", style: { flexWrap: "wrap" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: textSize, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: lang === "zh-CN" ? 0.02 : -8e-3, lineHeight: 1.2 }, children: phrase.text }),
+          phrase.pronunciation && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 11, color: "rgba(255,255,255,0.58)", letterSpacing: 0.02 }, children: phrase.pronunciation })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.72)", letterSpacing: -3e-3, lineHeight: 1.4, marginTop: 2 }, children: phrase.meaning }),
+        phrase.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 9, color: "rgba(255,255,255,0.38)", fontStyle: "italic", marginTop: 1 }, children: phrase.note })
+      ]
+    }
+  );
+}
 function LanguagesCard({ languages }) {
-  const fr = languages.french[0];
-  const zh = languages.chinese[0];
-  const [active, setActive] = React9.useState(null);
-  const playFr = () => {
-    if (!fr)
-      return;
-    setActive("fr");
-    speak(fr.text, "fr-FR");
-    setTimeout(() => setActive(null), 1500);
-  };
-  const playZh = () => {
-    if (!zh)
-      return;
-    setActive("zh");
-    speak(zh.text, "zh-CN");
-    setTimeout(() => setActive(null), 1500);
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
+  const empty = !languages.frenchWord && !languages.frenchPhrase && !languages.chineseWord && !languages.chinesePhrase;
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 14, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 10 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Learn \xB7 today" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }, children: "tap to hear \xB7 languages.md" })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }, children: "tap to hear \xB7 languages.md" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 14, style: { flex: 1, minHeight: 0, justifyContent: "space-evenly" }, children: [
-      fr ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
-        "div",
-        {
-          onClick: playFr,
-          title: "Click to hear pronunciation",
-          style: {
-            padding: "8px 10px",
-            marginLeft: -10,
-            marginRight: -10,
-            borderRadius: 8,
-            cursor: "pointer",
-            background: active === "fr" ? "rgba(255,255,255,0.05)" : "transparent",
-            transition: "background 200ms"
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", style: { marginBottom: 4 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "Fran\xE7ais" }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SpeakerIcon, { size: 12, opacity: active === "fr" ? 1 : 0.42 })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.2 }, children: fr.text }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4, marginTop: 4 }, children: fr.meaning }),
-            fr.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }, children: fr.note })
-          ]
-        }
-      ) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No French phrases yet \u2014 add some to languages.md" }),
-      zh ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
-        "div",
-        {
-          onClick: playZh,
-          title: "Click to hear pronunciation",
-          style: {
-            padding: "8px 10px",
-            marginLeft: -10,
-            marginRight: -10,
-            borderRadius: 8,
-            cursor: "pointer",
-            background: active === "zh" ? "rgba(255,255,255,0.05)" : "transparent",
-            transition: "background 200ms"
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", style: { marginBottom: 4 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "\u4E2D\u6587" }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SpeakerIcon, { size: 12, opacity: active === "zh" ? 1 : 0.42 })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 10, align: "baseline", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: 0.02, lineHeight: 1.1 }, children: zh.text }),
-              zh.pronunciation && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", letterSpacing: 0.02 }, children: zh.pronunciation })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4, marginTop: 4 }, children: zh.meaning }),
-            zh.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic", marginTop: 2 }, children: zh.note })
-          ]
-        }
-      ) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No Chinese phrases yet \u2014 add some to languages.md" })
+    empty ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.42)", marginTop: 8 }, children: [
+      "Add phrases to ",
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", children: "command-center/languages.md" }),
+      " under the",
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", children: " ## French Words" }),
+      ", ",
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", children: "## French Phrases" }),
+      ",",
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", children: " ## Chinese Words" }),
+      ", ",
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", children: "## Chinese Phrases" }),
+      " sections."
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+      flex: 1,
+      minHeight: 0,
+      overflowY: "auto",
+      display: "grid",
+      gridTemplateColumns: "1fr",
+      gap: 10
+    }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, letterSpacing: 0.14, color: "rgba(255,255,255,0.62)", textTransform: "uppercase", fontWeight: 700 }, children: "Fran\xE7ais" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 4, style: { marginTop: 4 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(PhraseRow, { phrase: languages.frenchWord, lang: "fr-FR", kind: "word", large: true }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(PhraseRow, { phrase: languages.frenchPhrase, lang: "fr-FR", kind: "phrase" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, letterSpacing: 0.14, color: "rgba(255,255,255,0.62)", textTransform: "uppercase", fontWeight: 700 }, children: "\u4E2D\u6587" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 4, style: { marginTop: 4 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(PhraseRow, { phrase: languages.chineseWord, lang: "zh-CN", kind: "word", large: true }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(PhraseRow, { phrase: languages.chinesePhrase, lang: "zh-CN", kind: "phrase" })
+        ] })
+      ] })
     ] })
   ] });
 }
@@ -34943,7 +34924,7 @@ function TabInspired({
       gridTemplateRows: "1fr 1fr 1fr",
       gap: 12
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(TodaysStoryCard, { story }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(InspiringStoryCard, { story }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(LanguagesCard, { languages }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(AppleNotesCard, { notes: appleNotes }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(MusicCard, { songs }),
@@ -37216,125 +37197,469 @@ async function fetchCMA(id) {
   }
 }
 
-// src/data-sources/today-story.ts
+// src/data-sources/inspiring-stories.ts
 var import_obsidian14 = require("obsidian");
-var CACHE_TTL_MS4 = 60 * 60 * 1e3;
-var cache4 = null;
-function dailyHash2(date = /* @__PURE__ */ new Date()) {
-  const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+var STORIES_FILE = "command-center/inspiring-stories.md";
+var SEED6 = `# Inspiring stories
+
+Bite-size biographical highlights \u2014 discovery, resilience, obsession,
+unreasonable belief. Add your own at any time. The dashboard rotates one
+per day.
+
+Format per entry:
+- Heading: \`## Subject \u2014 hook\` (the em-dash separates the name from the
+  one-line headline). Use a real em-dash \`\u2014\`, not a hyphen.
+- Optional \`Field:\` and \`Era:\` lines.
+- One or two paragraphs of body.
+- Optional \`> Lesson...\` blockquote at the end \u2014 surfaced as a pull-quote.
+
+---
+
+## Marie Curie \u2014 discovered radium in a converted shed
+
+Field: Physics, Chemistry
+Era: 1898
+
+Working in a leaky, unheated shed at the \xC9cole de Physique, Marie and
+Pierre Curie spent four years processing tons of pitchblende by hand to
+isolate a single decigram of radium. She later wrote that they had "no
+money, no laboratory, and no help." She is the only person to win Nobel
+Prizes in two different sciences.
+
+> The conditions don't decide. The obsession does.
+
+## Viktor Frankl \u2014 wrote a book outline in Auschwitz
+
+Field: Psychiatry, Philosophy
+Era: 1942\u20131945
+
+Frankl was imprisoned in four Nazi concentration camps. He survived in
+part by mentally reconstructing the manuscript of his book \u2014 a theory of
+meaning he'd been working on before the war. After liberation he wrote
+it in nine days. Man's Search for Meaning has sold over sixteen million
+copies. He gave the manuscript away for free for decades.
+
+> When you can't choose your circumstances, choose your stance toward them.
+
+## Stephen Hawking \u2014 given two years to live, worked for fifty-five more
+
+Field: Theoretical physics
+Era: 1963 diagnosis
+
+Diagnosed with ALS at 21 and told he had two years, Hawking enrolled in
+a PhD anyway. He lost the use of his hands, then his voice, then nearly
+every muscle. He kept producing \u2014 Hawking radiation, A Brief History of
+Time, decades of papers \u2014 by manipulating a single cheek muscle to drive
+a speech synthesizer. He died in 2018 at 76.
+
+> A prognosis is a probability, not a sentence.
+
+## Frida Kahlo \u2014 painted from a hospital bed
+
+Field: Art
+Era: 1925 onward
+
+At 18, Kahlo was nearly killed when a streetcar struck her bus \u2014 a metal
+handrail pierced her abdomen. She spent months in a body cast. Her mother
+rigged a mirror above her bed and an easel she could reach lying down.
+She painted herself, because "I am the subject I know best." She produced
+more than 140 paintings over the next 30 years, most of them self-portraits.
+
+> Constraints aren't subtraction. They're a frame.
+
+## Nelson Mandela \u2014 read a book on a quarry every day for 27 years
+
+Field: Activism, statesmanship
+Era: 1964\u20131990
+
+Mandela served 27 years in prison, much of it on Robben Island breaking
+limestone in a quarry. He studied law by correspondence, taught fellow
+prisoners, refused to bend to early-release offers that came with
+conditions. He emerged at 71 \u2014 and within four years was president of
+the country that imprisoned him.
+
+> Patience is not waiting. It's working through the waiting.
+
+## Helen Keller \u2014 learned twenty-five words in a month at age seven
+
+Field: Activism, writing
+Era: 1887
+
+Blind and deaf from 19 months old, Keller spent her childhood cut off
+from language. When Anne Sullivan arrived as her teacher, she spelled
+"water" into Helen's hand while running the pump. In one moment Keller
+understood that things had names. She learned 25 more words that month.
+She would go on to graduate from Radcliffe and write twelve books.
+
+> The fence between us and the world is often just the words we haven't met yet.
+
+## Frederick Douglass \u2014 taught himself to read while enslaved
+
+Field: Activism, oratory
+Era: 1820s\u20131830s
+
+As a young enslaved boy in Baltimore, Douglass was first taught letters
+by his enslaver's wife \u2014 until her husband forbade it, saying education
+would "spoil" him. Douglass took that as confirmation it was the path
+out. He traded bread to poor white boys in exchange for reading lessons.
+He learned. He escaped at 20. He became one of the most powerful orators
+of the 19th century.
+
+> The thing they don't want you to learn is the thing to learn first.
+
+## Wright Brothers \u2014 built a flying machine in a bicycle shop
+
+Field: Aeronautics
+Era: 1900\u20131903
+
+Wilbur and Orville ran a bicycle repair shop in Dayton, Ohio. They had
+no engineering degrees, no funding, no patrons. They built their own wind
+tunnel. They corrected the lift tables every published authority had
+gotten wrong. On December 17, 1903, Orville flew 120 feet in 12 seconds
+at Kitty Hawk. The world's papers ignored it for five years.
+
+> You don't need the establishment to be right. You need to be right.
+
+## Beethoven \u2014 composed his greatest work while deaf
+
+Field: Music
+Era: 1798 onward
+
+Beethoven began losing his hearing in his late twenties. He considered
+suicide \u2014 and chose work instead. He composed by feeling the piano's
+vibrations through a rod clamped between his teeth and the soundboard.
+He wrote the Ninth Symphony \u2014 possibly the most performed orchestral
+work in history \u2014 when he could not hear a single note of it.
+
+> The work doesn't ask whether you can perceive it.
+
+## Jane Goodall \u2014 went into the field at 26 with no degree
+
+Field: Primatology
+Era: 1960
+
+When Louis Leakey hired Goodall to study chimpanzees at Gombe, she had
+no university degree and no formal training. The field's experts called
+her methods amateur \u2014 she named the chimps instead of numbering them,
+ascribed personalities, watched without interfering. Within months she
+documented chimps using tools, demolishing the line scientists had drawn
+between humans and other animals.
+
+> Outsider status is a position, not a disadvantage.
+
+## Nikola Tesla \u2014 sketched the AC motor while penniless
+
+Field: Engineering
+Era: 1881\u20131888
+
+Tesla emigrated to America with four cents in his pocket and a letter
+of introduction. He worked digging ditches for a while. Walking in a
+Budapest park years earlier, he had seen the principle of the rotating
+magnetic field appear to him whole \u2014 he sketched it in the dirt with a
+stick. He carried the design in his head for years before he could
+build it. It became the foundation of the modern AC power grid.
+
+> Sometimes the idea arrives complete. The decade is just storage.
+
+## Mary Anning \u2014 self-taught fossil hunter who rewrote paleontology
+
+Field: Paleontology
+Era: 1810s\u20131840s
+
+Anning lived in Lyme Regis on the English coast and made her living
+selling fossils to tourists. She had almost no formal schooling. At
+twelve, she helped her brother dig the first complete ichthyosaur
+skeleton. Over decades she found the first plesiosaur, the first British
+pterosaur, and changed how Europe understood deep time. Geological
+societies barred her from membership because she was a woman.
+
+> Credentials and contribution are different things.
+
+## V\xE1clav Havel \u2014 went from prison cell to presidential palace in months
+
+Field: Writing, politics
+Era: 1989\u20131990
+
+Havel was a dissident playwright who spent years in Czechoslovak prisons
+for writing essays the regime didn't like. In November 1989, the regime
+collapsed. By December 29 \u2014 six weeks later \u2014 he was president of the
+country. He wrote a famous line in one of those prison-era essays:
+*"Hope is not the conviction that something will turn out well, but the
+certainty that something makes sense, regardless of how it turns out."*
+
+> The right work doesn't need to know whether it will win.
+
+## Anne Frank \u2014 wrote a book that outlived the regime that killed her
+
+Field: Writing
+Era: 1942\u20131944
+
+Frank was 13 when her family went into hiding in a sealed annex above
+her father's office. She wrote in a diary for two years. She rewrote
+parts after hearing a radio broadcast asking civilians to preserve their
+testimony. She was deported to Bergen-Belsen and died at 15. Her father
+survived. The diary has been translated into more than 70 languages and
+read by tens of millions.
+
+> The voice can outrun the cage. Sometimes by centuries.
+
+## Toni Morrison \u2014 wrote her first novel at 39, between her kids' bedtimes
+
+Field: Literature
+Era: 1970 onward
+
+Morrison was a single mother working full-time as an editor at Random
+House. She wrote The Bluest Eye in the hours before her sons woke and
+after they slept. She kept writing \u2014 Sula, Song of Solomon, Beloved.
+She won the Pulitzer at 56 and the Nobel at 62. She told interviewers
+she had no time, she just made time. "I get up at 5am."
+
+> Late starts are starts. The clock doesn't care.
+
+## Steve Jobs \u2014 fired by the company he founded, came back ten years later
+
+Field: Technology
+Era: 1985\u20131997
+
+Jobs was forced out of Apple in 1985 after a board power struggle. He
+called it the most painful event of his life \u2014 but also said later that
+"the heaviness of being successful was replaced by the lightness of
+being a beginner again." He started NeXT and bought Pixar. Apple bought
+NeXT in 1996. He returned, the iMac shipped, then the iPod, the iPhone.
+The company became the most valuable in the world.
+
+> Getting fired from the work isn't getting fired from yourself.
+
+## Malala Yousafzai \u2014 went back to school the year after being shot
+
+Field: Activism
+Era: 2012 onward
+
+A Taliban gunman shot 15-year-old Malala in the head on her school bus
+in Pakistan for advocating girls' education. She was airlifted to the
+UK in critical condition. She survived multiple surgeries. By the next
+school year she was back in a classroom \u2014 in Birmingham. Two years later
+she became the youngest Nobel laureate. She still studies. She still
+campaigns.
+
+> Showing up is the political act.
+`;
+async function ensureFile7(app) {
+  const np = (0, import_obsidian14.normalizePath)(STORIES_FILE);
+  const existing = app.vault.getAbstractFileByPath(np);
+  if (existing instanceof import_obsidian14.TFile)
+    return existing;
+  const folder = np.substring(0, np.lastIndexOf("/"));
+  if (folder && !app.vault.getAbstractFileByPath(folder)) {
+    await app.vault.createFolder(folder).catch(() => {
+    });
+  }
+  return app.vault.create(np, SEED6);
+}
+function parseStories(text) {
+  const lines = text.split(/\r?\n/);
+  const out = [];
+  let cur = null;
+  const flush = () => {
+    if (!cur)
+      return;
+    const s = buildStory(cur.heading, cur.body);
+    if (s)
+      out.push(s);
+    cur = null;
+  };
+  for (const raw of lines) {
+    const line = raw.replace(/\s+$/, "");
+    if (/^#\s/.test(line)) {
+      flush();
+      continue;
+    }
+    if (/^---+\s*$/.test(line)) {
+      flush();
+      continue;
+    }
+    const h2 = line.match(/^##\s+(.+)$/);
+    if (h2) {
+      flush();
+      cur = { heading: h2[1].trim(), body: [] };
+      continue;
+    }
+    if (cur)
+      cur.body.push(line);
+  }
+  flush();
+  return out;
+}
+function buildStory(heading, bodyLines) {
+  let subject = heading;
+  let hook = "";
+  const emDash = heading.indexOf("\u2014");
+  const hyphenDash = heading.indexOf(" - ");
+  if (emDash >= 0) {
+    subject = heading.slice(0, emDash).trim();
+    hook = heading.slice(emDash + 1).trim();
+  } else if (hyphenDash >= 0) {
+    subject = heading.slice(0, hyphenDash).trim();
+    hook = heading.slice(hyphenDash + 3).trim();
+  }
+  let field;
+  let era;
+  let lesson;
+  const paragraphs = [];
+  let buf = [];
+  const pushPara = () => {
+    const p = buf.join(" ").trim();
+    if (p)
+      paragraphs.push(p);
+    buf = [];
+  };
+  for (const raw of bodyLines) {
+    const line = raw.trim();
+    if (!line) {
+      pushPara();
+      continue;
+    }
+    const fld = line.match(/^Field:\s*(.+)$/i);
+    if (fld) {
+      pushPara();
+      field = fld[1].trim();
+      continue;
+    }
+    const eraM = line.match(/^Era:\s*(.+)$/i);
+    if (eraM) {
+      pushPara();
+      era = eraM[1].trim();
+      continue;
+    }
+    const quote = line.match(/^>\s*(.+)$/);
+    if (quote) {
+      pushPara();
+      lesson = quote[1].trim();
+      continue;
+    }
+    buf.push(line);
+  }
+  pushPara();
+  if (!subject || paragraphs.length === 0)
+    return null;
+  return { subject, hook, field, era, body: paragraphs, lesson };
+}
+function dailyHash2(seed, date = /* @__PURE__ */ new Date()) {
+  const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${seed}`;
   let h = 0;
   for (let i = 0; i < key.length; i++)
     h = h * 31 + key.charCodeAt(i) | 0;
   return Math.abs(h);
 }
-async function loadTodaysStory() {
-  const now = /* @__PURE__ */ new Date();
-  const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-  if (cache4 && cache4.dateKey === dateKey && Date.now() - cache4.fetchedAt < CACHE_TTL_MS4) {
-    return cache4.story;
-  }
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const dd = String(now.getDate()).padStart(2, "0");
+async function loadInspiringStory(app) {
   try {
-    const res = await (0, import_obsidian14.requestUrl)({
-      url: `https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/${mm}/${dd}`,
-      throw: false
-    });
-    if (res.status >= 400) {
-      cache4 = { story: null, fetchedAt: Date.now(), dateKey };
+    const file = await ensureFile7(app);
+    const text = await app.vault.read(file);
+    const stories = parseStories(text);
+    if (stories.length === 0)
       return null;
-    }
-    const events = res.json?.selected ?? [];
-    const eligible = [];
-    for (const e of events) {
-      const pages = e.pages ?? [];
-      const withThumb = pages.find((p) => p.thumbnail?.source);
-      if (withThumb && withThumb.extract) {
-        eligible.push({ event: e, page: withThumb });
-      }
-    }
-    if (eligible.length === 0) {
-      cache4 = { story: null, fetchedAt: Date.now(), dateKey };
-      return null;
-    }
-    const picked = eligible[dailyHash2(now) % eligible.length];
-    const story = {
-      year: String(picked.event.year ?? ""),
-      text: stripParenPictured(String(picked.event.text ?? "")).trim(),
-      subject: picked.page.titles?.normalized || picked.page.title || "",
-      extract: String(picked.page.extract ?? "").trim(),
-      thumbnail: picked.page.thumbnail?.source,
-      url: picked.page.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(picked.page.title || "")}`
-    };
-    cache4 = { story, fetchedAt: Date.now(), dateKey };
-    return story;
+    return stories[dailyHash2("story") % stories.length];
   } catch (e) {
-    console.warn("[command-center] today-story load failed:", e);
+    console.warn("[command-center] inspiring-stories load failed:", e);
     return null;
   }
-}
-function stripParenPictured(s) {
-  return s.replace(/\s*\(pictured\)\s*/gi, " ").replace(/\s{2,}/g, " ");
 }
 
 // src/data-sources/languages.ts
 var import_obsidian15 = require("obsidian");
 var LANGUAGES_FILE = "command-center/languages.md";
-var SEED6 = `# Languages
+var SEED7 = `# Languages
 
-One phrase per line. Pipe-separated: \`phrase | meaning | optional note\`.
-Add as many as you want \u2014 the dashboard rotates a fresh pair daily.
+Two tracks per language: single words/expressions, and full phrases/sentences.
+The dashboard shows one of each daily \u2014 four total. Click any row in the
+Inspired tab to hear it spoken.
 
-For Chinese, include the pinyin in parentheses after the characters so the
-dashboard can show pronunciation: \`\u4F60\u597D (n\u01D0 h\u01CEo) | hello | greeting\`.
+Format: \`- text | meaning | optional note\`. For Chinese, put the pinyin in
+parens after the characters: \`- \u52A0\u6CB9 (ji\u0101 y\xF3u) | keep going | motivational\`.
 
-## French
+## French Words
 
-- bonjour | hello | greeting
-- merci beaucoup | thank you very much | polite
-- comment \xE7a va ? | how are you? | casual
-- je vais bien | I'm doing well | response
-- on y va | let's go | colloquial
-- \xE0 plus tard | see you later | parting
 - \xE7a marche | sounds good, that works | agreement
-- pas de souci | no worries | reassurance
-- je ne sais pas | I don't know | useful
-- au fait | by the way | conversation
 - du coup | so, therefore | filler
-- bien s\xFBr | of course | agreement
-- petit \xE0 petit | little by little | rhythm
-- \xE7a vaut le coup | it's worth it | reflective
-- se d\xE9brouiller | to manage, figure it out | verb
-- en fait | actually, in fact | filler
-- je vous en prie | you're welcome / please | formal
-- tant pis | too bad, oh well | acceptance
-- d'accord | okay, agreed | agreement
-- \xE0 tout \xE0 l'heure | see you in a bit | parting
+- bof | meh | dismissive
+- bref | in short | conversation
+- voil\xE0 | there you go | confirmation
+- enfin | finally / well, anyway | filler
+- carr\xE9ment | totally, absolutely | emphasis
+- franchement | honestly | candor
+- d'ailleurs | by the way | conversation
+- pourtant | yet, however | contrast
+- quand m\xEAme | still, anyway | resignation
+- chouette | nice, cool | casual
+- ouais | yeah | casual
+- nickel | perfect | satisfaction
+- d\xE9brouillard | resourceful | personality
+- ras-le-bol | fed up | emotion
+- bouquin | book | slang
+- truc | thing, stuff | filler
+- gosse | kid | casual
+- bosser | to work hard | slang verb
 
-## Chinese
+## French Phrases
 
-- \u4F60\u597D (n\u01D0 h\u01CEo) | hello | greeting
-- \u8C22\u8C22 (xi\xE8 xie) | thank you | polite
-- \u4E0D\u5BA2\u6C14 (b\xFA k\xE8 qi) | you're welcome | response
+- Je ne sais pas par o\xF9 commencer. | I don't know where to start. | overwhelmed
+- Petit \xE0 petit, l'oiseau fait son nid. | Little by little, the bird builds its nest. | proverb
+- \xC7a vaut le coup d'essayer. | It's worth a try. | encouragement
+- On verra bien. | We'll see. | wait-and-see
+- Je vais y r\xE9fl\xE9chir. | I'll think about it. | useful
+- Ce n'est pas la peine. | It's not worth the trouble. | dismissal
+- Je m'en occupe. | I'll take care of it. | commitment
+- Tu as raison. | You're right. | agreement
+- \xC0 quoi bon ? | What's the point? | resignation
+- \xC7a me fait plaisir. | It makes me happy. / I'm glad. | warmth
+- Il faut que je m'y mette. | I need to get to it. | self-talk
+- Chaque chose en son temps. | Everything in its own time. | patience
+- On n'est jamais mieux servi que par soi-m\xEAme. | If you want something done right, do it yourself. | proverb
+- Je suis crev\xE9. | I'm exhausted. | feeling
+- Reste sur tes gardes. | Stay on your guard. | warning
+
+## Chinese Words
+
 - \u52A0\u6CB9 (ji\u0101 y\xF3u) | keep going / go for it | motivational
-- \u6211\u4E0D\u77E5\u9053 (w\u01D2 b\xF9 zh\u012B d\xE0o) | I don't know | useful
-- \u6162\u6162\u6765 (m\xE0n m\xE0n l\xE1i) | take your time | calming
-- \u6CA1\u95EE\u9898 (m\xE9i w\xE8n t\xED) | no problem | reassurance
-- \u4E00\u6B65\u4E00\u6B65 (y\xED b\xF9 y\xED b\xF9) | step by step | rhythm
-- \u600E\u4E48\u4E86 (z\u011Bn me le) | what's up / what happened? | casual
-- \u771F\u7684\u5417 (zh\u0113n de ma) | really? | reaction
-- \u542C\u8D77\u6765\u4E0D\u9519 (t\u012Bng q\u01D0 l\xE1i b\xFA cu\xF2) | sounds good | agreement
-- \u6211\u540C\u610F (w\u01D2 t\xF3ng y\xEC) | I agree | useful
-- \u518D\u89C1 (z\xE0i ji\xE0n) | goodbye | parting
-- \u660E\u5929\u89C1 (m\xEDng ti\u0101n ji\xE0n) | see you tomorrow | parting
-- \u522B\u62C5\u5FC3 (bi\xE9 d\u0101n x\u012Bn) | don't worry | reassurance
-- \u6211\u61C2\u4E86 (w\u01D2 d\u01D2ng le) | I get it / I understand now | useful
 - \u52AA\u529B (n\u01D4 l\xEC) | to work hard, effort | virtue
-- \u52A0\u500D\u52AA\u529B (ji\u0101 b\xE8i n\u01D4 l\xEC) | redouble your efforts | motivational
-- \u4E07\u4E8B\u5F00\u5934\u96BE (w\xE0n sh\xEC k\u0101i t\xF3u n\xE1n) | all beginnings are hard | proverb
+- \u6162\u6162 (m\xE0n m\xE0n) | slowly | rhythm
+- \u5389\u5BB3 (l\xEC h\xE0i) | impressive, formidable | praise
+- \u5F53\u7136 (d\u0101ng r\xE1n) | of course | agreement
+- \u5176\u5B9E (q\xED sh\xED) | actually | filler
+- \u4E5F\u8BB8 (y\u011B x\u01D4) | maybe, perhaps | hedge
+- \u9EBB\u70E6 (m\xE1 f\xE1n) | trouble, hassle | useful
+- \u4E60\u60EF (x\xED gu\xE0n) | habit, to be used to | concept
+- \u673A\u4F1A (j\u012B hu\xEC) | opportunity | concept
+- \u7ECF\u9A8C (j\u012Bng y\xE0n) | experience | concept
+- \u7B80\u5355 (ji\u01CEn d\u0101n) | simple | adjective
+- \u590D\u6742 (f\xF9 z\xE1) | complicated | adjective
+- \u575A\u6301 (ji\u0101n ch\xED) | to persist | virtue
+- \u653E\u677E (f\xE0ng s\u014Dng) | to relax | self-care
+- \u987A\u4FBF (sh\xF9n bi\xE0n) | by the way | conversation
+- \u5927\u6982 (d\xE0 g\xE0i) | approximately, probably | hedge
+- \u771F\u7684 (zh\u0113n de) | really, truly | emphasis
+- \u7A81\u7136 (t\u016B r\xE1n) | suddenly | time
+- \u91CD\u8981 (zh\xF2ng y\xE0o) | important | adjective
+
+## Chinese Phrases
+
 - \u5343\u91CC\u4E4B\u884C\uFF0C\u59CB\u4E8E\u8DB3\u4E0B (qi\u0101n l\u01D0 zh\u012B x\xEDng, sh\u01D0 y\xFA z\xFA xi\xE0) | a thousand-mile journey begins with a single step | proverb
+- \u4E07\u4E8B\u5F00\u5934\u96BE (w\xE0n sh\xEC k\u0101i t\xF3u n\xE1n) | all beginnings are hard | proverb
+- \u6162\u6162\u6765\uFF0C\u522B\u6025 (m\xE0n m\xE0n l\xE1i, bi\xE9 j\xED) | take your time, don't rush | calming
+- \u6211\u5C3D\u529B\u4E86 (w\u01D2 j\xECn l\xEC le) | I did my best | reflection
+- \u4F60\u8BF4\u5F97\u5BF9 (n\u01D0 shu\u014D de du\xEC) | you're right | agreement
+- \u6211\u4EEC\u8C08\u4E00\u8C08\u5427 (w\u01D2 men t\xE1n y\xEC t\xE1n ba) | let's talk it over | useful
+- \u8FD9\u662F\u4E2A\u597D\u4E3B\u610F (zh\xE8 sh\xEC ge h\u01CEo zh\u01D4 yi) | that's a good idea | praise
+- \u6211\u9700\u8981\u4F11\u606F\u4E00\u4E0B (w\u01D2 x\u016B y\xE0o xi\u016B xi y\xED xi\xE0) | I need to take a break | self-care
+- \u6CA1\u4EC0\u4E48\u5927\u4E0D\u4E86\u7684 (m\xE9i sh\xE9n me d\xE0 b\xF9 li\u01CEo de) | it's no big deal | reassurance
+- \u8BA9\u6211\u60F3\u4E00\u60F3 (r\xE0ng w\u01D2 xi\u01CEng yi xi\u01CEng) | let me think about it | useful
+- \u4E00\u6B65\u4E00\u4E2A\u811A\u5370 (y\xED b\xF9 y\xED ge ji\u01CEo y\xECn) | one step at a time, leaving a footprint each time | proverb
+- \u5931\u8D25\u662F\u6210\u529F\u4E4B\u6BCD (sh\u012B b\xE0i sh\xEC ch\xE9ng g\u014Dng zh\u012B m\u01D4) | failure is the mother of success | proverb
+- \u6211\u6709\u70B9\u7D27\u5F20 (w\u01D2 y\u01D2u di\u01CEn j\u01D0n zh\u0101ng) | I'm a little nervous | feeling
+- \u4F60\u80FD\u5E2E\u6211\u4E00\u4E0B\u5417 (n\u01D0 n\xE9ng b\u0101ng w\u01D2 y\xED xi\xE0 ma) | can you help me? | useful
+- \u522B\u62C5\u5FC3\uFF0C\u4F1A\u597D\u7684 (bi\xE9 d\u0101n x\u012Bn, hu\xEC h\u01CEo de) | don't worry, it'll be okay | reassurance
 `;
-async function ensureFile7(app) {
+async function ensureFile8(app) {
   const np = (0, import_obsidian15.normalizePath)(LANGUAGES_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
   if (existing instanceof import_obsidian15.TFile)
@@ -37344,22 +37669,30 @@ async function ensureFile7(app) {
     await app.vault.createFolder(folder).catch(() => {
     });
   }
-  return app.vault.create(np, SEED6);
+  return app.vault.create(np, SEED7);
 }
 function parseFile(text) {
+  const out = {
+    frWords: [],
+    frPhrases: [],
+    zhWords: [],
+    zhPhrases: []
+  };
   const lines = text.split(/\r?\n/);
   let section = null;
-  const french = [];
-  const chinese = [];
   for (const raw of lines) {
     const line = raw.trim();
-    const heading = line.match(/^##\s+(\w+)/i);
-    if (heading) {
-      const h = heading[1].toLowerCase();
-      if (h === "french")
-        section = "french";
-      else if (h === "chinese")
-        section = "chinese";
+    const h = line.match(/^##\s+(.+)$/i);
+    if (h) {
+      const t = h[1].toLowerCase();
+      if (t.startsWith("french") && t.includes("word"))
+        section = "frWords";
+      else if (t.startsWith("french") && t.includes("phrase"))
+        section = "frPhrases";
+      else if (t.startsWith("chinese") && t.includes("word"))
+        section = "zhWords";
+      else if (t.startsWith("chinese") && t.includes("phrase"))
+        section = "zhPhrases";
       else
         section = null;
       continue;
@@ -37378,13 +37711,13 @@ function parseFile(text) {
     let text2 = phraseRaw;
     let pronunciation;
     const pin = phraseRaw.match(/^(\S.*?)\s*\(([^)]+)\)\s*$/);
-    if (pin && section === "chinese") {
+    if (pin && (section === "zhWords" || section === "zhPhrases")) {
       text2 = pin[1].trim();
       pronunciation = pin[2].trim();
     }
-    (section === "french" ? french : chinese).push({ text: text2, pronunciation, meaning, note });
+    out[section].push({ text: text2, pronunciation, meaning, note });
   }
-  return { french, chinese };
+  return out;
 }
 function dailyHash3(seed, date = /* @__PURE__ */ new Date()) {
   const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${seed}`;
@@ -37393,17 +37726,25 @@ function dailyHash3(seed, date = /* @__PURE__ */ new Date()) {
     h = h * 31 + key.charCodeAt(i) | 0;
   return Math.abs(h);
 }
+function pickDaily(arr, seed) {
+  if (arr.length === 0)
+    return null;
+  return arr[dailyHash3(seed) % arr.length];
+}
 async function loadLanguagesOfTheDay(app) {
   try {
-    const file = await ensureFile7(app);
+    const file = await ensureFile8(app);
     const text = await app.vault.read(file);
-    const { french, chinese } = parseFile(text);
-    const pickFr = french.length ? [french[dailyHash3("fr") % french.length]] : [];
-    const pickZh = chinese.length ? [chinese[dailyHash3("zh") % chinese.length]] : [];
-    return { french: pickFr, chinese: pickZh };
+    const parsed = parseFile(text);
+    return {
+      frenchWord: pickDaily(parsed.frWords, "fr-word"),
+      frenchPhrase: pickDaily(parsed.frPhrases, "fr-phrase"),
+      chineseWord: pickDaily(parsed.zhWords, "zh-word"),
+      chinesePhrase: pickDaily(parsed.zhPhrases, "zh-phrase")
+    };
   } catch (e) {
     console.warn("[command-center] languages load failed:", e);
-    return { french: [], chinese: [] };
+    return { frenchWord: null, frenchPhrase: null, chineseWord: null, chinesePhrase: null };
   }
 }
 
@@ -37424,8 +37765,8 @@ var EMPTY_LIVE = {
   youtube: null,
   slack: null,
   appleNotes: [],
-  todaysStory: null,
-  languages: { french: [], chinese: [] },
+  story: null,
+  languages: { frenchWord: null, frenchPhrase: null, chineseWord: null, chinesePhrase: null },
   activityToday: [],
   loadedAt: 0
 };
@@ -37453,9 +37794,9 @@ function CommandCenterApp({ bridge }) {
         loadTopSongs(8),
         loadBookmarks(bridge.app)
       ]);
-      const [appleNotes, todaysStory, languages] = await Promise.all([
+      const [appleNotes, story, languages] = await Promise.all([
         loadAppleNotes(8),
-        loadTodaysStory(),
+        loadInspiringStory(bridge.app),
         loadLanguagesOfTheDay(bridge.app)
       ]);
       const [calendarEvents, youtube, slack] = await Promise.all([
@@ -37464,7 +37805,7 @@ function CommandCenterApp({ bridge }) {
         manual.slack?.token && manual.slack?.channels?.length ? loadSlackBriefing(manual.slack.token, manual.slack.channels, manual.slack.lookbackHours ?? 24) : Promise.resolve(null)
       ]);
       const activityToday = await loadTodaysActivity(bridge.app);
-      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, todaysStory, languages, activityToday, loadedAt: Date.now() });
+      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, story, languages, activityToday, loadedAt: Date.now() });
     } finally {
       setRefreshing(false);
     }
@@ -37945,7 +38286,7 @@ function CommandCenterApp({ bridge }) {
         currentTab === "Side Project" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabSideProject, { todos: sideTodos, toggleTodo: toggleSideTodo, trending: live.trending, manual: live.manual, news: live.news, reddit: live.reddit, tweets: live.tweets, slack: live.slack }),
         currentTab === "9-to-5" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabNineToFive, { eod: eodTodos, toggleEod, placedBlocks, onAddBlock, onRemoveBlock, manual: live.manual, calendarEvents: live.calendarEvents, activity: live.activityToday }),
         currentTab === "Health" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabHealth, { mode: healthMode, setMode: setHealthMode }),
-        currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks, appleNotes: live.appleNotes, story: live.todaysStory, languages: live.languages }),
+        currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks, appleNotes: live.appleNotes, story: live.story, languages: live.languages }),
         currentTab === "Social" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabSocial, { manual: live.manual, youtube: live.youtube })
       ] }, currentTab)
     ] })
