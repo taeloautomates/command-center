@@ -13,6 +13,7 @@ import { App, normalizePath, TFile } from "obsidian";
 export type ManualState = {
   youtube: {
     handle: string;
+    apiKey: string;          // YouTube Data API v3 key — leave blank to fall back to manual values
     scriptsDrafted: number; scriptsTarget: number;
     videosShot: number;     videosTarget: number;
     videosShipped: number;  videosShippedTarget: number;
@@ -39,6 +40,11 @@ export type ManualState = {
   terminal: {
     cwd: string;              // where claude/codex/shell starts
   };
+  slack: {
+    token: string;            // User OAuth token (xoxp-...). Blank = card hidden.
+    channels: string[];       // channel IDs to monitor, e.g. ["C01ABCDEF"]
+    lookbackHours: number;    // how far back to scan
+  };
 };
 
 export const MANUAL_FILE = "command-center/manual.md";
@@ -46,6 +52,7 @@ export const MANUAL_FILE = "command-center/manual.md";
 export const DEFAULT_MANUAL: ManualState = {
   youtube: {
     handle: "@taelo_kim",
+    apiKey: "",
     scriptsDrafted: 3, scriptsTarget: 5,
     videosShot: 2,     videosTarget: 3,
     videosShipped: 1,  videosShippedTarget: 2,
@@ -75,11 +82,17 @@ export const DEFAULT_MANUAL: ManualState = {
   terminal: {
     cwd: "~/Desktop/Content engine",
   },
+  slack: {
+    token: "",
+    channels: [],
+    lookbackHours: 24,
+  },
 };
 
 const SEED = `---
 youtube:
   handle: "@taelo_kim"
+  apiKey: ""
   scriptsDrafted: 3
   scriptsTarget: 5
   videosShot: 2
@@ -112,6 +125,10 @@ calendar:
   icsUrl: ""
 terminal:
   cwd: "~/Desktop/Content engine"
+slack:
+  token: ""
+  channels: []
+  lookbackHours: 24
 ---
 
 # Manual overrides
@@ -131,6 +148,37 @@ When a real source is wired for any of these, the override here is ignored.
   display your real meetings on the 9-to-5 timeline. Get it from
   Google Calendar → Settings → My calendars → click a calendar → Integrate calendar →
   Secret address in iCal format.
+
+## YouTube API setup
+
+- **handle** — your channel handle, e.g. \`@taelo_kim\`.
+- **apiKey** — YouTube Data API v3 key. Leave blank to keep manual values. To get one:
+  1. Go to https://console.cloud.google.com/apis/credentials
+  2. Create a project (free).
+  3. APIs & Services → Enable APIs → search "YouTube Data API v3" → Enable.
+  4. Credentials → Create Credentials → API key. Paste the key here.
+  5. Optional but recommended: restrict the key to "YouTube Data API v3" only.
+
+  Quota: 10,000 units/day free. This plugin uses ~3 units per refresh with a
+  10-minute cache, well under the limit.
+
+## Slack briefings setup
+
+Leave \`token\` blank to hide the Slack card.
+
+- **token** — User OAuth Token (\`xoxp-...\`). To get one:
+  1. Go to https://api.slack.com/apps → Create New App → From scratch.
+  2. Pick a name ("Command Center"), pick your workspace.
+  3. **OAuth & Permissions** → scroll to **User Token Scopes** → add:
+     - \`channels:history\`, \`channels:read\`
+     - \`groups:history\`, \`groups:read\` (private channels — optional)
+     - \`im:history\`, \`im:read\` (DMs — optional)
+     - \`users:read\`
+  4. Top of the same page: **Install to Workspace** → approve.
+  5. Copy the **User OAuth Token** (starts with \`xoxp-\`). Paste here.
+- **channels** — list of channel IDs to monitor. Find one in Slack: right-click
+  the channel → View channel details → bottom of the modal. Format: \`["C01ABCDEF"]\`.
+- **lookbackHours** — how far back to scan (default 24).
 `;
 
 async function ensureFile(app: App): Promise<TFile> {
@@ -156,6 +204,10 @@ function parseManualYAML(text: string): ManualState {
 
   // Tracks the path stack: e.g. ["youtube"] → ["youtube","nextUpload"]
   const stack: { key: string; indent: number }[] = [];
+  // Tracks which list-keys have started populating from YAML.
+  // Without this, the parser would append YAML items on top of the
+  // DEFAULT_MANUAL clone's array, doubling everything.
+  const startedLists = new Set<string>();
   for (const raw of lines) {
     const line = raw.replace(/\t/g, "  ");
     if (!line.trim() || line.trim().startsWith("#")) continue;
@@ -201,7 +253,13 @@ function parseManualYAML(text: string): ManualState {
       const parent = stack.map((s) => s.key);
       const key = parent[parent.length - 1];
       const grand = parent.slice(0, -1).reduce((a, k) => (a[k] ??= {}), out);
-      if (!Array.isArray(grand[key])) grand[key] = [];
+      const pathKey = parent.join(".");
+      if (!startedLists.has(pathKey)) {
+        // First list item we've seen for this key in THIS parse — wipe the
+        // default array so we replace it (not append on top of it).
+        grand[key] = [];
+        startedLists.add(pathKey);
+      }
       grand[key].push(parseInlineObj(listObjMatch[1]));
       continue;
     }
@@ -234,8 +292,18 @@ function parseInlineObj(body: string): any {
   return obj;
 }
 
-function parseScalar(v: string): string | number | boolean {
+function parseScalar(v: string): string | number | boolean | string[] {
   v = v.trim().replace(/,$/, "").trim();
+  // Inline array: [] or ["a", "b", 'c']
+  if (v.startsWith("[") && v.endsWith("]")) {
+    const inner = v.slice(1, -1).trim();
+    if (!inner) return [];
+    return inner.split(",").map((p) => {
+      let s = p.trim();
+      if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) s = s.slice(1, -1);
+      return s;
+    });
+  }
   if (v.startsWith('"') && v.endsWith('"')) return v.slice(1, -1);
   if (v.startsWith("'") && v.endsWith("'")) return v.slice(1, -1);
   if (v === "true") return true;

@@ -4,3 +4,6 @@ data.json
 .DS_Store
 # main.js is intentionally COMMITTED so users can clone+enable without a build step.
 # Run `npm run build` to regenerate it after editing source.
+
+# Personal session handoff — not for the public repo
+HANDOFF.md

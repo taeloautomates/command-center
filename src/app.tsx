@@ -27,6 +27,9 @@ import type { TrunkItem } from "./types";
 import { parseIntent } from "./voice-intent";
 import { planToday, brickForKey, type DayPlan, type PlannedBlock } from "./data-sources/plan-today";
 import { PlanTodayModal } from "./plan-today-modal";
+import { closeDay, type CloseDaySummary, type CarryItem } from "./data-sources/close-day";
+import { CloseDayModal } from "./close-day-modal";
+import { appendActivity, loadTodaysActivity, type ActivityEntry } from "./data-sources/activity-log";
 
 /** Expand `~/` paths so the Terminal tab spawns in the right cwd. */
 function resolveCwd(p: string): string {
@@ -47,6 +50,9 @@ import { loadTweets, Tweet } from "./data-sources/tweets";
 import { loadDailyArtwork, Artwork } from "./data-sources/art";
 import { loadTopSongs, Song } from "./data-sources/music";
 import { loadBookmarks, Bookmark } from "./data-sources/bookmarks";
+import { loadYouTubeChannel, YouTubeStats } from "./data-sources/youtube";
+import { loadSlackBriefing, SlackBriefing } from "./data-sources/slack";
+import { loadAppleNotes, AppleNote } from "./data-sources/apple-notes";
 
 export type LiveData = {
   sessions: AgentSession[];
@@ -60,13 +66,18 @@ export type LiveData = {
   artwork: Artwork | null;
   songs: Song[];
   bookmarks: Bookmark[];
+  youtube: YouTubeStats | null;
+  slack: SlackBriefing | null;
+  appleNotes: AppleNote[];
+  activityToday: ActivityEntry[];
   loadedAt: number;
 };
 
 const EMPTY_LIVE: LiveData = {
   sessions: [], trending: null, quotes: [], manual: DEFAULT_MANUAL,
   calendarEvents: [], news: [], reddit: [], tweets: [], artwork: null,
-  songs: [], bookmarks: [], loadedAt: 0,
+  songs: [], bookmarks: [], youtube: null, slack: null, appleNotes: [],
+  activityToday: [], loadedAt: 0,
 };
 
 type Bridge = {
@@ -100,11 +111,21 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
         loadTopSongs(8),
         loadBookmarks(bridge.app),
       ]);
-      // Calendar fetch depends on manual config — do it second.
-      const calendarEvents = manual.calendar.icsUrl
-        ? await fetchICalEvents(manual.calendar.icsUrl, manual.calendar.targetCalendar || "calendar")
-        : [];
-      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, loadedAt: Date.now() });
+      const appleNotes = await loadAppleNotes(8);
+      // Manual-config-dependent fetches go second so we have the API keys / URLs.
+      const [calendarEvents, youtube, slack] = await Promise.all([
+        manual.calendar.icsUrl
+          ? fetchICalEvents(manual.calendar.icsUrl, manual.calendar.targetCalendar || "calendar")
+          : Promise.resolve([]),
+        manual.youtube.apiKey
+          ? loadYouTubeChannel(manual.youtube.apiKey, manual.youtube.handle)
+          : Promise.resolve(null),
+        manual.slack?.token && manual.slack?.channels?.length
+          ? loadSlackBriefing(manual.slack.token, manual.slack.channels, manual.slack.lookbackHours ?? 24)
+          : Promise.resolve(null),
+      ]);
+      const activityToday = await loadTodaysActivity(bridge.app);
+      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, activityToday, loadedAt: Date.now() });
     } finally {
       setRefreshing(false);
     }
@@ -191,20 +212,30 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
     setState((s) => ({ ...s, timer: { ...s.timer, active: false, remainingSec: 0 } }));
 
   const toggleSideTodo = async (id: string) => {
+    const before = sideTodos.find((t) => t.id === id);
     const next = sideTodos.map((t) => (t.id === id ? { ...t, done: !t.done } : t));
     setSideTodos(next);
     await saveSideProjectTodos(bridge.app, next);
+    if (before) {
+      appendActivity(bridge.app, before.done ? "todo_undone" : "todo_done", `"${before.text}"`);
+    }
   };
   const toggleEod = async (id: string) => {
+    const before = eodTodos.find((t) => t.id === id);
     const next = eodTodos.map((t) => (t.id === id ? { ...t, done: !t.done } : t));
     setEodTodos(next);
     await saveEODTodos(bridge.app, next);
+    if (before) {
+      appendActivity(bridge.app, before.done ? "eod_undone" : "eod_done", `"${before.text}"`);
+    }
   };
 
   const onAddBlock = async (b: PlacedBlock) => {
     // 1. Render the block immediately as pending sync.
     const pending: PlacedBlock = { ...b, syncState: "pending" };
     setState((s) => ({ ...s, placedBlocks: [...s.placedBlocks, pending] }));
+    const startStr = `${String(Math.floor(b.startMin / 60)).padStart(2, "0")}:${String(b.startMin % 60).padStart(2, "0")}`;
+    appendActivity(bridge.app, "block_placed", `${b.brick.name} · ${b.durMin}m · ${startStr}`);
 
     // 2. Build the absolute start/end Date for today.
     const day = new Date(); day.setHours(0, 0, 0, 0);
@@ -245,6 +276,7 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
   const promoteFromTrunk = async (id: string) => {
     const next = trunk.find((t) => t.id === id);
     if (!next) return;
+    appendActivity(bridge.app, "mit_promoted", `"${next.title}"${next.project ? ` · ${next.project}` : ""}`);
     // Sink current MIT into the trunk first.
     const oldMIT: TrunkItem = {
       id: `tr${Date.now()}`,
@@ -289,11 +321,13 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
   const submitBrainDump = async (text: string) => {
     await appendBrainDump(bridge.app, text);
     setBrainDump(await loadBrainDump(bridge.app));
+    appendActivity(bridge.app, "brain_dump", text.length > 80 ? text.slice(0, 77) + "…" : text);
   };
 
   // Demote the MIT — push it into the trunk. Used when the user drags the
   // seat ball into the trunk. No new MIT is auto-promoted; the timer stops.
   const demoteToTrunk = async () => {
+    appendActivity(bridge.app, "mit_dismissed", `"${state.mit.title}"${state.mit.project ? ` · ${state.mit.project}` : ""}`);
     const oldMIT: TrunkItem = {
       id: `tr${Date.now()}`,
       title: state.mit.title,
@@ -389,6 +423,7 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
     setPlanState("loading");
     setPlan(null);
     setPlanError("");
+    appendActivity(bridge.app, "plan_today", "ritual started");
     try {
       const result = await planToday({
         mit: state.mit,
@@ -403,7 +438,58 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
       setPlanError(e?.message ?? String(e));
       setPlanState("error");
     }
-  }, [state.mit, trunk, live.calendarEvents, brainDump]);
+  }, [state.mit, trunk, live.calendarEvents, brainDump, bridge.app]);
+
+  // ── /close-day ritual ──
+  const [closeState, setCloseState] = React.useState<"closed" | "loading" | "ready" | "error">("closed");
+  const [closeSummary, setCloseSummary] = React.useState<CloseDaySummary | null>(null);
+  const [closeError, setCloseError] = React.useState<string>("");
+
+  const runCloseDay = React.useCallback(async () => {
+    setCloseState("loading");
+    setCloseSummary(null);
+    setCloseError("");
+    appendActivity(bridge.app, "close_day", "ritual started");
+    try {
+      const result = await closeDay(bridge.app, {
+        mit: state.mit,
+        trunk,
+        sideTodos,
+        eodTodos,
+      });
+      setCloseSummary(result);
+      setCloseState("ready");
+    } catch (e: any) {
+      setCloseError(e?.message ?? String(e));
+      setCloseState("error");
+    }
+  }, [state.mit, trunk, sideTodos, eodTodos, bridge.app]);
+
+  const carryItemToTrunk = async (item: CarryItem) => {
+    const next: TrunkItem = {
+      id: `tr${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      title: item.title,
+      project: item.project,
+      estMin: item.estMin,
+    };
+    const newTrunk = [...trunk, next];
+    setTrunk(newTrunk);
+    await saveTrunk(bridge.app, newTrunk);
+    appendActivity(bridge.app, "close_day", `→ trunk: "${item.title}"`);
+  };
+
+  const carryAllToTrunk = async (items: CarryItem[]) => {
+    const newItems: TrunkItem[] = items.map((item, i) => ({
+      id: `tr${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
+      title: item.title,
+      project: item.project,
+      estMin: item.estMin,
+    }));
+    const newTrunk = [...trunk, ...newItems];
+    setTrunk(newTrunk);
+    await saveTrunk(bridge.app, newTrunk);
+    appendActivity(bridge.app, "close_day", `→ trunk: ${items.length} item${items.length === 1 ? "" : "s"} carried`);
+  };
 
   const applyPlanMIT = async () => {
     if (!plan) return;
@@ -448,6 +534,10 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
   const onRemoveBlock = async (id: string) => {
     const block = state.placedBlocks.find((b) => b.id === id);
     setState((s) => ({ ...s, placedBlocks: s.placedBlocks.filter((b) => b.id !== id) }));
+    if (block) {
+      const startStr = `${String(Math.floor(block.startMin / 60)).padStart(2, "0")}:${String(block.startMin % 60).padStart(2, "0")}`;
+      appendActivity(bridge.app, "block_removed", `${block.brick.name} · ${startStr}`);
+    }
     if (block?.appleUid) {
       try {
         await deleteAppleCalendarEvent(live.manual.calendar.targetCalendar, block.appleUid);
@@ -472,6 +562,16 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
           onApplyMIT={applyPlanMIT}
           onApplyBlock={applyPlanBlock}
           onClose={() => setPlanState("closed")}
+        />
+      )}
+      {closeState !== "closed" && (
+        <CloseDayModal
+          state={closeState === "loading" ? "loading" : closeState === "error" ? "error" : "ready"}
+          summary={closeSummary}
+          error={closeError}
+          onCarryItem={carryItemToTrunk}
+          onCarryAll={carryAllToTrunk}
+          onClose={() => setCloseState("closed")}
         />
       )}
       <div className="cc-frame">
@@ -506,6 +606,7 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
                 )
               }
               onPlanToday={runPlanToday}
+              onCloseDay={runCloseDay}
             />
 
             <TrunkStrip
@@ -526,13 +627,13 @@ export function CommandCenterApp({ bridge }: { bridge: Bridge }) {
         )}
 
         <div key={currentTab} style={{ flex: 1, minHeight: 0, display: "flex" }}>
-          {currentTab === "Side Project" && <TabSideProject todos={sideTodos} toggleTodo={toggleSideTodo} trending={live.trending} manual={live.manual} news={live.news} reddit={live.reddit} tweets={live.tweets} />}
-          {currentTab === "9-to-5"       && <TabNineToFive eod={eodTodos} toggleEod={toggleEod} placedBlocks={placedBlocks} onAddBlock={onAddBlock} onRemoveBlock={onRemoveBlock} manual={live.manual} calendarEvents={live.calendarEvents} />}
+          {currentTab === "Side Project" && <TabSideProject todos={sideTodos} toggleTodo={toggleSideTodo} trending={live.trending} manual={live.manual} news={live.news} reddit={live.reddit} tweets={live.tweets} slack={live.slack} />}
+          {currentTab === "9-to-5"       && <TabNineToFive eod={eodTodos} toggleEod={toggleEod} placedBlocks={placedBlocks} onAddBlock={onAddBlock} onRemoveBlock={onRemoveBlock} manual={live.manual} calendarEvents={live.calendarEvents} activity={live.activityToday} />}
           {/* Agents tab removed. Terminal lives in its own pane now — open via
               the "Open Command Center Terminal" ribbon icon or command. */}
           {currentTab === "Health"       && <TabHealth mode={healthMode} setMode={setHealthMode} />}
-          {currentTab === "Inspired"     && <TabInspired quotes={live.quotes} brainDump={brainDump} onBrainDump={submitBrainDump} artwork={live.artwork} songs={live.songs} bookmarks={live.bookmarks} />}
-          {currentTab === "Social"       && <TabSocial manual={live.manual} />}
+          {currentTab === "Inspired"     && <TabInspired quotes={live.quotes} brainDump={brainDump} onBrainDump={submitBrainDump} artwork={live.artwork} songs={live.songs} bookmarks={live.bookmarks} appleNotes={live.appleNotes} />}
+          {currentTab === "Social"       && <TabSocial manual={live.manual} youtube={live.youtube} />}
         </div>
       </div>
     </div>

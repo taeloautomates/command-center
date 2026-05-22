@@ -9,6 +9,8 @@ import type { Song } from "./data-sources/music";
 import { upscaleArtwork } from "./data-sources/music";
 import type { Bookmark } from "./data-sources/bookmarks";
 import { pickDailyBookmarks } from "./data-sources/bookmarks";
+import type { AppleNote } from "./data-sources/apple-notes";
+import { showAppleNote, notesAge } from "./data-sources/apple-notes";
 
 /* ── Hero: Creative Spark + Quote of the Day ─────────────────────
    The Inspired tab's centerpiece. Left half is a real artwork pulled from
@@ -293,8 +295,69 @@ function BookmarkRevivalCard({ bookmarks }: { bookmarks: Bookmark[] }) {
   );
 }
 
+function AppleNotesCard({ notes }: { notes: AppleNote[] }) {
+  return (
+    <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
+      <Row justify="space-between" align="center" style={{ marginBottom: 12 }}>
+        <Row gap={8} align="center">
+          <Label>Apple Notes</Label>
+          {notes.length > 0 && <Dot />}
+        </Row>
+        <span className="mono tabular" style={{ fontSize: 10, color: "rgba(255,255,255,0.42)" }}>
+          {notes.length} recent
+        </span>
+      </Row>
+      <Col gap={0} style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+        {notes.length === 0 ? (
+          <div style={{ padding: "10px 10px", fontSize: 11, color: "rgba(255,255,255,0.38)", textAlign: "center", lineHeight: 1.5 }}>
+            No notes yet. macOS may need Automation permission for Obsidian → Notes (System Settings → Privacy & Security → Automation).
+          </div>
+        ) : (
+          notes.map((n, i) => (
+            <div
+              key={n.id || i}
+              onClick={() => showAppleNote(n.id)}
+              style={{
+                padding: "8px 0",
+                borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.04)",
+                cursor: "pointer",
+              }}
+              title="Open in Notes.app"
+            >
+              <Row gap={8} align="center" style={{ marginBottom: 3 }}>
+                <span style={{
+                  flex: 1, fontSize: 12, fontWeight: 500, letterSpacing: -0.005,
+                  color: "rgba(255,255,255,0.92)",
+                  textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap",
+                }}>{n.title}</span>
+                <span className="tabular" style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", flexShrink: 0 }}>
+                  {notesAge(n.ageMs)}
+                </span>
+              </Row>
+              <Row gap={6} align="center">
+                <span className="mono" style={{ fontSize: 9, letterSpacing: 0.08, color: "rgba(255,255,255,0.32)", textTransform: "uppercase", flexShrink: 0 }}>
+                  {n.folder}
+                </span>
+                {n.preview && (
+                  <>
+                    <span style={{ color: "rgba(255,255,255,0.18)", fontSize: 9 }}>·</span>
+                    <span style={{
+                      flex: 1, fontSize: 11, color: "rgba(255,255,255,0.58)",
+                      textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap",
+                    }}>{n.preview}</span>
+                  </>
+                )}
+              </Row>
+            </div>
+          ))
+        )}
+      </Col>
+    </GlassCard>
+  );
+}
+
 export function TabInspired({
-  quotes, brainDump, onBrainDump, artwork, songs, bookmarks,
+  quotes, brainDump, onBrainDump, artwork, songs, bookmarks, appleNotes,
 }: {
   quotes: Quote[];
   brainDump: BrainDumpEntry[];
@@ -302,6 +365,7 @@ export function TabInspired({
   artwork: Artwork | null;
   songs: Song[];
   bookmarks: Bookmark[];
+  appleNotes: AppleNote[];
 }) {
   const dailyQuote = React.useMemo(() => pickDailyQuote(quotes), [quotes]);
   const feed = React.useMemo(
@@ -311,21 +375,24 @@ export function TabInspired({
   return (
     <div className="surface" style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }}>
       {/* Hero — Creative Spark with real art + quote */}
-      <div style={{ flex: "0 0 320px", display: "flex" }}>
+      <div style={{ flex: "0 0 280px", display: "flex" }}>
         <CreativeSparkHero artwork={artwork} quote={dailyQuote} />
       </div>
-      {/* Row 2 — 2x2 grid: Saved Highlights | Music | Bookmark Revival | Brain Dump */}
+      {/* 2-col × 3-row grid; BrainDump spans both columns on the last row */}
       <div style={{
         flex: 1, minHeight: 0,
         display: "grid",
         gridTemplateColumns: "1.1fr 1fr",
-        gridTemplateRows: "1fr 1fr",
+        gridTemplateRows: "1fr 1fr 1fr",
         gap: 12,
       }}>
         <QuotesFeedCard quotes={feed} />
         <MusicCard songs={songs} />
+        <AppleNotesCard notes={appleNotes} />
         <BookmarkRevivalCard bookmarks={bookmarks} />
-        <BrainDumpCard entries={brainDump} onSubmit={onBrainDump} />
+        <div style={{ gridColumn: "span 2" }}>
+          <BrainDumpCard entries={brainDump} onSubmit={onBrainDump} />
+        </div>
       </div>
     </div>
   );

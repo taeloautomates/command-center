@@ -15,16 +15,64 @@ import { augmentedEnv } from "./data-sources/ai-bridge";
  */
 
 // node-pty is loaded at runtime so a missing/incompatible native binary
-// doesn't take down the whole plugin. Falls back to a clear error message.
+// doesn't take down the whole plugin. We capture the real load error so
+// the UI can surface it — most failures are ABI mismatches between the
+// installed prebuilt and Obsidian's Electron version.
+let lastLoadError: string | null = null;
+
 function loadNodePty(): any | null {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const nodePty = (window as any).require?.("node-pty");
-    return nodePty || null;
-  } catch (e) {
-    console.warn("[command-center] node-pty failed to load:", e);
+  lastLoadError = null;
+  const req = (window as any).require;
+  if (!req) {
+    lastLoadError = "window.require unavailable — running outside Electron?";
     return null;
   }
+
+  // Obsidian's `window.require` resolves from renderer_init, NOT from the
+  // plugin dir. A bare require("node-pty") will throw "Cannot find module".
+  // We need the absolute path — main.ts stashes it on window.__ccPluginRoot.
+  const pluginRoot = (window as any).__ccPluginRoot as string | undefined;
+  const attempts: { label: string; path: string }[] = [];
+  if (pluginRoot) {
+    attempts.push({ label: "plugin node_modules", path: `${pluginRoot}/node_modules/node-pty` });
+  }
+  attempts.push({ label: "bare module name", path: "node-pty" });
+
+  const errors: string[] = [];
+  for (const a of attempts) {
+    try {
+      const m = req(a.path);
+      if (m) return m;
+      errors.push(`${a.label}: returned falsy`);
+    } catch (e: any) {
+      errors.push(`${a.label} (${a.path}): ${e?.message || String(e)}`);
+    }
+  }
+
+  lastLoadError = errors.join("\n");
+  console.warn("[command-center] node-pty failed to load:", lastLoadError);
+  return null;
+}
+
+function diagnoseLoadFailure(): string {
+  const electron = (process as any).versions?.electron;
+  const modules = (process as any).versions?.modules;
+  const arch = (process as any).arch;
+  const platform = (process as any).platform;
+  return [
+    `Real error: ${lastLoadError || "(none captured)"}`,
+    "",
+    `Obsidian: Electron ${electron || "?"} · Node ABI ${modules || "?"} · ${platform}/${arch}`,
+    "",
+    "Most common cause: ABI mismatch — the prebuilt node-pty binary doesn't match Obsidian's Electron version.",
+    "",
+    "Rebuild against Obsidian's Electron (run in the plugin directory):",
+    `  cd ~/Desktop/second-brain/.obsidian/plugins/command-center`,
+    `  npx electron-rebuild -v ${electron || "<electron-version>"} -m . -w node-pty`,
+    "",
+    "If that doesn't work, the spawn-helper might lack +x. Run:",
+    "  chmod +x node_modules/node-pty/prebuilds/*/spawn-helper",
+  ].join("\n");
 }
 
 type Launcher = { id: string; label: string; cmd: string; args: string[] };
@@ -84,7 +132,7 @@ export function TabTerminal({ cwd }: { cwd: string }) {
     const nodePty = loadNodePty();
     if (!nodePty) {
       setStatus("error");
-      setErrMsg("node-pty unavailable — check the dev console (Cmd-Opt-I) for the load error. The plugin's postinstall hook should set spawn-helper +x. If it didn't, run: chmod +x ~/Desktop/second-brain/.obsidian/plugins/command-center/node_modules/node-pty/prebuilds/*/spawn-helper");
+      setErrMsg(diagnoseLoadFailure());
       return;
     }
 

@@ -21,24 +21,49 @@ export type Song = {
   explicit?: boolean;
 };
 
-const FEED_URL = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/20/songs.json";
+// Apple migrated the host from rss.applemarketingtools.com → rss.marketingtools.apple.com.
+// The old host still 301-redirects today but will eventually drop. Use the new host directly.
+// We pull the top 100 (not 20) so a single album drop can't monopolize the card after dedupe.
+const FEED_URL = "https://rss.marketingtools.apple.com/api/v2/us/music/most-played/100/songs.json";
+
+const MAX_PER_ARTIST = 2;
+
+/** Extract the lead artist so collabs ("Drake & X", "Drake, Y & Z") count toward Drake's cap. */
+function primaryArtist(name: string): string {
+  if (!name) return "";
+  // Split on the first separator — "&", ",", "feat.", "ft.", "with".
+  const m = name.split(/\s*(?:&|,|feat\.?|ft\.?|with)\s+/i)[0];
+  return m.trim().toLowerCase();
+}
 
 export async function loadTopSongs(limit = 8): Promise<Song[]> {
   try {
     const res = await requestUrl({ url: FEED_URL, throw: false });
     if (res.status >= 400) return [];
     const results = res.json?.feed?.results ?? [];
-    return results.slice(0, limit).map((r: any, i: number): Song => ({
-      rank: i + 1,
-      name: r.name || "(untitled)",
-      artist: r.artistName || "—",
-      artistUrl: r.artistUrl,
-      genre: r.genres?.[0]?.name || "Music",
-      releaseDate: r.releaseDate || "",
-      artworkUrl: r.artworkUrl100 || "",
-      url: r.url || "#",
-      explicit: r.contentAdvisoryRating === "Explict" || r.contentAdvisoryRating === "Explicit",
-    }));
+
+    // Dedupe by lead artist so one album drop (Drake at 30/100 right now) can't take over.
+    const perArtist = new Map<string, number>();
+    const picked: Song[] = [];
+    for (let i = 0; i < results.length && picked.length < limit; i++) {
+      const r = results[i];
+      const key = primaryArtist(r.artistName || "");
+      const count = perArtist.get(key) ?? 0;
+      if (count >= MAX_PER_ARTIST) continue;
+      perArtist.set(key, count + 1);
+      picked.push({
+        rank: picked.length + 1,
+        name: r.name || "(untitled)",
+        artist: r.artistName || "—",
+        artistUrl: r.artistUrl,
+        genre: r.genres?.[0]?.name || "Music",
+        releaseDate: r.releaseDate || "",
+        artworkUrl: r.artworkUrl100 || "",
+        url: r.url || "#",
+        explicit: r.contentAdvisoryRating === "Explict" || r.contentAdvisoryRating === "Explicit",
+      });
+    }
+    return picked;
   } catch {
     return [];
   }

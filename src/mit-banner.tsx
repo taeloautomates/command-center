@@ -9,7 +9,7 @@ export function MITBanner({
   task, active, paused, progress, remaining, total,
   onTogglePause, onAdd5, onDone,
   seatRef, isDropTarget, onPointerDownSeat,
-  onPlanToday,
+  onPlanToday, onCloseDay,
 }: {
   task: MIT;
   active: boolean;
@@ -24,6 +24,7 @@ export function MITBanner({
   isDropTarget?: boolean;
   onPointerDownSeat?: (e: React.PointerEvent) => void;
   onPlanToday?: () => void;
+  onCloseDay?: () => void;
 }) {
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;
@@ -73,6 +74,16 @@ export function MITBanner({
               >
                 <span aria-hidden="true">☀</span>
                 <span>plan today</span>
+              </button>
+            )}
+            {onCloseDay && (
+              <button
+                className="cc-plan-today-btn"
+                onClick={onCloseDay}
+                title="Ask Claude to review the day and pick carry-overs"
+              >
+                <span aria-hidden="true">●</span>
+                <span>close day</span>
               </button>
             )}
             <span className="mono tabular" style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>

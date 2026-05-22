@@ -44,8 +44,17 @@ Pure monochrome on `#0A0A0B`. Apple Liquid-Glass cards. The only volumetric elem
    cd command-center
    npm install
    ```
+   The `postinstall` hook detects your installed Obsidian's Electron version
+   and rebuilds `node-pty` against it. This is required for the Terminal pane
+   to work — node-pty's shipped prebuilds don't cover Obsidian 1.12+ (Electron 39+).
 2. Open Obsidian → Settings → Community plugins → Reload → enable **Command Center**.
 3. Click the **layout-dashboard** icon in the left ribbon to open the dashboard. Click the **terminal-square** icon for the Claude Code pane.
+
+If the Terminal pane shows "node-pty unavailable" after install or an Obsidian update, rerun the rebuild:
+```bash
+cd /path/to/your/vault/.obsidian/plugins/command-center
+npm run rebuild-pty
+```
 
 Or via [BRAT](https://github.com/TfTHacker/obsidian42-brat):
 1. Install BRAT from the Community Plugin store.

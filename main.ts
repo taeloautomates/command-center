@@ -18,6 +18,23 @@ export default class CommandCenterPlugin extends Plugin {
   async onload() {
     ensureXtermStyles();
 
+    // Stash the plugin's absolute path on window so React components can
+    // `window.require()` native modules by absolute path. Obsidian's
+    // window.require resolves from the renderer's bootstrap module, not
+    // the plugin dir — so a bare `require("node-pty")` fails with
+    // "Cannot find module". The terminal needs this.
+    try {
+      const adapter: any = this.app.vault.adapter;
+      const basePath = typeof adapter.getBasePath === "function"
+        ? adapter.getBasePath()
+        : adapter.basePath;
+      if (basePath && this.manifest.dir) {
+        (window as any).__ccPluginRoot = `${basePath}/${this.manifest.dir}`;
+      }
+    } catch (e) {
+      console.warn("[command-center] couldn't resolve plugin root:", e);
+    }
+
     // Dashboard view
     this.registerView(COMMAND_CENTER_VIEW, (leaf) => new CommandCenterView(leaf, this));
     // Terminal view — separate pane, splittable, pinnable

@@ -1088,7 +1088,7 @@ var require_react_development = __commonJS({
           }
           return dispatcher.useContext(Context);
         }
-        function useState12(initialState) {
+        function useState13(initialState) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useState(initialState);
         }
@@ -1100,7 +1100,7 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useRef(initialValue);
         }
-        function useEffect10(create, deps) {
+        function useEffect11(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useEffect(create, deps);
         }
@@ -1883,7 +1883,7 @@ var require_react_development = __commonJS({
         exports.useContext = useContext;
         exports.useDebugValue = useDebugValue;
         exports.useDeferredValue = useDeferredValue;
-        exports.useEffect = useEffect10;
+        exports.useEffect = useEffect11;
         exports.useId = useId2;
         exports.useImperativeHandle = useImperativeHandle;
         exports.useInsertionEffect = useInsertionEffect;
@@ -1891,7 +1891,7 @@ var require_react_development = __commonJS({
         exports.useMemo = useMemo2;
         exports.useReducer = useReducer2;
         exports.useRef = useRef8;
-        exports.useState = useState12;
+        exports.useState = useState13;
         exports.useSyncExternalStore = useSyncExternalStore;
         exports.useTransition = useTransition;
         exports.version = ReactVersion;
@@ -2387,9 +2387,9 @@ var require_react_dom_development = __commonJS({
         if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
         }
-        var React17 = require_react();
+        var React18 = require_react();
         var Scheduler = require_scheduler();
-        var ReactSharedInternals = React17.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+        var ReactSharedInternals = React18.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         var suppressWarning = false;
         function setSuppressWarning(newSuppressWarning) {
           {
@@ -2438,7 +2438,7 @@ var require_react_dom_development = __commonJS({
         var HostPortal = 4;
         var HostComponent = 5;
         var HostText = 6;
-        var Fragment6 = 7;
+        var Fragment8 = 7;
         var Mode = 8;
         var ContextConsumer = 9;
         var ContextProvider = 10;
@@ -3594,7 +3594,7 @@ var require_react_dom_development = __commonJS({
               return "DehydratedFragment";
             case ForwardRef:
               return getWrappedName$1(type, type.render, "ForwardRef");
-            case Fragment6:
+            case Fragment8:
               return "Fragment";
             case HostComponent:
               return type;
@@ -3994,7 +3994,7 @@ var require_react_dom_development = __commonJS({
           {
             if (props.value == null) {
               if (typeof props.children === "object" && props.children !== null) {
-                React17.Children.forEach(props.children, function(child) {
+                React18.Children.forEach(props.children, function(child) {
                   if (child == null) {
                     return;
                   }
@@ -11995,7 +11995,7 @@ var require_react_dom_development = __commonJS({
             }
           }
           function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-            if (current2 === null || current2.tag !== Fragment6) {
+            if (current2 === null || current2.tag !== Fragment8) {
               var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
               created.return = returnFiber;
               return created;
@@ -12398,7 +12398,7 @@ var require_react_dom_development = __commonJS({
               if (child.key === key) {
                 var elementType = element.type;
                 if (elementType === REACT_FRAGMENT_TYPE) {
-                  if (child.tag === Fragment6) {
+                  if (child.tag === Fragment8) {
                     deleteRemainingChildren(returnFiber, child.sibling);
                     var existing = useFiber(child, element.props.children);
                     existing.return = returnFiber;
@@ -17875,7 +17875,7 @@ var require_react_dom_development = __commonJS({
               var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
               return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
             }
-            case Fragment6:
+            case Fragment8:
               return updateFragment(current2, workInProgress2, renderLanes2);
             case Mode:
               return updateMode(current2, workInProgress2, renderLanes2);
@@ -18148,7 +18148,7 @@ var require_react_dom_development = __commonJS({
             case SimpleMemoComponent:
             case FunctionComponent:
             case ForwardRef:
-            case Fragment6:
+            case Fragment8:
             case Mode:
             case Profiler:
             case ContextConsumer:
@@ -22407,7 +22407,7 @@ var require_react_dom_development = __commonJS({
           return fiber;
         }
         function createFiberFromFragment(elements, mode, lanes, key) {
-          var fiber = createFiber(Fragment6, elements, key, mode);
+          var fiber = createFiber(Fragment8, elements, key, mode);
           fiber.lanes = lanes;
           return fiber;
         }
@@ -23563,7 +23563,7 @@ var require_react_jsx_runtime_development = __commonJS({
     if (true) {
       (function() {
         "use strict";
-        var React17 = require_react();
+        var React18 = require_react();
         var REACT_ELEMENT_TYPE = Symbol.for("react.element");
         var REACT_PORTAL_TYPE = Symbol.for("react.portal");
         var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -23589,7 +23589,7 @@ var require_react_jsx_runtime_development = __commonJS({
           }
           return null;
         }
-        var ReactSharedInternals = React17.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+        var ReactSharedInternals = React18.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         function error(format) {
           {
             {
@@ -24439,11 +24439,11 @@ var require_react_jsx_runtime_development = __commonJS({
             return jsxWithValidation(type, props, key, false);
           }
         }
-        var jsx21 = jsxWithValidationDynamic;
-        var jsxs18 = jsxWithValidationStatic;
+        var jsx22 = jsxWithValidationDynamic;
+        var jsxs19 = jsxWithValidationStatic;
         exports.Fragment = REACT_FRAGMENT_TYPE;
-        exports.jsx = jsx21;
-        exports.jsxs = jsxs18;
+        exports.jsx = jsx22;
+        exports.jsxs = jsxs19;
       })();
     }
   }
@@ -31001,15 +31001,15 @@ __export(main_exports, {
   default: () => CommandCenterPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian13 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 
 // src/view.tsx
-var import_obsidian11 = require("obsidian");
-var React14 = __toESM(require_react());
+var import_obsidian14 = require("obsidian");
+var React15 = __toESM(require_react());
 var import_client = __toESM(require_client());
 
 // src/app.tsx
-var React13 = __toESM(require_react());
+var React14 = __toESM(require_react());
 
 // src/topbar.tsx
 var React2 = __toESM(require_react());
@@ -32069,7 +32069,8 @@ function MITBanner({
   seatRef,
   isDropTarget,
   onPointerDownSeat,
-  onPlanToday
+  onPlanToday,
+  onCloseDay
 }) {
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;
@@ -32109,6 +32110,18 @@ function MITBanner({
               children: [
                 /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { "aria-hidden": "true", children: "\u2600" }),
                 /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "plan today" })
+              ]
+            }
+          ),
+          onCloseDay && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+            "button",
+            {
+              className: "cc-plan-today-btn",
+              onClick: onCloseDay,
+              title: "Ask Claude to review the day and pick carry-overs",
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { "aria-hidden": "true", children: "\u25CF" }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "close day" })
               ]
             }
           ),
@@ -32351,6 +32364,221 @@ function ageStr2(ms) {
     return `${h}h`;
   const d = Math.floor(h / 24);
   return `${d}d`;
+}
+
+// src/data-sources/slack.ts
+var import_obsidian3 = require("obsidian");
+var CACHE_TTL_MS = 5 * 60 * 1e3;
+var cache = null;
+var cacheKey = "";
+var userNameCache = /* @__PURE__ */ new Map();
+var channelNameCache = /* @__PURE__ */ new Map();
+async function slackGet(endpoint, token, params) {
+  const qs = new URLSearchParams(params).toString();
+  try {
+    const res = await (0, import_obsidian3.requestUrl)({
+      url: `https://slack.com/api/${endpoint}?${qs}`,
+      headers: { Authorization: `Bearer ${token}` },
+      throw: false
+    });
+    if (res.status >= 400) {
+      console.warn("[command-center] Slack API HTTP error", endpoint, res.status);
+      return null;
+    }
+    const json = res.json;
+    if (!json?.ok) {
+      console.warn("[command-center] Slack API error", endpoint, json?.error);
+      return null;
+    }
+    return json;
+  } catch (e) {
+    console.warn("[command-center] Slack fetch failed:", endpoint, e);
+    return null;
+  }
+}
+async function getUserName(token, userId) {
+  if (!userId)
+    return "unknown";
+  if (userNameCache.has(userId))
+    return userNameCache.get(userId);
+  const j = await slackGet("users.info", token, { user: userId });
+  const profile = j?.user?.profile;
+  const name = profile?.display_name_normalized || profile?.real_name_normalized || j?.user?.name || userId;
+  userNameCache.set(userId, name);
+  return name;
+}
+async function getChannelName(token, channelId) {
+  if (channelNameCache.has(channelId))
+    return channelNameCache.get(channelId);
+  const j = await slackGet("conversations.info", token, { channel: channelId });
+  const name = j?.channel?.name || j?.channel?.name_normalized || channelId;
+  channelNameCache.set(channelId, name);
+  return name;
+}
+async function loadSlackBriefing(token, channels, lookbackHours = 24) {
+  if (!token || channels.length === 0)
+    return null;
+  const key = `${token.slice(0, 12)}|${channels.join(",")}|${lookbackHours}`;
+  if (cache && cacheKey === key && Date.now() - cache.fetchedAt < CACHE_TTL_MS) {
+    return cache;
+  }
+  const auth = await slackGet("auth.test", token, {});
+  if (!auth)
+    return null;
+  const team = auth.team || "Slack";
+  const oldest = ((Date.now() - lookbackHours * 3600 * 1e3) / 1e3).toFixed(0);
+  const all = [];
+  for (const cid of channels) {
+    const [history, channelName] = await Promise.all([
+      slackGet("conversations.history", token, { channel: cid, oldest, limit: "30" }),
+      getChannelName(token, cid)
+    ]);
+    if (!history)
+      continue;
+    const msgs = history.messages ?? [];
+    for (const m of msgs) {
+      if (m.subtype && m.subtype !== "thread_broadcast")
+        continue;
+      if (!m.text || !m.user)
+        continue;
+      const userName = await getUserName(token, m.user);
+      const tsMs = parseFloat(m.ts) * 1e3;
+      all.push({
+        channelId: cid,
+        channelName,
+        userId: m.user,
+        userName,
+        text: cleanSlackText(m.text),
+        ts: m.ts,
+        ageMs: Date.now() - tsMs
+      });
+    }
+  }
+  all.sort((a, b) => a.ageMs - b.ageMs);
+  cache = { team, messages: all, channelsScanned: channels.length, fetchedAt: Date.now() };
+  cacheKey = key;
+  return cache;
+}
+function cleanSlackText(s) {
+  return s.replace(/<@([UW][A-Z0-9]+)>/g, (_, id) => `@${userNameCache.get(id) || id}`).replace(/<#([CG][A-Z0-9]+)\|([^>]+)>/g, "#$2").replace(/<([^|>]+)\|([^>]+)>/g, "$2").replace(/<([^>]+)>/g, "$1").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+}
+function slackAge(ms) {
+  if (ms < 6e4)
+    return "now";
+  if (ms < 36e5)
+    return `${Math.floor(ms / 6e4)}m`;
+  if (ms < 864e5)
+    return `${Math.floor(ms / 36e5)}h`;
+  return `${Math.floor(ms / 864e5)}d`;
+}
+
+// src/data-sources/ai-bridge.ts
+var import_child_process = require("child_process");
+var fs3 = __toESM(require("fs"));
+var path3 = __toESM(require("path"));
+var os3 = __toESM(require("os"));
+function commonBinDirs() {
+  const home = os3.homedir();
+  return [
+    `${home}/.local/bin`,
+    `${home}/.claude/local`,
+    `${home}/.bun/bin`,
+    `${home}/.npm-global/bin`,
+    `${home}/.volta/bin`,
+    `${home}/.nvm/current/bin`,
+    "/opt/homebrew/bin",
+    "/usr/local/bin",
+    "/usr/bin",
+    "/bin"
+  ];
+}
+function augmentedEnv() {
+  const existing = (process.env.PATH || "").split(":").filter(Boolean);
+  const merged = Array.from(/* @__PURE__ */ new Set([...commonBinDirs(), ...existing])).join(":");
+  return { ...process.env, PATH: merged };
+}
+var cachedClaudePath = null;
+async function resolveClaudeBinary() {
+  if (cachedClaudePath)
+    return cachedClaudePath;
+  if (process.env.CLAUDE_BIN && fs3.existsSync(process.env.CLAUDE_BIN)) {
+    cachedClaudePath = process.env.CLAUDE_BIN;
+    return cachedClaudePath;
+  }
+  for (const dir of commonBinDirs()) {
+    const candidate = path3.join(dir, "claude");
+    try {
+      if (fs3.existsSync(candidate)) {
+        cachedClaudePath = candidate;
+        return candidate;
+      }
+    } catch {
+    }
+  }
+  const loginPath = await new Promise((resolve) => {
+    const sh = (0, import_child_process.spawn)("/bin/zsh", ["-lc", "command -v claude"], { env: augmentedEnv() });
+    let out = "";
+    sh.stdout.on("data", (d) => out += d.toString());
+    sh.on("close", (code) => {
+      const found = out.trim();
+      resolve(code === 0 && found ? found : null);
+    });
+    sh.on("error", () => resolve(null));
+  });
+  if (loginPath) {
+    cachedClaudePath = loginPath;
+    return loginPath;
+  }
+  throw new Error(
+    "Could not find the `claude` binary. Install Claude Code (https://docs.claude.com/en/docs/claude-code) and sign in. If it's installed at a non-standard path, set CLAUDE_BIN in your environment."
+  );
+}
+async function askClaude(prompt, opts = {}) {
+  const bin = await resolveClaudeBinary();
+  const args = ["-p", prompt, "--output-format", "text"];
+  if (opts.systemPrompt)
+    args.push("--append-system-prompt", opts.systemPrompt);
+  return new Promise((resolve, reject) => {
+    const proc = (0, import_child_process.spawn)(bin, args, {
+      cwd: opts.cwd,
+      env: augmentedEnv()
+    });
+    let out = "";
+    let err = "";
+    const timer = setTimeout(() => {
+      proc.kill();
+      reject(new Error("Claude call timed out \u2014 is `claude` signed in? Try running it manually from the Terminal pane."));
+    }, opts.timeoutMs ?? 6e4);
+    proc.stdout.on("data", (d) => out += d.toString());
+    proc.stderr.on("data", (d) => err += d.toString());
+    proc.on("error", (e) => {
+      clearTimeout(timer);
+      reject(new Error(`Could not spawn claude (${bin}): ${e.message}.`));
+    });
+    proc.on("close", (code) => {
+      clearTimeout(timer);
+      if (code !== 0)
+        reject(new Error(err.trim() || `claude exited ${code}`));
+      else
+        resolve(out.trim());
+    });
+  });
+}
+async function askClaudeJSON(prompt, opts = {}) {
+  const full = prompt + "\n\nReply with ONLY a single JSON object. No prose, no markdown, no code fence.";
+  const text = await askClaude(full, opts);
+  return parseLooseJSON(text);
+}
+function parseLooseJSON(text) {
+  let s = text.trim();
+  const fence = s.match(/^```(?:json)?\s*\n([\s\S]*?)\n```\s*$/);
+  if (fence)
+    s = fence[1].trim();
+  const first = s.indexOf("{");
+  const last = s.lastIndexOf("}");
+  if (first >= 0 && last > first)
+    s = s.slice(first, last + 1);
+  return JSON.parse(s);
 }
 
 // src/tab-side-project.tsx
@@ -32639,6 +32867,117 @@ function RedditCard({ posts }) {
     )) }) })
   ] });
 }
+function SlackBriefingCard({ slack }) {
+  const [summary, setSummary] = React5.useState("");
+  const [summarizing, setSummarizing] = React5.useState(false);
+  const [err, setErr] = React5.useState("");
+  const onSummarize = async () => {
+    if (slack.messages.length === 0)
+      return;
+    setSummarizing(true);
+    setErr("");
+    try {
+      const transcript = slack.messages.slice(0, 40).map(
+        (m) => `[#${m.channelName}] ${m.userName} (${slackAge(m.ageMs)} ago): ${m.text}`
+      ).join("\n");
+      const prompt = `You are Taelo's Slack triage assistant. Below are the most recent messages from his side-project channels in the last ${Math.round(slack.messages[0]?.ageMs / 36e5) || 24}h.
+
+${transcript}
+
+Extract a tight, prioritized list of items that need Taelo's action. For each item:
+- one line, prefixed with "\u2192 "
+- name the channel and who's blocked on him
+- skip pure FYI messages, social chatter, and bot noise
+
+If nothing needs his action, say so in one line. No preamble, no headers.`;
+      const out = await askClaude(prompt, { timeoutMs: 3e4 });
+      setSummary(out.trim());
+    } catch (e) {
+      setErr(e?.message || "Summary failed");
+    } finally {
+      setSummarizing(false);
+    }
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Row, { gap: 8, align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Label, { children: [
+          "Slack \xB7 ",
+          slack.team
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { title: "Live", style: {
+          width: 6,
+          height: 6,
+          borderRadius: 50,
+          background: "rgba(155,210,150,0.86)",
+          boxShadow: "0 0 6px rgba(155,210,150,0.5)"
+        } })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Row, { gap: 6, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: "mono tabular", style: { fontSize: 10, color: "rgba(255,255,255,0.42)" }, children: [
+          slack.messages.length,
+          " msgs \xB7 ",
+          slack.channelsScanned,
+          " ch"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+          "button",
+          {
+            className: "pill",
+            onClick: onSummarize,
+            disabled: summarizing || slack.messages.length === 0,
+            style: { padding: "3px 10px", fontSize: 10 },
+            title: "Send recent messages to Claude and extract action items",
+            children: summarizing ? "\u2026" : summary ? "\u21BB resummarize" : "summarize"
+          }
+        )
+      ] })
+    ] }),
+    summary && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { style: {
+      marginBottom: 12,
+      padding: "10px 12px",
+      background: "rgba(155,210,150,0.04)",
+      border: "1px solid rgba(155,210,150,0.18)",
+      borderRadius: 6,
+      fontSize: 12,
+      lineHeight: 1.55,
+      color: "rgba(255,255,255,0.88)",
+      whiteSpace: "pre-wrap"
+    }, children: summary }),
+    err && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { style: {
+      marginBottom: 12,
+      padding: "8px 10px",
+      fontSize: 11,
+      background: "rgba(255,255,255,0.03)",
+      border: "1px solid rgba(224,130,140,0.32)",
+      borderRadius: 6,
+      color: "rgba(224,130,140,0.86)"
+    }, children: err }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Col, { gap: 0, style: { flex: 1, minHeight: 0, overflowY: "auto" }, children: slack.messages.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { style: { fontSize: 12, color: "rgba(255,255,255,0.42)" }, children: [
+      "No messages in the last ",
+      "window."
+    ] }) : slack.messages.slice(0, 8).map((m, i) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Row, { gap: 8, align: "start", style: {
+      padding: "8px 0",
+      borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.04)"
+    }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.42)", minWidth: 60 }, children: [
+        "#",
+        m.channelName
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", minWidth: 90, maxWidth: 90, textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }, children: m.userName }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { style: {
+        flex: 1,
+        fontSize: 12,
+        color: "rgba(255,255,255,0.92)",
+        letterSpacing: -5e-3,
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        whiteSpace: "nowrap"
+      }, children: m.text }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "tabular", style: { fontSize: 10, color: "rgba(255,255,255,0.38)" }, children: slackAge(m.ageMs) })
+    ] }, i)) })
+  ] });
+}
 function TabSideProject({
   todos,
   toggleTodo,
@@ -32646,12 +32985,14 @@ function TabSideProject({
   manual,
   news,
   reddit,
-  tweets
+  tweets,
+  slack
 }) {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Col, { gap: 12, style: { minHeight: 0 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(YouTubeCard, { manual }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(SaaSCard, { todos, toggleTodo }) })
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(SaaSCard, { todos, toggleTodo }) }),
+      slack && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { style: { flex: 0.9, minHeight: 0, display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(SlackBriefingCard, { slack }) })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Col, { gap: 12, style: { minHeight: 0 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { style: { flex: 1.1, minHeight: 0, display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(CurrentEventsCard, { news }) }),
@@ -32765,8 +33106,117 @@ function TimeBlockPaletteCard({
   ] });
 }
 
+// src/data-sources/activity-log.ts
+var import_obsidian4 = require("obsidian");
+var ACTIVITY_LOG_FILE = "command-center/activity-log.md";
+var SEED = `# Activity log
+
+Append-only ledger of everything that happens in the Command Center.
+The dashboard writes to this file as you work. \`/close-day\` reads it to
+synthesize the day.
+
+Format: \`- ISO_TIMESTAMP \xB7 KIND \xB7 DETAIL\`. Edit by hand only if you know
+what you're doing \u2014 duplicate or out-of-order lines will confuse close-day.
+
+`;
+async function ensureFile(app) {
+  const np = (0, import_obsidian4.normalizePath)(ACTIVITY_LOG_FILE);
+  const existing = app.vault.getAbstractFileByPath(np);
+  if (existing instanceof import_obsidian4.TFile)
+    return existing;
+  const folder = np.substring(0, np.lastIndexOf("/"));
+  if (folder && !app.vault.getAbstractFileByPath(folder)) {
+    await app.vault.createFolder(folder).catch(() => {
+    });
+  }
+  return app.vault.create(np, SEED);
+}
+async function appendActivity(app, kind, detail) {
+  try {
+    const file = await ensureFile(app);
+    const ts = (/* @__PURE__ */ new Date()).toISOString().replace(/\.\d{3}Z$/, "");
+    const line = `- ${ts} \xB7 ${kind} \xB7 ${detail.replace(/\s+/g, " ").trim()}
+`;
+    await app.vault.append(file, line);
+  } catch (e) {
+    console.warn("[command-center] activity-log append failed:", e);
+  }
+}
+async function loadActivityLog(app, sinceMs) {
+  try {
+    const file = await ensureFile(app);
+    const text = await app.vault.read(file);
+    const lines = text.split(/\r?\n/);
+    const out = [];
+    for (const raw of lines) {
+      const m = raw.match(/^-\s+(\S+)\s+·\s+(\w+)\s+·\s+(.+)$/);
+      if (!m)
+        continue;
+      const ts = m[1];
+      const kind = m[2];
+      const detail = m[3].trim();
+      if (sinceMs !== void 0) {
+        const t = Date.parse(ts);
+        if (Number.isFinite(t) && t < sinceMs)
+          continue;
+      }
+      out.push({ ts, kind, detail });
+    }
+    return out;
+  } catch (e) {
+    console.warn("[command-center] activity-log read failed:", e);
+    return [];
+  }
+}
+async function loadTodaysActivity(app) {
+  const midnight = /* @__PURE__ */ new Date();
+  midnight.setHours(0, 0, 0, 0);
+  return loadActivityLog(app, midnight.getTime());
+}
+function activityTime(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime()))
+    return iso;
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+function activityLabel(kind) {
+  switch (kind) {
+    case "todo_done":
+      return "\u2713 todo";
+    case "todo_undone":
+      return "\u21BA todo";
+    case "eod_done":
+      return "\u2713 eod";
+    case "eod_undone":
+      return "\u21BA eod";
+    case "mit_promoted":
+      return "\u2192 seat";
+    case "mit_dismissed":
+      return "\u2190 trunk";
+    case "block_placed":
+      return "\u25A6 block";
+    case "block_removed":
+      return "\xD7 block";
+    case "brain_dump":
+      return "\u270E dump";
+    case "plan_today":
+      return "\u2600 plan";
+    case "close_day":
+      return "\u25CF close";
+    case "note":
+      return "\xB7 note";
+  }
+}
+
 // src/tab-nine-to-five.tsx
 var import_jsx_runtime10 = __toESM(require_jsx_runtime());
+var N5_START = 6 * 60;
+var N5_END = 23 * 60;
+var N5_SPAN = N5_END - N5_START;
+var PX_PER_MIN = 1;
+var TIMELINE_HEIGHT = N5_SPAN * PX_PER_MIN;
+var toPx = (m) => (m - N5_START) * PX_PER_MIN;
+var HOUR_TICKS = Array.from({ length: 9 }, (_, i) => 6 + i * 2);
 function SwimlaneChip({ id, title, kind }) {
   const active = kind === "doing";
   return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: {
@@ -32828,16 +33278,12 @@ function CalendarTimeline({
   onRemoveBlock,
   calendarEvents
 }) {
-  const start = 9 * 60;
-  const end = 18 * 60;
-  const span = end - start;
   const [now, setNow] = React7.useState(() => /* @__PURE__ */ new Date());
   React7.useEffect(() => {
     const id = setInterval(() => setNow(/* @__PURE__ */ new Date()), 60 * 1e3);
     return () => clearInterval(id);
   }, []);
   const nowMin = now.getHours() * 60 + now.getMinutes();
-  const nowPct = (nowMin - start) / span * 100;
   const dayStart = new Date(now);
   dayStart.setHours(0, 0, 0, 0);
   const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1e3);
@@ -32853,10 +33299,21 @@ function CalendarTimeline({
       calendar: e.calendar,
       kind: nowMin >= en ? "past" : nowMin >= s ? "now" : "later"
     };
-  }).filter((m) => m.e > start && m.s < end);
-  const blockedTotal = todays.length;
-  const toPct = (m) => (m - start) / span * 100;
+  }).filter((m) => m.e > N5_START && m.s < N5_END);
   const fmt = (m) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+  const scrollRef = React7.useRef(null);
+  const didInitialScroll = React7.useRef(false);
+  React7.useEffect(() => {
+    if (didInitialScroll.current)
+      return;
+    const target = scrollRef.current;
+    if (!target)
+      return;
+    const focus = Math.max(N5_START, nowMin - 60);
+    target.scrollTop = Math.max(0, toPx(focus));
+    didInitialScroll.current = true;
+  }, [nowMin]);
+  const nowInRange = nowMin >= N5_START && nowMin <= N5_END;
   return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(GlassCard, { style: { padding: 20, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 14 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Row, { gap: 10, children: [
@@ -32866,12 +33323,39 @@ function CalendarTimeline({
           placedBlocks.length > 0 && ` \xB7 ${placedBlocks.length} block${placedBlocks.length === 1 ? "" : "s"}`
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "09:00 \u2013 18:00" })
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Row, { gap: 8, align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          "button",
+          {
+            className: "pill ghost",
+            onClick: () => {
+              if (scrollRef.current)
+                scrollRef.current.scrollTop = Math.max(0, toPx(Math.max(N5_START, nowMin - 60)));
+            },
+            style: { padding: "3px 10px", fontSize: 10 },
+            title: "Scroll back to now",
+            children: "jump to now"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: "tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: [
+          fmt(N5_START),
+          " \u2013 ",
+          fmt(N5_END)
+        ] })
+      ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { position: "relative", flex: 1, minHeight: 0, display: "flex", gap: 14 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Col, { gap: 0, style: { width: 32, position: "relative" }, children: [9, 11, 13, 15, 17].map((h) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { ref: scrollRef, style: {
+      position: "relative",
+      flex: 1,
+      minHeight: 0,
+      overflowY: "auto",
+      overflowX: "hidden",
+      // Custom-thin scrollbar hint; falls back to native if unsupported.
+      scrollbarWidth: "thin"
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { position: "relative", display: "flex", gap: 14, height: TIMELINE_HEIGHT + "px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Col, { gap: 0, style: { width: 32, position: "relative", flexShrink: 0 }, children: HOUR_TICKS.map((h) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: {
         position: "absolute",
-        top: (h * 60 - start) / span * 100 + "%",
+        top: toPx(h * 60) + "px",
         transform: "translateY(-50%)",
         fontSize: 9,
         color: "rgba(255,255,255,0.32)",
@@ -32881,36 +33365,47 @@ function CalendarTimeline({
         String(h).padStart(2, "0"),
         ":00"
       ] }, h)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { ref: timelineInnerRef, style: { position: "relative", flex: 1, borderLeft: "1px solid rgba(255,255,255,0.06)" }, children: [
-        [9, 11, 13, 15, 17].map((h) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { ref: timelineInnerRef, style: {
+        position: "relative",
+        flex: 1,
+        borderLeft: "1px solid rgba(255,255,255,0.06)",
+        height: TIMELINE_HEIGHT + "px"
+      }, children: [
+        HOUR_TICKS.map((h) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: {
           position: "absolute",
           left: 0,
           right: 0,
-          top: (h * 60 - start) / span * 100 + "%",
+          top: toPx(h * 60) + "px",
           borderTop: "1px dashed rgba(255,255,255,0.04)"
         } }, h)),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: {
           position: "absolute",
+          left: 0,
+          right: 0,
+          top: toPx(17 * 60 + 30) + "px",
+          borderTop: "1px dashed rgba(255,255,255,0.10)"
+        }, title: "17:30 \u2014 work day boundary" }),
+        nowInRange && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: {
+          position: "absolute",
           left: -4,
           right: 0,
-          top: nowPct + "%",
+          top: toPx(nowMin) + "px",
           height: 1,
           background: "rgba(255,255,255,0.86)",
           boxShadow: "0 0 8px rgba(255,255,255,0.35)",
           zIndex: 3
         } }),
         meetings.map((m, i) => {
-          const top = toPct(m.s);
-          const height = Math.max(toPct(m.e) - toPct(m.s), 3);
+          const top = toPx(m.s);
+          const height = Math.max(toPx(m.e) - toPx(m.s), 22);
           const opacity = m.kind === "now" ? 0.96 : m.kind === "later" ? 0.62 : 0.32;
           const bg = m.kind === "now" ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)";
           return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: {
             position: "absolute",
             left: 8,
             right: 6,
-            top: top + "%",
-            height: height + "%",
-            minHeight: 30,
+            top: top + "px",
+            height: height + "px",
             overflow: "hidden",
             background: bg,
             border: "1px solid rgba(255,255,255," + (m.kind === "now" ? 0.16 : 0.06) + ")",
@@ -32935,10 +33430,16 @@ function CalendarTimeline({
           ] }, i);
         }),
         placedBlocks.map((b) => {
-          const top = toPct(b.startMin);
-          const height = Math.max(toPct(b.startMin + b.durMin) - toPct(b.startMin), 3);
+          const top = toPx(b.startMin);
+          const height = Math.max(b.durMin * PX_PER_MIN, 22);
           const syncCls = b.syncState === "pending" ? " syncing" : b.syncState === "failed" ? " sync-failed" : b.syncState === "synced" ? " synced" : "";
-          return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "placed-block" + syncCls, style: { left: 8, right: 6, top: top + "%", height: height + "%", minHeight: 30 }, children: [
+          return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "placed-block" + syncCls, style: {
+            position: "absolute",
+            left: 8,
+            right: 6,
+            top: top + "px",
+            height: height + "px"
+          }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "blocked-badge", "aria-hidden": "true", children: b.brick.glyph }),
             /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Col, { gap: 0, style: { flex: 1, minWidth: 0 }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Row, { gap: 6, align: "center", children: [
@@ -32958,10 +33459,11 @@ function CalendarTimeline({
           ] }, b.id);
         }),
         hoverMin !== null && hoverBrick && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "drop-preview", style: {
+          position: "absolute",
           left: 8,
           right: 6,
-          top: toPct(hoverMin) + "%",
-          height: Math.max(toPct(hoverMin + hoverBrick.dur) - toPct(hoverMin), 3) + "%"
+          top: toPx(hoverMin) + "px",
+          height: Math.max(hoverBrick.dur * PX_PER_MIN, 22) + "px"
         }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { style: {
             width: 18,
@@ -32987,7 +33489,7 @@ function CalendarTimeline({
           ] })
         ] })
       ] })
-    ] })
+    ] }) })
   ] });
 }
 function EODChecklist({ items, toggle }) {
@@ -33072,6 +33574,57 @@ function BoundaryClock() {
     ] }) })
   ] });
 }
+function TodaysActivityCard({ entries }) {
+  const filtered = [...entries].reverse().filter((e) => {
+    if (e.kind === "close_day" && e.detail === "ritual started")
+      return false;
+    if (e.kind === "plan_today" && e.detail === "ritual started")
+      return false;
+    return true;
+  });
+  const counts = entries.reduce((acc, e) => {
+    acc[e.kind] = (acc[e.kind] || 0) + 1;
+    return acc;
+  }, {});
+  const done = (counts.todo_done || 0) + (counts.eod_done || 0);
+  const placed = counts.block_placed || 0;
+  const dumps = counts.brain_dump || 0;
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(GlassCard, { style: { padding: 18, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Label, { children: "Today's activity" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Row, { gap: 10, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: "mono tabular", style: { fontSize: 10, color: "rgba(255,255,255,0.62)" }, children: [
+        done,
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { style: { color: "rgba(255,255,255,0.32)" }, children: " done" }),
+        placed > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
+          " \xB7 ",
+          placed,
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { style: { color: "rgba(255,255,255,0.32)" }, children: " blocks" })
+        ] }),
+        dumps > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
+          " \xB7 ",
+          dumps,
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { style: { color: "rgba(255,255,255,0.32)" }, children: " dumps" })
+        ] })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Col, { gap: 0, style: { flex: 1, minHeight: 0, overflowY: "auto" }, children: filtered.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { padding: "10px 10px", fontSize: 11, color: "rgba(255,255,255,0.38)", textAlign: "center" }, children: "Nothing logged yet today. Check a todo or drop a time-block." }) : filtered.map((e, i) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Row, { gap: 10, align: "center", style: {
+      padding: "6px 0",
+      borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.03)"
+    }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "mono tabular", style: { fontSize: 10, color: "rgba(255,255,255,0.42)", minWidth: 38 }, children: activityTime(e.ts) }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.62)", minWidth: 56 }, children: activityLabel(e.kind) }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { style: {
+        flex: 1,
+        fontSize: 11,
+        color: "rgba(255,255,255,0.86)",
+        letterSpacing: -5e-3,
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        whiteSpace: "nowrap"
+      }, children: e.detail })
+    ] }, i)) })
+  ] });
+}
 function TabNineToFive({
   eod,
   toggleEod,
@@ -33079,24 +33632,24 @@ function TabNineToFive({
   onAddBlock,
   onRemoveBlock,
   manual,
-  calendarEvents
+  calendarEvents,
+  activity
 }) {
   const surfaceKey = "9to5";
   const surfaceBlocks = placedBlocks.filter((b) => b.surface === surfaceKey);
   const [hoverMin, setHoverMin] = React7.useState(null);
   const [hoverBrick, setHoverBrick] = React7.useState(null);
   const timelineInnerRef = React7.useRef(null);
-  const N5_START = 9 * 60;
-  const N5_END = 18 * 60;
-  const N5_SPAN = N5_END - N5_START;
   const computeDrop = (e, brick) => {
     const r = timelineInnerRef.current?.getBoundingClientRect();
     if (!r)
       return null;
-    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)
+    if (e.clientX < r.left || e.clientX > r.right)
       return null;
-    const pct = (e.clientY - r.top) / r.height;
-    let m = N5_START + pct * N5_SPAN;
+    const offsetPx = e.clientY - r.top;
+    if (offsetPx < 0 || offsetPx > TIMELINE_HEIGHT)
+      return null;
+    let m = N5_START + offsetPx / PX_PER_MIN;
     m = Math.round(m / 15) * 15;
     m = Math.max(N5_START, Math.min(N5_END - brick.dur, m));
     return m;
@@ -33147,7 +33700,8 @@ function TabNineToFive({
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Col, { gap: 12, style: { minHeight: 0 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(TimeBlockPaletteCard, { startDrag, draggingId: drag?.brick.id }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BoundaryClock, {}) })
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BoundaryClock, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(TodaysActivityCard, { entries: activity }) })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BrickGhost, { drag })
   ] });
@@ -33446,9 +34000,9 @@ function TabHealth({ mode, setMode }) {
 var React9 = __toESM(require_react());
 
 // src/data-sources/quotes.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 var QUOTES_FILE = "command-center/quotes.md";
-var SEED = `# Quotes
+var SEED2 = `# Quotes
 
 > Drop quotes here, one block per quote. Blockquote line for the text, then a dash-prefixed line for attribution. Tags are optional. The Inspired tab rotates the "Quote of the Day" deterministically from the date, and lists the rest as Saved Highlights.
 
@@ -33512,20 +34066,20 @@ function parseQuotes(content) {
   }
   return quotes;
 }
-async function ensureFile(app) {
-  const np = (0, import_obsidian3.normalizePath)(QUOTES_FILE);
+async function ensureFile2(app) {
+  const np = (0, import_obsidian5.normalizePath)(QUOTES_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian3.TFile)
+  if (existing instanceof import_obsidian5.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
     await app.vault.createFolder(folder).catch(() => {
     });
   }
-  return app.vault.create(np, SEED);
+  return app.vault.create(np, SEED2);
 }
 async function loadQuotes(app) {
-  const file = await ensureFile(app);
+  const file = await ensureFile2(app);
   const content = await app.vault.read(file);
   return parseQuotes(content);
 }
@@ -33627,25 +34181,43 @@ function BrainDumpCard({
 }
 
 // src/data-sources/music.ts
-var import_obsidian4 = require("obsidian");
-var FEED_URL = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/20/songs.json";
+var import_obsidian6 = require("obsidian");
+var FEED_URL = "https://rss.marketingtools.apple.com/api/v2/us/music/most-played/100/songs.json";
+var MAX_PER_ARTIST = 2;
+function primaryArtist(name) {
+  if (!name)
+    return "";
+  const m = name.split(/\s*(?:&|,|feat\.?|ft\.?|with)\s+/i)[0];
+  return m.trim().toLowerCase();
+}
 async function loadTopSongs(limit = 8) {
   try {
-    const res = await (0, import_obsidian4.requestUrl)({ url: FEED_URL, throw: false });
+    const res = await (0, import_obsidian6.requestUrl)({ url: FEED_URL, throw: false });
     if (res.status >= 400)
       return [];
     const results = res.json?.feed?.results ?? [];
-    return results.slice(0, limit).map((r, i) => ({
-      rank: i + 1,
-      name: r.name || "(untitled)",
-      artist: r.artistName || "\u2014",
-      artistUrl: r.artistUrl,
-      genre: r.genres?.[0]?.name || "Music",
-      releaseDate: r.releaseDate || "",
-      artworkUrl: r.artworkUrl100 || "",
-      url: r.url || "#",
-      explicit: r.contentAdvisoryRating === "Explict" || r.contentAdvisoryRating === "Explicit"
-    }));
+    const perArtist = /* @__PURE__ */ new Map();
+    const picked = [];
+    for (let i = 0; i < results.length && picked.length < limit; i++) {
+      const r = results[i];
+      const key = primaryArtist(r.artistName || "");
+      const count = perArtist.get(key) ?? 0;
+      if (count >= MAX_PER_ARTIST)
+        continue;
+      perArtist.set(key, count + 1);
+      picked.push({
+        rank: picked.length + 1,
+        name: r.name || "(untitled)",
+        artist: r.artistName || "\u2014",
+        artistUrl: r.artistUrl,
+        genre: r.genres?.[0]?.name || "Music",
+        releaseDate: r.releaseDate || "",
+        artworkUrl: r.artworkUrl100 || "",
+        url: r.url || "#",
+        explicit: r.contentAdvisoryRating === "Explict" || r.contentAdvisoryRating === "Explicit"
+      });
+    }
+    return picked;
   } catch {
     return [];
   }
@@ -33657,9 +34229,9 @@ function upscaleArtwork(url, size = 200) {
 }
 
 // src/data-sources/bookmarks.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 var SAVED_FILE = "command-center/saved.md";
-var SEED2 = `# Saved bookmarks
+var SEED3 = `# Saved bookmarks
 
 > Things you bookmarked but haven't revisited. The dashboard surfaces a few
 > daily on the Inspired tab so they don't get buried.
@@ -33677,17 +34249,17 @@ var SEED2 = `# Saved bookmarks
 - Joscha Bach on consciousness and substrate independence \xB7 podcast \xB7 https://example.com/bach-podcast
 `;
 var LINE_RE = /^\s*[-*]\s+(.+)$/;
-async function ensureFile2(app) {
-  const np = (0, import_obsidian5.normalizePath)(SAVED_FILE);
+async function ensureFile3(app) {
+  const np = (0, import_obsidian7.normalizePath)(SAVED_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian5.TFile)
+  if (existing instanceof import_obsidian7.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
     await app.vault.createFolder(folder).catch(() => {
     });
   }
-  return app.vault.create(np, SEED2);
+  return app.vault.create(np, SEED3);
 }
 function parseBookmarks(content) {
   const out = [];
@@ -33739,9 +34311,151 @@ function pickDailyBookmarks(all, n = 3, date = /* @__PURE__ */ new Date()) {
   return out;
 }
 async function loadBookmarks(app) {
-  const file = await ensureFile2(app);
+  const file = await ensureFile3(app);
   const content = await app.vault.read(file);
   return parseBookmarks(content);
+}
+
+// src/data-sources/apple-notes.ts
+var import_child_process2 = require("child_process");
+var CACHE_TTL_MS2 = 5 * 60 * 1e3;
+var cache2 = null;
+function buildScript(limit) {
+  return `
+on isoDate(d)
+  set y to year of d
+  set m to month of d as integer
+  set dd to day of d
+  set hh to hours of d
+  set mm to minutes of d
+  set ss to seconds of d
+  set yStr to text -4 thru -1 of ("0000" & y)
+  set mStr to text -2 thru -1 of ("00" & m)
+  set dStr to text -2 thru -1 of ("00" & dd)
+  set hStr to text -2 thru -1 of ("00" & hh)
+  set minStr to text -2 thru -1 of ("00" & mm)
+  set sStr to text -2 thru -1 of ("00" & ss)
+  return yStr & "-" & mStr & "-" & dStr & "T" & hStr & ":" & minStr & ":" & sStr
+end isoDate
+
+on sanitize(t)
+  set t to my replace(t, tab, " ")
+  set t to my replace(t, return, " | ")
+  set t to my replace(t, linefeed, " | ")
+  return t
+end sanitize
+
+on replace(t, oldStr, newStr)
+  set AppleScript's text item delimiters to oldStr
+  set ti to text items of t
+  set AppleScript's text item delimiters to newStr
+  set out to ti as string
+  set AppleScript's text item delimiters to ""
+  return out
+end replace
+
+tell application "Notes"
+  set out to ""
+  set k to 0
+  repeat with n in notes
+    set k to k + 1
+    if k > ${limit} then exit repeat
+    try
+      set nId to id of n
+      set nTitle to name of n
+      set nFolder to name of container of n
+      set nMod to my isoDate(modification date of n)
+      set nBody to plaintext of n
+      if (length of nBody) > 240 then set nBody to text 1 thru 240 of nBody
+      set out to out & nId & tab & my sanitize(nTitle) & tab & my sanitize(nFolder) & tab & nMod & tab & my sanitize(nBody) & linefeed
+    end try
+  end repeat
+  return out
+end tell
+`;
+}
+function runOsa(script, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    const proc = (0, import_child_process2.spawn)("osascript", ["-e", script], { env: augmentedEnv() });
+    let out = "";
+    let err = "";
+    const timer = setTimeout(() => {
+      proc.kill();
+      reject(new Error("osascript timed out \u2014 is the Notes automation permission granted?"));
+    }, timeoutMs);
+    proc.stdout.on("data", (d) => out += d.toString());
+    proc.stderr.on("data", (d) => err += d.toString());
+    proc.on("error", (e) => {
+      clearTimeout(timer);
+      reject(e);
+    });
+    proc.on("close", (code) => {
+      clearTimeout(timer);
+      if (code !== 0)
+        reject(new Error(err.trim() || `osascript exited ${code}`));
+      else
+        resolve(out);
+    });
+  });
+}
+async function loadAppleNotes(limit = 10) {
+  if (cache2 && Date.now() - cache2.fetchedAt < CACHE_TTL_MS2)
+    return cache2.notes;
+  try {
+    const raw = await runOsa(buildScript(limit), 15e3);
+    const lines = raw.split(/\r?\n/).filter((l) => l.trim().length > 0);
+    const now = Date.now();
+    const notes = [];
+    for (const line of lines) {
+      const parts = line.split("	");
+      if (parts.length < 5)
+        continue;
+      const [id, title, folder, modIso, preview] = parts;
+      const modMs = Date.parse(modIso);
+      notes.push({
+        id,
+        title: title || "(untitled)",
+        preview: (preview || "").trim(),
+        folder: folder || "Notes",
+        modifiedAt: modIso,
+        ageMs: Number.isFinite(modMs) ? now - modMs : 0
+      });
+    }
+    cache2 = { notes, fetchedAt: now };
+    return notes;
+  } catch (e) {
+    console.warn("[command-center] Apple Notes load failed:", e);
+    return [];
+  }
+}
+async function showAppleNote(id) {
+  const safeId = id.replace(/"/g, '\\"');
+  const script = `
+tell application "Notes"
+  activate
+  try
+    show note id "${safeId}"
+  end try
+end tell
+`;
+  try {
+    await runOsa(script, 5e3);
+  } catch (e) {
+    console.warn("[command-center] showAppleNote failed:", e);
+  }
+}
+function notesAge(ms) {
+  if (ms < 6e4)
+    return "now";
+  if (ms < 36e5)
+    return `${Math.floor(ms / 6e4)}m`;
+  if (ms < 864e5)
+    return `${Math.floor(ms / 36e5)}h`;
+  if (ms < 864e5 * 7)
+    return `${Math.floor(ms / 864e5)}d`;
+  if (ms < 864e5 * 30)
+    return `${Math.floor(ms / 864e5 / 7)}w`;
+  return `${Math.floor(ms / 864e5 / 30)}mo`;
 }
 
 // src/tab-inspired.tsx
@@ -34007,13 +34721,70 @@ function BookmarkRevivalCard({ bookmarks }) {
     ] })
   ] });
 }
+function AppleNotesCard({ notes }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Apple Notes" }),
+        notes.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Dot, {})
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "mono tabular", style: { fontSize: 10, color: "rgba(255,255,255,0.42)" }, children: [
+        notes.length,
+        " recent"
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Col, { gap: 0, style: { flex: 1, minHeight: 0, overflowY: "auto" }, children: notes.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { padding: "10px 10px", fontSize: 11, color: "rgba(255,255,255,0.38)", textAlign: "center", lineHeight: 1.5 }, children: "No notes yet. macOS may need Automation permission for Obsidian \u2192 Notes (System Settings \u2192 Privacy & Security \u2192 Automation)." }) : notes.map((n, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+      "div",
+      {
+        onClick: () => showAppleNote(n.id),
+        style: {
+          padding: "8px 0",
+          borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.04)",
+          cursor: "pointer"
+        },
+        title: "Open in Notes.app",
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", style: { marginBottom: 3 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+              flex: 1,
+              fontSize: 12,
+              fontWeight: 500,
+              letterSpacing: -5e-3,
+              color: "rgba(255,255,255,0.92)",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap"
+            }, children: n.title }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "tabular", style: { fontSize: 10, color: "rgba(255,255,255,0.42)", flexShrink: 0 }, children: notesAge(n.ageMs) })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 6, align: "center", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.08, color: "rgba(255,255,255,0.32)", textTransform: "uppercase", flexShrink: 0 }, children: n.folder }),
+            n.preview && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "rgba(255,255,255,0.18)", fontSize: 9 }, children: "\xB7" }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+                flex: 1,
+                fontSize: 11,
+                color: "rgba(255,255,255,0.58)",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap"
+              }, children: n.preview })
+            ] })
+          ] })
+        ]
+      },
+      n.id || i
+    )) })
+  ] });
+}
 function TabInspired({
   quotes,
   brainDump,
   onBrainDump,
   artwork,
   songs,
-  bookmarks
+  bookmarks,
+  appleNotes
 }) {
   const dailyQuote = React9.useMemo(() => pickDailyQuote(quotes), [quotes]);
   const feed = React9.useMemo(
@@ -34021,40 +34792,213 @@ function TabInspired({
     [quotes, dailyQuote]
   );
   return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { flex: "0 0 320px", display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CreativeSparkHero, { artwork, quote: dailyQuote }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { flex: "0 0 280px", display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CreativeSparkHero, { artwork, quote: dailyQuote }) }),
     /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
       flex: 1,
       minHeight: 0,
       display: "grid",
       gridTemplateColumns: "1.1fr 1fr",
-      gridTemplateRows: "1fr 1fr",
+      gridTemplateRows: "1fr 1fr 1fr",
       gap: 12
     }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(QuotesFeedCard, { quotes: feed }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(MusicCard, { songs }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(AppleNotesCard, { notes: appleNotes }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BookmarkRevivalCard, { bookmarks }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BrainDumpCard, { entries: brainDump, onSubmit: onBrainDump })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { gridColumn: "span 2" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BrainDumpCard, { entries: brainDump, onSubmit: onBrainDump }) })
     ] })
   ] });
 }
 
 // src/tab-social.tsx
 var React10 = __toESM(require_react());
+
+// src/data-sources/youtube.ts
+var import_obsidian8 = require("obsidian");
+var CACHE_TTL_MS3 = 10 * 60 * 1e3;
+var cache3 = null;
+function normalizeHandle(input) {
+  const s = input.trim();
+  if (!s)
+    return {};
+  if (/^UC[A-Za-z0-9_-]{22}$/.test(s))
+    return { channelId: s };
+  return { handle: s.startsWith("@") ? s : "@" + s };
+}
+async function fetchJSON(url) {
+  try {
+    const res = await (0, import_obsidian8.requestUrl)({ url, throw: false });
+    if (res.status >= 400) {
+      console.warn("[command-center] YouTube API error", res.status, res.text?.slice(0, 200));
+      return null;
+    }
+    return res.json;
+  } catch (e) {
+    console.warn("[command-center] YouTube fetch failed:", e);
+    return null;
+  }
+}
+async function loadYouTubeChannel(apiKey, handleOrId) {
+  if (!apiKey || !handleOrId)
+    return null;
+  if (cache3 && Date.now() - cache3.fetchedAt < CACHE_TTL_MS3)
+    return cache3;
+  const { handle, channelId } = normalizeHandle(handleOrId);
+  const idParam = channelId ? `id=${encodeURIComponent(channelId)}` : `forHandle=${encodeURIComponent(handle)}`;
+  const chData = await fetchJSON(
+    `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&${idParam}&key=${apiKey}`
+  );
+  const item = chData?.items?.[0];
+  if (!item)
+    return null;
+  const uploadsPlaylistId = item.contentDetails?.relatedPlaylists?.uploads;
+  let uploads = [];
+  if (uploadsPlaylistId) {
+    const pl = await fetchJSON(
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${uploadsPlaylistId}&maxResults=5&key=${apiKey}`
+    );
+    const plItems = pl?.items ?? [];
+    const videoIds = plItems.map((i) => i.contentDetails?.videoId).filter(Boolean).join(",");
+    const viewMap = {};
+    if (videoIds) {
+      const vids = await fetchJSON(
+        `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${apiKey}`
+      );
+      for (const v of vids?.items ?? []) {
+        viewMap[v.id] = {
+          views: parseInt(v.statistics?.viewCount ?? "0", 10),
+          likes: parseInt(v.statistics?.likeCount ?? "0", 10)
+        };
+      }
+    }
+    uploads = plItems.map((i) => {
+      const vid = i.contentDetails?.videoId;
+      const thumbs = i.snippet?.thumbnails ?? {};
+      return {
+        videoId: vid,
+        title: i.snippet?.title || "(untitled)",
+        publishedAt: i.contentDetails?.videoPublishedAt || i.snippet?.publishedAt || "",
+        thumbnail: thumbs.medium?.url || thumbs.high?.url || thumbs.default?.url || "",
+        views: viewMap[vid]?.views,
+        likes: viewMap[vid]?.likes,
+        url: `https://www.youtube.com/watch?v=${vid}`
+      };
+    });
+  }
+  cache3 = {
+    subs: parseInt(item.statistics?.subscriberCount ?? "0", 10),
+    totalViews: parseInt(item.statistics?.viewCount ?? "0", 10),
+    totalVideos: parseInt(item.statistics?.videoCount ?? "0", 10),
+    channelTitle: item.snippet?.title || "",
+    channelThumb: item.snippet?.thumbnails?.default?.url,
+    recentUploads: uploads,
+    fetchedAt: Date.now()
+  };
+  return cache3;
+}
+function fmtCount(n) {
+  if (!Number.isFinite(n))
+    return "\u2014";
+  return n.toLocaleString("en-US");
+}
+function relativeAge(iso) {
+  if (!iso)
+    return "";
+  const then = new Date(iso).getTime();
+  if (!Number.isFinite(then))
+    return "";
+  const sec = Math.max(0, (Date.now() - then) / 1e3);
+  if (sec < 60)
+    return `${Math.floor(sec)}s`;
+  if (sec < 3600)
+    return `${Math.floor(sec / 60)}m`;
+  if (sec < 86400)
+    return `${Math.floor(sec / 3600)}h`;
+  if (sec < 86400 * 7)
+    return `${Math.floor(sec / 86400)}d`;
+  if (sec < 86400 * 30)
+    return `${Math.floor(sec / 86400 / 7)}w`;
+  if (sec < 86400 * 365)
+    return `${Math.floor(sec / 86400 / 30)}mo`;
+  return `${Math.floor(sec / 86400 / 365)}y`;
+}
+
+// src/tab-social.tsx
 var import_jsx_runtime14 = __toESM(require_jsx_runtime());
-function KPITile({ platform, value, label, delta, positive, icon }) {
+function KPITile({ platform, value, label, delta, positive, icon, live }) {
   return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(GlassCard, { style: { padding: 18, flex: 1 }, clickable: true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 16 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { gap: 8, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { gap: 8, align: "center", children: [
         icon,
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Label, { children: platform })
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Label, { children: platform }),
+        live && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { title: "Live from YouTube Data API", style: {
+          width: 6,
+          height: 6,
+          borderRadius: 50,
+          background: "rgba(155,210,150,0.86)",
+          boxShadow: "0 0 6px rgba(155,210,150,0.5)"
+        } })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { fontSize: 10, letterSpacing: 0.14, color: "rgba(255,255,255,0.32)", textTransform: "uppercase", fontWeight: 500 }, children: label })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "tabular", style: { fontSize: 32, fontWeight: 600, letterSpacing: -0.025, lineHeight: 1.1, color: "rgba(255,255,255,0.96)", marginBottom: 8 }, children: value }),
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { gap: 6, align: "center", children: [
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { fontSize: 11, fontWeight: 500, color: positive ? "rgba(255,255,255,0.64)" : "rgba(255,255,255,0.38)" }, className: "tabular", children: delta }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.32)" }, children: "\xB7 7d" })
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.32)" }, children: [
+        "\xB7 ",
+        live ? "lifetime" : "7d"
+      ] })
     ] })
+  ] });
+}
+function LatestUploads({ yt }) {
+  const items = yt.recentUploads.slice(0, 5);
+  if (items.length === 0) {
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(GlassCard, { style: { padding: 20 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Label, { children: "Latest uploads" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { marginTop: 12, fontSize: 12, color: "rgba(255,255,255,0.42)" }, children: "No uploads yet." })
+    ] });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(GlassCard, { style: { padding: 20, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 14 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { gap: 8, align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(YouTubeIcon, { size: 12, opacity: 0.6 }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Label, { children: "Latest uploads" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { title: "Live from YouTube Data API", style: {
+          width: 6,
+          height: 6,
+          borderRadius: 50,
+          background: "rgba(155,210,150,0.86)",
+          boxShadow: "0 0 6px rgba(155,210,150,0.5)"
+        } })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { className: "mono tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.62)" }, children: [
+        fmtCount(yt.totalVideos),
+        " ",
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { style: { color: "rgba(255,255,255,0.32)" }, children: [
+          "uploads \xB7 ",
+          fmtCount(yt.totalViews),
+          " views"
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Col, { gap: 0, style: { flex: 1 }, children: items.map((u, i) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("a", { href: u.url, target: "_blank", rel: "noopener noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { gap: 12, align: "center", style: {
+      padding: "10px 0",
+      borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.04)"
+    }, children: [
+      u.thumbnail && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: u.thumbnail, alt: "", style: { width: 56, height: 32, objectFit: "cover", borderRadius: 4, flexShrink: 0 } }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: {
+        flex: 1,
+        fontSize: 12,
+        letterSpacing: -5e-3,
+        color: "rgba(255,255,255,0.92)",
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        whiteSpace: "nowrap"
+      }, children: u.title }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", minWidth: 60, textAlign: "right" }, children: u.views !== void 0 ? fmtCount(u.views) : "\u2014" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.38)", minWidth: 30, textAlign: "right" }, children: relativeAge(u.publishedAt) })
+    ] }) }, u.videoId)) })
   ] });
 }
 function CadenceGrid() {
@@ -34188,17 +35132,18 @@ function SocialLifeStrip() {
     ] })
   ] }) });
 }
-function TabSocial({ manual }) {
+function TabSocial({ manual, youtube }) {
   const s = manual.social;
+  const ytTile = youtube ? { value: fmtCount(youtube.subs), delta: `${fmtCount(youtube.totalVideos)} videos`, positive: true, live: true } : { value: s.youtube.value, delta: s.youtube.delta, positive: s.youtube.positive, live: false };
   return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Row, { gap: 12, align: "stretch", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(KPITile, { platform: "YouTube", label: "subs", value: s.youtube.value, delta: s.youtube.delta, positive: s.youtube.positive, icon: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(YouTubeIcon, { size: 12, opacity: 0.6 }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(KPITile, { platform: "YouTube", label: "subs", value: ytTile.value, delta: ytTile.delta, positive: ytTile.positive, live: ytTile.live, icon: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(YouTubeIcon, { size: 12, opacity: 0.6 }) }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(KPITile, { platform: "Instagram", label: "followers", value: s.instagram.value, delta: s.instagram.delta, positive: s.instagram.positive, icon: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(IGIcon, { size: 12, opacity: 0.6 }) }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(KPITile, { platform: "TikTok", label: "followers", value: s.tiktok.value, delta: s.tiktok.delta, positive: s.tiktok.positive, icon: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(TTIcon, { size: 12, opacity: 0.6 }) }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(KPITile, { platform: "LinkedIn", label: "followers", value: s.linkedin.value, delta: s.linkedin.delta, positive: s.linkedin.positive, icon: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(LIIcon, { size: 12, opacity: 0.6 }) })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(CadenceGrid, {}),
+      youtube ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(LatestUploads, { yt: youtube }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(CadenceGrid, {}),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(RepliesQueue, {})
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(SocialLifeStrip, {})
@@ -34221,7 +35166,7 @@ var DEFAULT_STATE = {
 };
 
 // src/persistence.ts
-var import_obsidian6 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 var TODOS_SIDE_PROJECT = "command-center/todos/side-project.md";
 var TODOS_EOD = "command-center/todos/eod.md";
 var MIT_FILE = "command-center/mit.md";
@@ -34253,10 +35198,10 @@ startedAt: "11:02"
 
 Edit /watch tutorial \u2014 final cut pass
 `;
-async function ensureFile3(app, path4, seed) {
-  const np = (0, import_obsidian6.normalizePath)(path4);
+async function ensureFile4(app, path4, seed) {
+  const np = (0, import_obsidian9.normalizePath)(path4);
   let f = app.vault.getAbstractFileByPath(np);
-  if (f instanceof import_obsidian6.TFile)
+  if (f instanceof import_obsidian9.TFile)
     return f;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
@@ -34283,14 +35228,14 @@ function parseTodos(content) {
   return out;
 }
 async function loadTodos(app, path4, seed) {
-  const file = await ensureFile3(app, path4, seed);
+  const file = await ensureFile4(app, path4, seed);
   const content = await app.vault.read(file);
   return parseTodos(content);
 }
 async function saveTodos(app, path4, todos) {
-  const np = (0, import_obsidian6.normalizePath)(path4);
+  const np = (0, import_obsidian9.normalizePath)(path4);
   const file = app.vault.getAbstractFileByPath(np);
-  if (!(file instanceof import_obsidian6.TFile))
+  if (!(file instanceof import_obsidian9.TFile))
     return;
   const content = await app.vault.read(file);
   const lines = content.split(/\r?\n/);
@@ -34330,7 +35275,7 @@ async function saveEODTodos(app, todos) {
   return saveTodos(app, TODOS_EOD, todos);
 }
 async function loadMIT(app) {
-  const file = await ensureFile3(app, MIT_FILE, SEED_MIT);
+  const file = await ensureFile4(app, MIT_FILE, SEED_MIT);
   const content = await app.vault.read(file);
   const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   let project = "side project";
@@ -34430,14 +35375,14 @@ function serializeTrunk(items) {
   return head + lines.join("\n") + "\n";
 }
 async function loadTrunk(app) {
-  const file = await ensureFile3(app, TRUNK_FILE, SEED_TRUNK);
+  const file = await ensureFile4(app, TRUNK_FILE, SEED_TRUNK);
   const content = await app.vault.read(file);
   return parseTrunk(content);
 }
 async function saveTrunk(app, items) {
-  const np = (0, import_obsidian6.normalizePath)(TRUNK_FILE);
+  const np = (0, import_obsidian9.normalizePath)(TRUNK_FILE);
   const file = app.vault.getAbstractFileByPath(np);
-  if (!(file instanceof import_obsidian6.TFile))
+  if (!(file instanceof import_obsidian9.TFile))
     return;
   await app.vault.modify(file, serializeTrunk(items));
 }
@@ -34463,7 +35408,7 @@ function parseBrainDump(content) {
   return out;
 }
 async function loadBrainDump(app) {
-  const file = await ensureFile3(app, BRAINDUMP_FILE, SEED_BRAINDUMP);
+  const file = await ensureFile4(app, BRAINDUMP_FILE, SEED_BRAINDUMP);
   const content = await app.vault.read(file);
   return parseBrainDump(content);
 }
@@ -34471,7 +35416,7 @@ async function appendBrainDump(app, text) {
   const t = text.trim();
   if (!t)
     return;
-  const file = await ensureFile3(app, BRAINDUMP_FILE, SEED_BRAINDUMP);
+  const file = await ensureFile4(app, BRAINDUMP_FILE, SEED_BRAINDUMP);
   const content = await app.vault.read(file);
   const lines = content.split(/\r?\n/);
   let insertAt = 0;
@@ -34487,7 +35432,7 @@ async function appendBrainDump(app, text) {
   await app.vault.modify(file, lines.join("\n"));
 }
 async function saveMIT(app, mit) {
-  const np = (0, import_obsidian6.normalizePath)(MIT_FILE);
+  const np = (0, import_obsidian9.normalizePath)(MIT_FILE);
   const file = app.vault.getAbstractFileByPath(np);
   const body = `---
 project: ${mit.project}
@@ -34497,7 +35442,7 @@ startedAt: "${mit.startedAt}"
 
 ${mit.title}
 `;
-  if (file instanceof import_obsidian6.TFile)
+  if (file instanceof import_obsidian9.TFile)
     await app.vault.modify(file, body);
   else {
     const folder = np.substring(0, np.lastIndexOf("/"));
@@ -34761,115 +35706,6 @@ function parseIntent(transcript) {
 }
 function cleanTitle(raw) {
   return raw.trim().replace(/^(that|to|this is|it is)\s+/i, "").replace(/[.!?]+\s*$/g, "").replace(/\s+/g, " ");
-}
-
-// src/data-sources/ai-bridge.ts
-var import_child_process = require("child_process");
-var fs3 = __toESM(require("fs"));
-var path3 = __toESM(require("path"));
-var os3 = __toESM(require("os"));
-function commonBinDirs() {
-  const home = os3.homedir();
-  return [
-    `${home}/.local/bin`,
-    `${home}/.claude/local`,
-    `${home}/.bun/bin`,
-    `${home}/.npm-global/bin`,
-    `${home}/.volta/bin`,
-    `${home}/.nvm/current/bin`,
-    "/opt/homebrew/bin",
-    "/usr/local/bin",
-    "/usr/bin",
-    "/bin"
-  ];
-}
-function augmentedEnv() {
-  const existing = (process.env.PATH || "").split(":").filter(Boolean);
-  const merged = Array.from(/* @__PURE__ */ new Set([...commonBinDirs(), ...existing])).join(":");
-  return { ...process.env, PATH: merged };
-}
-var cachedClaudePath = null;
-async function resolveClaudeBinary() {
-  if (cachedClaudePath)
-    return cachedClaudePath;
-  if (process.env.CLAUDE_BIN && fs3.existsSync(process.env.CLAUDE_BIN)) {
-    cachedClaudePath = process.env.CLAUDE_BIN;
-    return cachedClaudePath;
-  }
-  for (const dir of commonBinDirs()) {
-    const candidate = path3.join(dir, "claude");
-    try {
-      if (fs3.existsSync(candidate)) {
-        cachedClaudePath = candidate;
-        return candidate;
-      }
-    } catch {
-    }
-  }
-  const loginPath = await new Promise((resolve) => {
-    const sh = (0, import_child_process.spawn)("/bin/zsh", ["-lc", "command -v claude"], { env: augmentedEnv() });
-    let out = "";
-    sh.stdout.on("data", (d) => out += d.toString());
-    sh.on("close", (code) => {
-      const found = out.trim();
-      resolve(code === 0 && found ? found : null);
-    });
-    sh.on("error", () => resolve(null));
-  });
-  if (loginPath) {
-    cachedClaudePath = loginPath;
-    return loginPath;
-  }
-  throw new Error(
-    "Could not find the `claude` binary. Install Claude Code (https://docs.claude.com/en/docs/claude-code) and sign in. If it's installed at a non-standard path, set CLAUDE_BIN in your environment."
-  );
-}
-async function askClaude(prompt, opts = {}) {
-  const bin = await resolveClaudeBinary();
-  const args = ["-p", prompt, "--output-format", "text"];
-  if (opts.systemPrompt)
-    args.push("--append-system-prompt", opts.systemPrompt);
-  return new Promise((resolve, reject) => {
-    const proc = (0, import_child_process.spawn)(bin, args, {
-      cwd: opts.cwd,
-      env: augmentedEnv()
-    });
-    let out = "";
-    let err = "";
-    const timer = setTimeout(() => {
-      proc.kill();
-      reject(new Error("Claude call timed out \u2014 is `claude` signed in? Try running it manually from the Terminal pane."));
-    }, opts.timeoutMs ?? 6e4);
-    proc.stdout.on("data", (d) => out += d.toString());
-    proc.stderr.on("data", (d) => err += d.toString());
-    proc.on("error", (e) => {
-      clearTimeout(timer);
-      reject(new Error(`Could not spawn claude (${bin}): ${e.message}.`));
-    });
-    proc.on("close", (code) => {
-      clearTimeout(timer);
-      if (code !== 0)
-        reject(new Error(err.trim() || `claude exited ${code}`));
-      else
-        resolve(out.trim());
-    });
-  });
-}
-async function askClaudeJSON(prompt, opts = {}) {
-  const full = prompt + "\n\nReply with ONLY a single JSON object. No prose, no markdown, no code fence.";
-  const text = await askClaude(full, opts);
-  return parseLooseJSON(text);
-}
-function parseLooseJSON(text) {
-  let s = text.trim();
-  const fence = s.match(/^```(?:json)?\s*\n([\s\S]*?)\n```\s*$/);
-  if (fence)
-    s = fence[1].trim();
-  const first = s.indexOf("{");
-  const last = s.lastIndexOf("}");
-  if (first >= 0 && last > first)
-    s = s.slice(first, last + 1);
-  return JSON.parse(s);
 }
 
 // src/data-sources/plan-today.ts
@@ -35158,6 +35994,232 @@ function PlanTodayModal({
   ] }) });
 }
 
+// src/data-sources/close-day.ts
+function fmtTime3(d) {
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+function buildPrompt2(ctx) {
+  const now = /* @__PURE__ */ new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const log = ctx.activity.length === 0 ? "  (no events logged today)" : ctx.activity.slice(-50).map((a) => {
+    const d = new Date(a.ts);
+    const t = Number.isFinite(d.getTime()) ? fmtTime3(d) : a.ts;
+    return `  \u2022 ${t} \xB7 ${a.kind} \xB7 ${a.detail}`;
+  }).join("\n");
+  const openSide = ctx.sideTodos.filter((t) => !t.done);
+  const openEod = ctx.eodTodos.filter((t) => !t.done);
+  const sideStr = openSide.length === 0 ? "  (all checked)" : openSide.map((t) => `  \u2022 ${t.text}`).join("\n");
+  const eodStr = openEod.length === 0 ? "  (all checked)" : openEod.map((t) => `  \u2022 ${t.text}`).join("\n");
+  const trunk = ctx.trunk.slice(0, 12).map((t) => `  \u2022 ${t.title}${t.project ? ` \xB7 ${t.project}` : ""}`).join("\n") || "  (empty)";
+  return `
+You are running Taelo's end-of-day reflection. He's an ADHD solo operator \u2014
+he hates fluff and meta-commentary. Be specific. Cite actual log entries.
+Don't moralize. No "great job" energy.
+
+# Today's context (${today}, ${fmtTime3(now)})
+
+Front-seat task right now:
+  \u2022 "${ctx.mit.title}" \u2014 ${ctx.mit.project} \xB7 est ${ctx.mit.est}m
+
+Open side-project todos:
+${sideStr}
+
+Open EOD checklist:
+${eodStr}
+
+Current trunk (already deferred):
+${trunk}
+
+Activity log for today:
+${log}
+
+# Your task
+
+Give Taelo a tight reflection on the day. Be honest:
+- What actually got done? Pull from the log entries.
+- What was open and stayed open? List the specific items.
+- Which open items should carry over to tomorrow's trunk? Don't just dump
+  everything \u2014 pick the 1-5 that genuinely matter. Drop trivial admin.
+- One-paragraph reflection: \u2264 60 words, specific, no fluff.
+
+# Output schema
+
+{
+  "headline": "string \u2014 one line, \u2264 80 chars, the shape of the day",
+  "done":    ["string", "..."],   // 2-6 bullets, each \u2264 80 chars
+  "undone":  ["string", "..."],   // 0-8 bullets of what's still open
+  "carryOver": [
+    {
+      "title": "string \u2264 60 chars",
+      "project": "string \u2264 24 chars (optional)",
+      "estMin": number (optional \u2014 25 | 45 | 60 | 90),
+      "why": "string \u2264 80 chars \u2014 one short sentence"
+    }
+  ],
+  "reflection": "string \u2014 one paragraph, \u2264 60 words"
+}
+`.trim();
+}
+async function closeDay(app, ctx) {
+  const activity = await loadTodaysActivity(app);
+  const full = { ...ctx, activity };
+  const prompt = buildPrompt2(full);
+  return askClaudeJSON(prompt, { timeoutMs: 45e3 });
+}
+
+// src/close-day-modal.tsx
+var React13 = __toESM(require_react());
+var import_jsx_runtime17 = __toESM(require_jsx_runtime());
+function CloseDayModal({
+  state,
+  summary,
+  error,
+  onCarryItem,
+  onCarryAll,
+  onClose
+}) {
+  React13.useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+  const [carried, setCarried] = React13.useState(/* @__PURE__ */ new Set());
+  const handleCarryAll = () => {
+    if (!summary)
+      return;
+    const remaining = summary.carryOver.filter((_, i) => !carried.has(i));
+    if (remaining.length === 0)
+      return;
+    onCarryAll(remaining);
+    setCarried(new Set(summary.carryOver.map((_, i) => i)));
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "cc-modal-backdrop", onClick: onClose, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "cc-modal", onClick: (e) => e.stopPropagation(), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 16 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { gap: 10, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "cc-sun-glyph", "aria-hidden": "true", children: "\u25CF" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 2, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Label, { children: "Close day \xB7 Claude" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.42)", letterSpacing: -5e-3 }, children: "Reading today's log and open work." })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "cc-modal-close", onClick: onClose, "aria-label": "Close", children: "\xD7" })
+    ] }),
+    state === "loading" && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 14, style: { alignItems: "center", padding: "32px 12px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "cc-think-dots", "aria-hidden": "true", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", {})
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.62)", letterSpacing: -5e-3 }, children: "Claude is reviewing your day\u2026" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)" }, children: "this can take 5\u201315 seconds" })
+    ] }),
+    state === "error" && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 10, style: { padding: "20px 8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { fontSize: 13, color: "rgba(255,255,255,0.86)", lineHeight: 1.45 }, children: "Couldn't reach Claude." }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "mono", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", lineHeight: 1.45, whiteSpace: "pre-wrap" }, children: error })
+    ] }),
+    state === "ready" && summary && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: {
+        padding: "10px 14px",
+        marginBottom: 14,
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 8,
+        fontSize: 13,
+        fontStyle: "italic",
+        letterSpacing: -5e-3,
+        color: "rgba(255,255,255,0.92)",
+        fontFamily: "Georgia, 'Times New Roman', serif"
+      }, children: [
+        '"',
+        summary.headline,
+        '"'
+      ] }),
+      summary.done.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 6, style: { marginBottom: 14 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Label, { children: [
+          "Done (",
+          summary.done.length,
+          ")"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Col, { gap: 4, children: summary.done.map((d, i) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { gap: 8, align: "start", style: { fontSize: 12, color: "rgba(255,255,255,0.86)", lineHeight: 1.5 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { color: "rgba(155,210,150,0.86)", flexShrink: 0 }, children: "\u2713" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { flex: 1 }, children: d })
+        ] }, i)) })
+      ] }),
+      summary.undone.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 6, style: { marginBottom: 14 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Label, { children: [
+          "Still open (",
+          summary.undone.length,
+          ")"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Col, { gap: 4, children: summary.undone.map((u, i) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { gap: 8, align: "start", style: { fontSize: 12, color: "rgba(255,255,255,0.74)", lineHeight: 1.5 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { color: "rgba(255,255,255,0.32)", flexShrink: 0 }, children: "\u25CB" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { flex: 1 }, children: u })
+        ] }, i)) })
+      ] }),
+      summary.carryOver.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 6, style: { marginBottom: 14 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Label, { children: "Carry to tomorrow's trunk" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Col, { gap: 6, children: summary.carryOver.map((c, i) => {
+          const isCarried = carried.has(i);
+          return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { gap: 10, align: "center", style: {
+            padding: "10px 12px",
+            background: "rgba(255,255,255,0.025)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 8
+          }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 2, style: { flex: 1, minWidth: 0 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { fontSize: 12, fontWeight: 500, color: "rgba(255,255,255,0.92)" }, children: c.title }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { gap: 8, children: [
+                c.project && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)" }, children: c.project }),
+                c.estMin && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+                  c.project && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { color: "rgba(255,255,255,0.18)", fontSize: 10 }, children: "\xB7" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "tabular", style: { fontSize: 10, color: "rgba(255,255,255,0.42)" }, children: [
+                    c.estMin,
+                    "m"
+                  ] })
+                ] })
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", letterSpacing: -5e-3, lineHeight: 1.4, marginTop: 2 }, children: c.why })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+              "button",
+              {
+                className: "pill" + (isCarried ? " ghost" : ""),
+                onClick: () => {
+                  if (isCarried)
+                    return;
+                  onCarryItem(c);
+                  setCarried((s) => /* @__PURE__ */ new Set([...s, i]));
+                },
+                disabled: isCarried,
+                style: { padding: "3px 9px", fontSize: 9, flexShrink: 0 },
+                children: isCarried ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { gap: 3, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(CheckIcon, { size: 9, opacity: 0.78 }),
+                  " ",
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "carried" })
+                ] }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { gap: 3, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PlusIcon, { size: 9, opacity: 0.78 }),
+                  " ",
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "trunk" })
+                ] })
+              }
+            )
+          ] }, i);
+        }) })
+      ] }),
+      summary.reflection && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Col, { gap: 6, style: { marginBottom: 14 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Label, { children: "Reflection" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.78)", lineHeight: 1.5, letterSpacing: -5e-3 }, children: summary.reflection })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Row, { justify: "space-between", style: { marginTop: 18, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "pill ghost", onClick: onClose, style: { padding: "5px 14px" }, children: "Dismiss" }),
+        summary.carryOver.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "pill solid", onClick: handleCarryAll, style: { padding: "5px 14px" }, children: "Carry all to trunk" })
+      ] })
+    ] })
+  ] }) });
+}
+
 // src/data-sources/agents.ts
 var fs4 = __toESM(require("fs/promises"));
 var CONTENT_ENGINE_DIR = "~/.claude/projects/-Users-ek-Desktop-Content-engine/";
@@ -35309,11 +36371,12 @@ async function loadTrendReport() {
 }
 
 // src/data-sources/manual.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 var MANUAL_FILE = "command-center/manual.md";
 var DEFAULT_MANUAL = {
   youtube: {
     handle: "@taelo_kim",
+    apiKey: "",
     scriptsDrafted: 3,
     scriptsTarget: 5,
     videosShot: 2,
@@ -35345,11 +36408,17 @@ var DEFAULT_MANUAL = {
   },
   terminal: {
     cwd: "~/Desktop/Content engine"
+  },
+  slack: {
+    token: "",
+    channels: [],
+    lookbackHours: 24
   }
 };
-var SEED3 = `---
+var SEED4 = `---
 youtube:
   handle: "@taelo_kim"
+  apiKey: ""
   scriptsDrafted: 3
   scriptsTarget: 5
   videosShot: 2
@@ -35382,6 +36451,10 @@ calendar:
   icsUrl: ""
 terminal:
   cwd: "~/Desktop/Content engine"
+slack:
+  token: ""
+  channels: []
+  lookbackHours: 24
 ---
 
 # Manual overrides
@@ -35401,18 +36474,49 @@ When a real source is wired for any of these, the override here is ignored.
   display your real meetings on the 9-to-5 timeline. Get it from
   Google Calendar \u2192 Settings \u2192 My calendars \u2192 click a calendar \u2192 Integrate calendar \u2192
   Secret address in iCal format.
+
+## YouTube API setup
+
+- **handle** \u2014 your channel handle, e.g. \`@taelo_kim\`.
+- **apiKey** \u2014 YouTube Data API v3 key. Leave blank to keep manual values. To get one:
+  1. Go to https://console.cloud.google.com/apis/credentials
+  2. Create a project (free).
+  3. APIs & Services \u2192 Enable APIs \u2192 search "YouTube Data API v3" \u2192 Enable.
+  4. Credentials \u2192 Create Credentials \u2192 API key. Paste the key here.
+  5. Optional but recommended: restrict the key to "YouTube Data API v3" only.
+
+  Quota: 10,000 units/day free. This plugin uses ~3 units per refresh with a
+  10-minute cache, well under the limit.
+
+## Slack briefings setup
+
+Leave \`token\` blank to hide the Slack card.
+
+- **token** \u2014 User OAuth Token (\`xoxp-...\`). To get one:
+  1. Go to https://api.slack.com/apps \u2192 Create New App \u2192 From scratch.
+  2. Pick a name ("Command Center"), pick your workspace.
+  3. **OAuth & Permissions** \u2192 scroll to **User Token Scopes** \u2192 add:
+     - \`channels:history\`, \`channels:read\`
+     - \`groups:history\`, \`groups:read\` (private channels \u2014 optional)
+     - \`im:history\`, \`im:read\` (DMs \u2014 optional)
+     - \`users:read\`
+  4. Top of the same page: **Install to Workspace** \u2192 approve.
+  5. Copy the **User OAuth Token** (starts with \`xoxp-\`). Paste here.
+- **channels** \u2014 list of channel IDs to monitor. Find one in Slack: right-click
+  the channel \u2192 View channel details \u2192 bottom of the modal. Format: \`["C01ABCDEF"]\`.
+- **lookbackHours** \u2014 how far back to scan (default 24).
 `;
-async function ensureFile4(app) {
-  const np = (0, import_obsidian7.normalizePath)(MANUAL_FILE);
+async function ensureFile5(app) {
+  const np = (0, import_obsidian10.normalizePath)(MANUAL_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian7.TFile)
+  if (existing instanceof import_obsidian10.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
     await app.vault.createFolder(folder).catch(() => {
     });
   }
-  return app.vault.create(np, SEED3);
+  return app.vault.create(np, SEED4);
 }
 function parseManualYAML(text) {
   const out = JSON.parse(JSON.stringify(DEFAULT_MANUAL));
@@ -35420,6 +36524,7 @@ function parseManualYAML(text) {
   let section = [];
   const indentOf = (l) => l.match(/^(\s*)/)?.[1].length ?? 0;
   const stack = [];
+  const startedLists = /* @__PURE__ */ new Set();
   for (const raw of lines) {
     const line = raw.replace(/\t/g, "  ");
     if (!line.trim() || line.trim().startsWith("#"))
@@ -35459,8 +36564,11 @@ function parseManualYAML(text) {
       const parent = stack.map((s) => s.key);
       const key = parent[parent.length - 1];
       const grand = parent.slice(0, -1).reduce((a, k) => a[k] ?? (a[k] = {}), out);
-      if (!Array.isArray(grand[key]))
+      const pathKey = parent.join(".");
+      if (!startedLists.has(pathKey)) {
         grand[key] = [];
+        startedLists.add(pathKey);
+      }
       grand[key].push(parseInlineObj(listObjMatch[1]));
       continue;
     }
@@ -35503,6 +36611,17 @@ function parseInlineObj(body) {
 }
 function parseScalar(v) {
   v = v.trim().replace(/,$/, "").trim();
+  if (v.startsWith("[") && v.endsWith("]")) {
+    const inner = v.slice(1, -1).trim();
+    if (!inner)
+      return [];
+    return inner.split(",").map((p) => {
+      let s = p.trim();
+      if (s.startsWith('"') && s.endsWith('"') || s.startsWith("'") && s.endsWith("'"))
+        s = s.slice(1, -1);
+      return s;
+    });
+  }
   if (v.startsWith('"') && v.endsWith('"'))
     return v.slice(1, -1);
   if (v.startsWith("'") && v.endsWith("'"))
@@ -35516,7 +36635,7 @@ function parseScalar(v) {
   return v;
 }
 async function loadManual(app) {
-  const file = await ensureFile4(app);
+  const file = await ensureFile5(app);
   const content = await app.vault.read(file);
   const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
   if (!fmMatch)
@@ -35529,7 +36648,7 @@ async function loadManual(app) {
 }
 
 // src/data-sources/ical.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 function parseICalDate(s) {
   const clean = s.replace(/[^\dTZ]/g, "");
   if (clean.length === 8) {
@@ -35607,7 +36726,7 @@ async function fetchICalEvents(url, name) {
   if (!url)
     return [];
   try {
-    const res = await (0, import_obsidian8.requestUrl)({ url, throw: false });
+    const res = await (0, import_obsidian11.requestUrl)({ url, throw: false });
     if (res.status >= 400)
       return [];
     return parseICal(res.text, name);
@@ -35617,7 +36736,7 @@ async function fetchICalEvents(url, name) {
 }
 
 // src/data-sources/apple-calendar.ts
-var import_child_process2 = require("child_process");
+var import_child_process3 = require("child_process");
 var SCRIPT_CREATE = `
 function run(argv) {
   const [calName, title, startISO, endISO, notes] = argv;
@@ -35661,7 +36780,7 @@ function run() {
 `.trim();
 function osascript(script, args = [], timeoutMs = 3e4) {
   return new Promise((resolve, reject) => {
-    const proc = (0, import_child_process2.spawn)("osascript", ["-l", "JavaScript", "-", ...args]);
+    const proc = (0, import_child_process3.spawn)("osascript", ["-l", "JavaScript", "-", ...args]);
     let out = "";
     let err = "";
     const timer = setTimeout(() => {
@@ -35695,9 +36814,9 @@ async function deleteAppleCalendarEvent(calendar, uid) {
 }
 
 // src/data-sources/tweets.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 var TWEETS_FILE = "command-center/tweets.md";
-var SEED4 = `# Tweets
+var SEED5 = `# Tweets
 
 > Hand-curated tweet feed. Paste tweets you want pinned to the dashboard here.
 > X's free API was killed and the public mirrors are unreliable \u2014 so this feed
@@ -35720,17 +36839,17 @@ var SEED4 = `# Tweets
 > Daily reminder that "vibes" is a load-bearing technical term in 2026.
 \u2014 @karpathy \xB7 2d \xB7 https://x.com/karpathy/status/example4
 `;
-async function ensureFile5(app) {
-  const np = (0, import_obsidian9.normalizePath)(TWEETS_FILE);
+async function ensureFile6(app) {
+  const np = (0, import_obsidian12.normalizePath)(TWEETS_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian9.TFile)
+  if (existing instanceof import_obsidian12.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
     await app.vault.createFolder(folder).catch(() => {
     });
   }
-  return await app.vault.create(np, SEED4);
+  return await app.vault.create(np, SEED5);
 }
 function parseTweets(content) {
   const lines = content.split(/\r?\n/);
@@ -35781,13 +36900,13 @@ function parseTweets(content) {
   return out;
 }
 async function loadTweets(app) {
-  const file = await ensureFile5(app);
+  const file = await ensureFile6(app);
   const content = await app.vault.read(file);
   return parseTweets(content);
 }
 
 // src/data-sources/art.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 var CURATED_OBJECT_IDS = [
   // Hokusai woodblock prints
   45434,
@@ -35856,7 +36975,7 @@ async function loadDailyArtwork() {
 }
 async function tryFetch(id) {
   try {
-    const res = await (0, import_obsidian10.requestUrl)({
+    const res = await (0, import_obsidian13.requestUrl)({
       url: `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`,
       throw: false
     });
@@ -35883,7 +37002,7 @@ async function tryFetch(id) {
 }
 
 // src/app.tsx
-var import_jsx_runtime17 = __toESM(require_jsx_runtime());
+var import_jsx_runtime18 = __toESM(require_jsx_runtime());
 var EMPTY_LIVE = {
   sessions: [],
   trending: null,
@@ -35896,18 +37015,22 @@ var EMPTY_LIVE = {
   artwork: null,
   songs: [],
   bookmarks: [],
+  youtube: null,
+  slack: null,
+  appleNotes: [],
+  activityToday: [],
   loadedAt: 0
 };
 function CommandCenterApp({ bridge }) {
-  const [state, setState] = React13.useState(DEFAULT_STATE);
-  const [sideTodos, setSideTodos] = React13.useState([]);
-  const [eodTodos, setEodTodos] = React13.useState([]);
-  const [trunk, setTrunk] = React13.useState([]);
-  const [brainDump, setBrainDump] = React13.useState([]);
-  const [live, setLive] = React13.useState(EMPTY_LIVE);
-  const [refreshing, setRefreshing] = React13.useState(false);
-  const [hydrated, setHydrated] = React13.useState(false);
-  const refreshLive = React13.useCallback(async () => {
+  const [state, setState] = React14.useState(DEFAULT_STATE);
+  const [sideTodos, setSideTodos] = React14.useState([]);
+  const [eodTodos, setEodTodos] = React14.useState([]);
+  const [trunk, setTrunk] = React14.useState([]);
+  const [brainDump, setBrainDump] = React14.useState([]);
+  const [live, setLive] = React14.useState(EMPTY_LIVE);
+  const [refreshing, setRefreshing] = React14.useState(false);
+  const [hydrated, setHydrated] = React14.useState(false);
+  const refreshLive = React14.useCallback(async () => {
     setRefreshing(true);
     try {
       const [sessions, trending, quotes, manual, news, reddit, tweets, artwork, songs, bookmarks] = await Promise.all([
@@ -35922,13 +37045,19 @@ function CommandCenterApp({ bridge }) {
         loadTopSongs(8),
         loadBookmarks(bridge.app)
       ]);
-      const calendarEvents = manual.calendar.icsUrl ? await fetchICalEvents(manual.calendar.icsUrl, manual.calendar.targetCalendar || "calendar") : [];
-      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, loadedAt: Date.now() });
+      const appleNotes = await loadAppleNotes(8);
+      const [calendarEvents, youtube, slack] = await Promise.all([
+        manual.calendar.icsUrl ? fetchICalEvents(manual.calendar.icsUrl, manual.calendar.targetCalendar || "calendar") : Promise.resolve([]),
+        manual.youtube.apiKey ? loadYouTubeChannel(manual.youtube.apiKey, manual.youtube.handle) : Promise.resolve(null),
+        manual.slack?.token && manual.slack?.channels?.length ? loadSlackBriefing(manual.slack.token, manual.slack.channels, manual.slack.lookbackHours ?? 24) : Promise.resolve(null)
+      ]);
+      const activityToday = await loadTodaysActivity(bridge.app);
+      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, activityToday, loadedAt: Date.now() });
     } finally {
       setRefreshing(false);
     }
   }, [bridge]);
-  React13.useEffect(() => {
+  React14.useEffect(() => {
     let cancelled = false;
     (async () => {
       const [pluginData, sp, eod, mit2, trunkItems, dump] = await Promise.all([
@@ -35955,18 +37084,18 @@ function CommandCenterApp({ bridge }) {
       cancelled = true;
     };
   }, [bridge, refreshLive]);
-  React13.useEffect(() => {
+  React14.useEffect(() => {
     if (!hydrated)
       return;
     const id = setInterval(refreshLive, 60 * 1e3);
     return () => clearInterval(id);
   }, [hydrated, refreshLive]);
-  React13.useEffect(() => {
+  React14.useEffect(() => {
     if (!hydrated)
       return;
     bridge.savePluginData(state);
   }, [state, hydrated, bridge]);
-  React13.useEffect(() => {
+  React14.useEffect(() => {
     const handler = async (file) => {
       if (!file || !isCommandCenterPath(file.path))
         return;
@@ -35983,7 +37112,7 @@ function CommandCenterApp({ bridge }) {
     vault.on("modify", handler);
     return () => vault.off("modify", handler);
   }, [bridge]);
-  React13.useEffect(() => {
+  React14.useEffect(() => {
     const { active, paused } = state.timer;
     if (!active || paused)
       return;
@@ -36002,18 +37131,28 @@ function CommandCenterApp({ bridge }) {
   const onAdd5 = () => setState((s) => ({ ...s, timer: { ...s.timer, remainingSec: Math.min(s.timer.totalSec, s.timer.remainingSec + 5 * 60) } }));
   const onDone = () => setState((s) => ({ ...s, timer: { ...s.timer, active: false, remainingSec: 0 } }));
   const toggleSideTodo = async (id) => {
+    const before = sideTodos.find((t) => t.id === id);
     const next = sideTodos.map((t) => t.id === id ? { ...t, done: !t.done } : t);
     setSideTodos(next);
     await saveSideProjectTodos(bridge.app, next);
+    if (before) {
+      appendActivity(bridge.app, before.done ? "todo_undone" : "todo_done", `"${before.text}"`);
+    }
   };
   const toggleEod = async (id) => {
+    const before = eodTodos.find((t) => t.id === id);
     const next = eodTodos.map((t) => t.id === id ? { ...t, done: !t.done } : t);
     setEodTodos(next);
     await saveEODTodos(bridge.app, next);
+    if (before) {
+      appendActivity(bridge.app, before.done ? "eod_undone" : "eod_done", `"${before.text}"`);
+    }
   };
   const onAddBlock = async (b) => {
     const pending = { ...b, syncState: "pending" };
     setState((s) => ({ ...s, placedBlocks: [...s.placedBlocks, pending] }));
+    const startStr = `${String(Math.floor(b.startMin / 60)).padStart(2, "0")}:${String(b.startMin % 60).padStart(2, "0")}`;
+    appendActivity(bridge.app, "block_placed", `${b.brick.name} \xB7 ${b.durMin}m \xB7 ${startStr}`);
     const day = /* @__PURE__ */ new Date();
     day.setHours(0, 0, 0, 0);
     const start = new Date(day.getTime() + b.startMin * 60 * 1e3);
@@ -36050,6 +37189,7 @@ function CommandCenterApp({ bridge }) {
     const next = trunk.find((t) => t.id === id);
     if (!next)
       return;
+    appendActivity(bridge.app, "mit_promoted", `"${next.title}"${next.project ? ` \xB7 ${next.project}` : ""}`);
     const oldMIT = {
       id: `tr${Date.now()}`,
       title: state.mit.title,
@@ -36088,8 +37228,10 @@ function CommandCenterApp({ bridge }) {
   const submitBrainDump = async (text) => {
     await appendBrainDump(bridge.app, text);
     setBrainDump(await loadBrainDump(bridge.app));
+    appendActivity(bridge.app, "brain_dump", text.length > 80 ? text.slice(0, 77) + "\u2026" : text);
   };
   const demoteToTrunk = async () => {
+    appendActivity(bridge.app, "mit_dismissed", `"${state.mit.title}"${state.mit.project ? ` \xB7 ${state.mit.project}` : ""}`);
     const oldMIT = {
       id: `tr${Date.now()}`,
       title: state.mit.title,
@@ -36184,13 +37326,14 @@ function CommandCenterApp({ bridge }) {
         return { ok: false, summary: `Heard "${transcript}" \u2014 didn't match an intent` };
     }
   };
-  const [planState, setPlanState] = React13.useState("closed");
-  const [plan, setPlan] = React13.useState(null);
-  const [planError, setPlanError] = React13.useState("");
-  const runPlanToday = React13.useCallback(async () => {
+  const [planState, setPlanState] = React14.useState("closed");
+  const [plan, setPlan] = React14.useState(null);
+  const [planError, setPlanError] = React14.useState("");
+  const runPlanToday = React14.useCallback(async () => {
     setPlanState("loading");
     setPlan(null);
     setPlanError("");
+    appendActivity(bridge.app, "plan_today", "ritual started");
     try {
       const result = await planToday({
         mit: state.mit,
@@ -36205,7 +37348,53 @@ function CommandCenterApp({ bridge }) {
       setPlanError(e?.message ?? String(e));
       setPlanState("error");
     }
-  }, [state.mit, trunk, live.calendarEvents, brainDump]);
+  }, [state.mit, trunk, live.calendarEvents, brainDump, bridge.app]);
+  const [closeState, setCloseState] = React14.useState("closed");
+  const [closeSummary, setCloseSummary] = React14.useState(null);
+  const [closeError, setCloseError] = React14.useState("");
+  const runCloseDay = React14.useCallback(async () => {
+    setCloseState("loading");
+    setCloseSummary(null);
+    setCloseError("");
+    appendActivity(bridge.app, "close_day", "ritual started");
+    try {
+      const result = await closeDay(bridge.app, {
+        mit: state.mit,
+        trunk,
+        sideTodos,
+        eodTodos
+      });
+      setCloseSummary(result);
+      setCloseState("ready");
+    } catch (e) {
+      setCloseError(e?.message ?? String(e));
+      setCloseState("error");
+    }
+  }, [state.mit, trunk, sideTodos, eodTodos, bridge.app]);
+  const carryItemToTrunk = async (item) => {
+    const next = {
+      id: `tr${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      title: item.title,
+      project: item.project,
+      estMin: item.estMin
+    };
+    const newTrunk = [...trunk, next];
+    setTrunk(newTrunk);
+    await saveTrunk(bridge.app, newTrunk);
+    appendActivity(bridge.app, "close_day", `\u2192 trunk: "${item.title}"`);
+  };
+  const carryAllToTrunk = async (items) => {
+    const newItems = items.map((item, i) => ({
+      id: `tr${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
+      title: item.title,
+      project: item.project,
+      estMin: item.estMin
+    }));
+    const newTrunk = [...trunk, ...newItems];
+    setTrunk(newTrunk);
+    await saveTrunk(bridge.app, newTrunk);
+    appendActivity(bridge.app, "close_day", `\u2192 trunk: ${items.length} item${items.length === 1 ? "" : "s"} carried`);
+  };
   const applyPlanMIT = async () => {
     if (!plan)
       return;
@@ -36236,8 +37425,8 @@ function CommandCenterApp({ bridge }) {
       surface: "9to5"
     });
   };
-  const seatRef = React13.useRef(null);
-  const trunkRef = React13.useRef(null);
+  const seatRef = React14.useRef(null);
+  const trunkRef = React14.useRef(null);
   const { drag: ballDrag, startDrag: startBallDrag, hoverTarget } = useBallDrag({
     seatRef,
     trunkRef,
@@ -36251,6 +37440,10 @@ function CommandCenterApp({ bridge }) {
   const onRemoveBlock = async (id) => {
     const block = state.placedBlocks.find((b) => b.id === id);
     setState((s) => ({ ...s, placedBlocks: s.placedBlocks.filter((b) => b.id !== id) }));
+    if (block) {
+      const startStr = `${String(Math.floor(block.startMin / 60)).padStart(2, "0")}:${String(block.startMin % 60).padStart(2, "0")}`;
+      appendActivity(bridge.app, "block_removed", `${block.brick.name} \xB7 ${startStr}`);
+    }
     if (block?.appleUid) {
       try {
         await deleteAppleCalendarEvent(live.manual.calendar.targetCalendar, block.appleUid);
@@ -36261,8 +37454,8 @@ function CommandCenterApp({ bridge }) {
   };
   const { timer, mit, currentTab, focusMode, placedBlocks, healthMode } = state;
   const progress = timer.active ? Math.round((timer.totalSec - timer.remainingSec) / timer.totalSec * 100) : 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "cc-stage", children: [
-    planState !== "closed" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "cc-stage", children: [
+    planState !== "closed" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
       PlanTodayModal,
       {
         state: planState === "loading" ? "loading" : planState === "error" ? "error" : "ready",
@@ -36273,8 +37466,19 @@ function CommandCenterApp({ bridge }) {
         onClose: () => setPlanState("closed")
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "cc-frame", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    closeState !== "closed" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+      CloseDayModal,
+      {
+        state: closeState === "loading" ? "loading" : closeState === "error" ? "error" : "ready",
+        summary: closeSummary,
+        error: closeError,
+        onCarryItem: carryItemToTrunk,
+        onCarryAll: carryAllToTrunk,
+        onClose: () => setCloseState("closed")
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "cc-frame", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
         TopBar,
         {
           tab: currentTab,
@@ -36287,8 +37491,8 @@ function CommandCenterApp({ bridge }) {
           onVoice: dispatchVoice
         }
       ),
-      (currentTab === "9-to-5" || currentTab === "Side Project") && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+      (currentTab === "9-to-5" || currentTab === "Side Project") && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
           MITBanner,
           {
             task: mit,
@@ -36306,10 +37510,11 @@ function CommandCenterApp({ bridge }) {
               { id: "seat", label: ballLabel({ title: mit.title, project: mit.project }), title: mit.title, source: "seat" },
               e
             ),
-            onPlanToday: runPlanToday
+            onPlanToday: runPlanToday,
+            onCloseDay: runCloseDay
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
           TrunkStrip,
           {
             items: trunk,
@@ -36322,23 +37527,23 @@ function CommandCenterApp({ bridge }) {
             draggingId: ballDrag?.source === "trunk" ? ballDrag.id : void 0
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(BallGhost, { drag: ballDrag })
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(BallGhost, { drag: ballDrag })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: [
-        currentTab === "Side Project" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabSideProject, { todos: sideTodos, toggleTodo: toggleSideTodo, trending: live.trending, manual: live.manual, news: live.news, reddit: live.reddit, tweets: live.tweets }),
-        currentTab === "9-to-5" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabNineToFive, { eod: eodTodos, toggleEod, placedBlocks, onAddBlock, onRemoveBlock, manual: live.manual, calendarEvents: live.calendarEvents }),
-        currentTab === "Health" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabHealth, { mode: healthMode, setMode: setHealthMode }),
-        currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks }),
-        currentTab === "Social" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TabSocial, { manual: live.manual })
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { flex: 1, minHeight: 0, display: "flex" }, children: [
+        currentTab === "Side Project" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabSideProject, { todos: sideTodos, toggleTodo: toggleSideTodo, trending: live.trending, manual: live.manual, news: live.news, reddit: live.reddit, tweets: live.tweets, slack: live.slack }),
+        currentTab === "9-to-5" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabNineToFive, { eod: eodTodos, toggleEod, placedBlocks, onAddBlock, onRemoveBlock, manual: live.manual, calendarEvents: live.calendarEvents, activity: live.activityToday }),
+        currentTab === "Health" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabHealth, { mode: healthMode, setMode: setHealthMode }),
+        currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks, appleNotes: live.appleNotes }),
+        currentTab === "Social" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabSocial, { manual: live.manual, youtube: live.youtube })
       ] }, currentTab)
     ] })
   ] });
 }
 
 // src/view.tsx
-var import_jsx_runtime18 = __toESM(require_jsx_runtime());
+var import_jsx_runtime19 = __toESM(require_jsx_runtime());
 var COMMAND_CENTER_VIEW = "command-center-view";
-var CommandCenterView = class extends import_obsidian11.ItemView {
+var CommandCenterView = class extends import_obsidian14.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.root = null;
@@ -36359,7 +37564,7 @@ var CommandCenterView = class extends import_obsidian11.ItemView {
     container.addClass("cc-root");
     this.root = (0, import_client.createRoot)(container);
     this.root.render(
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(React14.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(CommandCenterApp, { bridge: {
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(React15.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(CommandCenterApp, { bridge: {
         app: this.app,
         loadPluginData: async () => await this.plugin.loadData() ?? {},
         savePluginData: async (s) => {
@@ -36375,23 +37580,63 @@ var CommandCenterView = class extends import_obsidian11.ItemView {
 };
 
 // src/terminal-view.tsx
-var import_obsidian12 = require("obsidian");
-var React16 = __toESM(require_react());
+var import_obsidian15 = require("obsidian");
+var React17 = __toESM(require_react());
 var import_client2 = __toESM(require_client());
 
 // src/tab-terminal.tsx
-var React15 = __toESM(require_react());
+var React16 = __toESM(require_react());
 var import_xterm = __toESM(require_xterm());
 var import_xterm_addon_fit = __toESM(require_xterm_addon_fit());
-var import_jsx_runtime19 = __toESM(require_jsx_runtime());
+var import_jsx_runtime20 = __toESM(require_jsx_runtime());
+var lastLoadError = null;
 function loadNodePty() {
-  try {
-    const nodePty = window.require?.("node-pty");
-    return nodePty || null;
-  } catch (e) {
-    console.warn("[command-center] node-pty failed to load:", e);
+  lastLoadError = null;
+  const req = window.require;
+  if (!req) {
+    lastLoadError = "window.require unavailable \u2014 running outside Electron?";
     return null;
   }
+  const pluginRoot = window.__ccPluginRoot;
+  const attempts = [];
+  if (pluginRoot) {
+    attempts.push({ label: "plugin node_modules", path: `${pluginRoot}/node_modules/node-pty` });
+  }
+  attempts.push({ label: "bare module name", path: "node-pty" });
+  const errors = [];
+  for (const a of attempts) {
+    try {
+      const m = req(a.path);
+      if (m)
+        return m;
+      errors.push(`${a.label}: returned falsy`);
+    } catch (e) {
+      errors.push(`${a.label} (${a.path}): ${e?.message || String(e)}`);
+    }
+  }
+  lastLoadError = errors.join("\n");
+  console.warn("[command-center] node-pty failed to load:", lastLoadError);
+  return null;
+}
+function diagnoseLoadFailure() {
+  const electron = process.versions?.electron;
+  const modules = process.versions?.modules;
+  const arch = process.arch;
+  const platform = process.platform;
+  return [
+    `Real error: ${lastLoadError || "(none captured)"}`,
+    "",
+    `Obsidian: Electron ${electron || "?"} \xB7 Node ABI ${modules || "?"} \xB7 ${platform}/${arch}`,
+    "",
+    "Most common cause: ABI mismatch \u2014 the prebuilt node-pty binary doesn't match Obsidian's Electron version.",
+    "",
+    "Rebuild against Obsidian's Electron (run in the plugin directory):",
+    `  cd ~/Desktop/second-brain/.obsidian/plugins/command-center`,
+    `  npx electron-rebuild -v ${electron || "<electron-version>"} -m . -w node-pty`,
+    "",
+    "If that doesn't work, the spawn-helper might lack +x. Run:",
+    "  chmod +x node_modules/node-pty/prebuilds/*/spawn-helper"
+  ].join("\n");
 }
 var LAUNCHERS = [
   { id: "claude", label: "Claude Code", cmd: "claude", args: [] },
@@ -36431,21 +37676,21 @@ var XTERM_OPTIONS = {
   }
 };
 function TabTerminal({ cwd }) {
-  const containerRef = React15.useRef(null);
-  const termRef = React15.useRef(null);
-  const fitRef = React15.useRef(null);
-  const ptyRef = React15.useRef(null);
-  const [launcher, setLauncher] = React15.useState(LAUNCHERS[0]);
-  const [status, setStatus] = React15.useState("idle");
-  const [errMsg, setErrMsg] = React15.useState("");
-  const [restartKey, setRestartKey] = React15.useState(0);
-  React15.useEffect(() => {
+  const containerRef = React16.useRef(null);
+  const termRef = React16.useRef(null);
+  const fitRef = React16.useRef(null);
+  const ptyRef = React16.useRef(null);
+  const [launcher, setLauncher] = React16.useState(LAUNCHERS[0]);
+  const [status, setStatus] = React16.useState("idle");
+  const [errMsg, setErrMsg] = React16.useState("");
+  const [restartKey, setRestartKey] = React16.useState(0);
+  React16.useEffect(() => {
     if (!containerRef.current)
       return;
     const nodePty = loadNodePty();
     if (!nodePty) {
       setStatus("error");
-      setErrMsg("node-pty unavailable \u2014 check the dev console (Cmd-Opt-I) for the load error. The plugin's postinstall hook should set spawn-helper +x. If it didn't, run: chmod +x ~/Desktop/second-brain/.obsidian/plugins/command-center/node_modules/node-pty/prebuilds/*/spawn-helper");
+      setErrMsg(diagnoseLoadFailure());
       return;
     }
     const term = new import_xterm.Terminal(XTERM_OPTIONS);
@@ -36512,16 +37757,16 @@ function TabTerminal({ cwd }) {
   }, [launcher, restartKey, cwd]);
   const restart = () => setRestartKey((k) => k + 1);
   const focusTerm = () => termRef.current?.focus();
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(GlassCard, { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 10 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { gap: 10, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(TerminalIcon, { size: 14, opacity: 0.7 }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Label, { children: "Terminal" }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { color: "rgba(255,255,255,0.16)", fontSize: 10 }, children: "\xB7" }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.42)", letterSpacing: 0.04 }, children: cwd })
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(GlassCard, { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 10 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Row, { gap: 10, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(TerminalIcon, { size: 14, opacity: 0.7 }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Label, { children: "Terminal" }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: { color: "rgba(255,255,255,0.16)", fontSize: 10 }, children: "\xB7" }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.42)", letterSpacing: 0.04 }, children: cwd })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { gap: 6, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "seg", role: "tablist", style: { padding: 2 }, children: LAUNCHERS.map((l) => /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Row, { gap: 6, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { className: "seg", role: "tablist", style: { padding: 2 }, children: LAUNCHERS.map((l) => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           "button",
           {
             role: "tab",
@@ -36533,7 +37778,7 @@ function TabTerminal({ cwd }) {
           },
           l.id
         )) }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           "button",
           {
             className: "pill",
@@ -36545,7 +37790,7 @@ function TabTerminal({ cwd }) {
         )
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
       "div",
       {
         ref: containerRef,
@@ -36554,23 +37799,23 @@ function TabTerminal({ cwd }) {
         style: { flex: 1, minHeight: 0, background: "#0A0A0B", borderRadius: 8, padding: 10, border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { justify: "space-between", align: "center", style: { marginTop: 8 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Row, { gap: 6, align: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Row, { justify: "space-between", align: "center", style: { marginTop: 8 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Row, { gap: 6, align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: {
           width: 7,
           height: 7,
           borderRadius: 50,
           background: status === "running" ? "rgba(155,210,150,0.86)" : status === "exited" ? "rgba(255,255,255,0.32)" : status === "error" ? "rgba(224,130,140,0.86)" : "rgba(255,255,255,0.18)",
           boxShadow: status === "running" ? "0 0 8px rgba(155,210,150,0.5)" : "none"
         } }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.62)", letterSpacing: 0.06, textTransform: "uppercase" }, children: status === "running" ? `${launcher.cmd} \xB7 live` : status })
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.62)", letterSpacing: 0.06, textTransform: "uppercase" }, children: status === "running" ? `${launcher.cmd} \xB7 live` : status })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)" }, children: [
         "click to focus \xB7 keys go straight to ",
         launcher.cmd
       ] })
     ] }),
-    errMsg && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: {
+    errMsg && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
       marginTop: 8,
       padding: "8px 10px",
       background: "rgba(255,255,255,0.03)",
@@ -36584,9 +37829,9 @@ function TabTerminal({ cwd }) {
 }
 
 // src/terminal-view.tsx
-var import_jsx_runtime20 = __toESM(require_jsx_runtime());
+var import_jsx_runtime21 = __toESM(require_jsx_runtime());
 var COMMAND_CENTER_TERMINAL_VIEW = "command-center-terminal-view";
-var CommandCenterTerminalView = class extends import_obsidian12.ItemView {
+var CommandCenterTerminalView = class extends import_obsidian15.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.root = null;
@@ -36622,7 +37867,7 @@ var CommandCenterTerminalView = class extends import_obsidian12.ItemView {
     this.cwd = cwd;
     this.root = (0, import_client2.createRoot)(container);
     this.root.render(
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(React16.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(TabTerminal, { cwd: this.cwd }) })
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(React17.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TabTerminal, { cwd: this.cwd }) })
     );
   }
   async onClose() {
@@ -36852,9 +38097,18 @@ function ensureXtermStyles() {
   el.textContent = xterm_default;
   document.head.appendChild(el);
 }
-var CommandCenterPlugin = class extends import_obsidian13.Plugin {
+var CommandCenterPlugin = class extends import_obsidian16.Plugin {
   async onload() {
     ensureXtermStyles();
+    try {
+      const adapter = this.app.vault.adapter;
+      const basePath = typeof adapter.getBasePath === "function" ? adapter.getBasePath() : adapter.basePath;
+      if (basePath && this.manifest.dir) {
+        window.__ccPluginRoot = `${basePath}/${this.manifest.dir}`;
+      }
+    } catch (e) {
+      console.warn("[command-center] couldn't resolve plugin root:", e);
+    }
     this.registerView(COMMAND_CENTER_VIEW, (leaf) => new CommandCenterView(leaf, this));
     this.registerView(COMMAND_CENTER_TERMINAL_VIEW, (leaf) => new CommandCenterTerminalView(leaf, this));
     this.addRibbonIcon("layout-dashboard", "Open Command Center", () => {

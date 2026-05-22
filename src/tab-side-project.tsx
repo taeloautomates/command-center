@@ -9,6 +9,9 @@ import { ageStr } from "./data-sources/hn";
 import type { RedditPost } from "./data-sources/reddit";
 import { ageStr as redditAge } from "./data-sources/reddit";
 import type { Tweet } from "./data-sources/tweets";
+import type { SlackBriefing } from "./data-sources/slack";
+import { slackAge } from "./data-sources/slack";
+import { askClaude } from "./data-sources/ai-bridge";
 
 function KPILine({ label, current, target }: { label: string; current: number; target: number }) {
   return (
@@ -441,8 +444,117 @@ function TrendCard({ trending }: { trending: TrendReport | null }) {
   );
 }
 
+function SlackBriefingCard({ slack }: { slack: SlackBriefing }) {
+  const [summary, setSummary] = React.useState<string>("");
+  const [summarizing, setSummarizing] = React.useState(false);
+  const [err, setErr] = React.useState("");
+
+  const onSummarize = async () => {
+    if (slack.messages.length === 0) return;
+    setSummarizing(true);
+    setErr("");
+    try {
+      const transcript = slack.messages.slice(0, 40).map((m) =>
+        `[#${m.channelName}] ${m.userName} (${slackAge(m.ageMs)} ago): ${m.text}`
+      ).join("\n");
+      const prompt = `You are Taelo's Slack triage assistant. Below are the most recent messages from his side-project channels in the last ${Math.round(slack.messages[0]?.ageMs / 3_600_000) || 24}h.
+
+${transcript}
+
+Extract a tight, prioritized list of items that need Taelo's action. For each item:
+- one line, prefixed with "→ "
+- name the channel and who's blocked on him
+- skip pure FYI messages, social chatter, and bot noise
+
+If nothing needs his action, say so in one line. No preamble, no headers.`;
+      const out = await askClaude(prompt, { timeoutMs: 30_000 });
+      setSummary(out.trim());
+    } catch (e: any) {
+      setErr(e?.message || "Summary failed");
+    } finally {
+      setSummarizing(false);
+    }
+  };
+
+  return (
+    <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
+      <Row justify="space-between" align="center" style={{ marginBottom: 12 }}>
+        <Row gap={8} align="center">
+          <Label>Slack · {slack.team}</Label>
+          <span title="Live" style={{
+            width: 6, height: 6, borderRadius: 50,
+            background: "rgba(155,210,150,0.86)",
+            boxShadow: "0 0 6px rgba(155,210,150,0.5)",
+          }} />
+        </Row>
+        <Row gap={6}>
+          <span className="mono tabular" style={{ fontSize: 10, color: "rgba(255,255,255,0.42)" }}>
+            {slack.messages.length} msgs · {slack.channelsScanned} ch
+          </span>
+          <button
+            className="pill"
+            onClick={onSummarize}
+            disabled={summarizing || slack.messages.length === 0}
+            style={{ padding: "3px 10px", fontSize: 10 }}
+            title="Send recent messages to Claude and extract action items"
+          >
+            {summarizing ? "…" : summary ? "↻ resummarize" : "summarize"}
+          </button>
+        </Row>
+      </Row>
+
+      {summary && (
+        <div style={{
+          marginBottom: 12, padding: "10px 12px",
+          background: "rgba(155,210,150,0.04)",
+          border: "1px solid rgba(155,210,150,0.18)",
+          borderRadius: 6, fontSize: 12, lineHeight: 1.55,
+          color: "rgba(255,255,255,0.88)", whiteSpace: "pre-wrap",
+        }}>{summary}</div>
+      )}
+      {err && (
+        <div style={{
+          marginBottom: 12, padding: "8px 10px", fontSize: 11,
+          background: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(224,130,140,0.32)",
+          borderRadius: 6, color: "rgba(224,130,140,0.86)",
+        }}>{err}</div>
+      )}
+
+      <Col gap={0} style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+        {slack.messages.length === 0 ? (
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.42)" }}>
+            No messages in the last {/* lookback shown by data source */}window.
+          </div>
+        ) : (
+          slack.messages.slice(0, 8).map((m, i) => (
+            <Row key={i} gap={8} align="start" style={{
+              padding: "8px 0",
+              borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.04)",
+            }}>
+              <span className="mono" style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", minWidth: 60 }}>
+                #{m.channelName}
+              </span>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", minWidth: 90, maxWidth: 90, textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+                {m.userName}
+              </span>
+              <span style={{
+                flex: 1, fontSize: 12, color: "rgba(255,255,255,0.92)", letterSpacing: -0.005,
+                textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap",
+              }}>{m.text}</span>
+              <span className="tabular" style={{ fontSize: 10, color: "rgba(255,255,255,0.38)" }}>
+                {slackAge(m.ageMs)}
+              </span>
+            </Row>
+          ))
+        )}
+      </Col>
+    </GlassCard>
+  );
+}
+
 export function TabSideProject({
-  todos, toggleTodo, trending, manual, news, reddit, tweets,
+  todos, toggleTodo, trending, manual, news, reddit, tweets, slack,
 }: {
   todos: Todo[];
   toggleTodo: (id: string) => void;
@@ -451,6 +563,7 @@ export function TabSideProject({
   news: NewsItem[];
   reddit: RedditPost[];
   tweets: Tweet[];
+  slack: SlackBriefing | null;
 }) {
   return (
     <div className="surface" style={{ flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -459,6 +572,11 @@ export function TabSideProject({
         <div style={{ flex: 1, minHeight: 0, display: "flex" }}>
           <SaaSCard todos={todos} toggleTodo={toggleTodo} />
         </div>
+        {slack && (
+          <div style={{ flex: 0.9, minHeight: 0, display: "flex" }}>
+            <SlackBriefingCard slack={slack} />
+          </div>
+        )}
       </Col>
       <Col gap={12} style={{ minHeight: 0 }}>
         <div style={{ flex: 1.1, minHeight: 0, display: "flex" }}>
