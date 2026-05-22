@@ -11,6 +11,9 @@ import type { Bookmark } from "./data-sources/bookmarks";
 import { pickDailyBookmarks } from "./data-sources/bookmarks";
 import type { AppleNote } from "./data-sources/apple-notes";
 import { showAppleNote, notesAge } from "./data-sources/apple-notes";
+import type { TodaysStory } from "./data-sources/today-story";
+import { upscaleWikiThumb } from "./data-sources/today-story";
+import type { LanguagesOfTheDay } from "./data-sources/languages";
 
 /* ── Hero: Creative Spark + Quote of the Day ─────────────────────
    The Inspired tab's centerpiece. Left half is a real artwork pulled from
@@ -36,7 +39,7 @@ function CreativeSparkHero({ artwork, quote }: { artwork: Artwork | null; quote:
             />
             <div className="cc-art-caption">
               <span className="mono" style={{ fontSize: 9, letterSpacing: 0.16, textTransform: "uppercase", color: "rgba(255,255,255,0.62)" }}>
-                Met · {artwork.date}
+                {artwork.museum} · {artwork.date}
               </span>
             </div>
           </a>
@@ -64,7 +67,7 @@ function CreativeSparkHero({ artwork, quote }: { artwork: Artwork | null; quote:
               className="mono"
               style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 }}
             >
-              metmuseum.org ↗
+              {artwork.museum === "Met" ? "metmuseum.org" : artwork.museum === "Art Institute of Chicago" ? "artic.edu" : "clevelandart.org"} ↗
             </a>
           )}
         </Row>
@@ -356,8 +359,144 @@ function AppleNotesCard({ notes }: { notes: AppleNote[] }) {
   );
 }
 
+function TodaysStoryCard({ story }: { story: TodaysStory | null }) {
+  if (!story) {
+    return (
+      <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+        <Label>Today in history</Label>
+        <div style={{ marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.42)" }}>
+          Loading…
+        </div>
+      </GlassCard>
+    );
+  }
+  return (
+    <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
+      <Row justify="space-between" align="center" style={{ marginBottom: 10 }}>
+        <Row gap={8} align="center">
+          <Label>Today in history</Label>
+          <span className="tabular" style={{ fontSize: 11, color: "rgba(255,255,255,0.62)", fontWeight: 600 }}>
+            {story.year}
+          </span>
+        </Row>
+        <a
+          href={story.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mono"
+          style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 }}
+        >wikipedia ↗</a>
+      </Row>
+      <Row gap={12} align="start" style={{ flex: 1, minHeight: 0 }}>
+        {story.thumbnail && (
+          <a href={story.url} target="_blank" rel="noopener noreferrer" style={{ flexShrink: 0, lineHeight: 0 }}>
+            <img
+              src={upscaleWikiThumb(story.thumbnail, 240)}
+              alt={story.subject}
+              loading="lazy"
+              style={{
+                width: 96, height: 120, objectFit: "cover",
+                borderRadius: 4, border: "1px solid rgba(255,255,255,0.06)",
+              }}
+            />
+          </a>
+        )}
+        <Col gap={6} style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.005, lineHeight: 1.3 }}>
+            {story.subject}
+          </span>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.78)", letterSpacing: -0.005, lineHeight: 1.45,
+            display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden",
+          }}>
+            {story.text}
+          </span>
+          <span style={{
+            fontSize: 11, color: "rgba(255,255,255,0.58)", letterSpacing: -0.005, lineHeight: 1.5,
+            fontStyle: "italic",
+            display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden",
+          }}>
+            {story.extract}
+          </span>
+        </Col>
+      </Row>
+    </GlassCard>
+  );
+}
+
+function LanguagesCard({ languages }: { languages: LanguagesOfTheDay }) {
+  const fr = languages.french[0];
+  const zh = languages.chinese[0];
+  return (
+    <GlassCard style={{ padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }} clickable>
+      <Row justify="space-between" align="center" style={{ marginBottom: 12 }}>
+        <Label>Learn · today</Label>
+        <span className="mono" style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }}>
+          edit · languages.md
+        </span>
+      </Row>
+      <Col gap={14} style={{ flex: 1, minHeight: 0, justifyContent: "space-evenly" }}>
+        {/* French */}
+        {fr ? (
+          <Col gap={4}>
+            <Row gap={8} align="center">
+              <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
+                Français
+              </span>
+              <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
+            </Row>
+            <span style={{ fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.2 }}>
+              {fr.text}
+            </span>
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4 }}>
+              {fr.meaning}
+            </span>
+            {fr.note && (
+              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }}>
+                {fr.note}
+              </span>
+            )}
+          </Col>
+        ) : (
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>No French phrases yet — add some to languages.md</span>
+        )}
+        {/* Chinese */}
+        {zh ? (
+          <Col gap={4}>
+            <Row gap={8} align="center">
+              <span className="mono" style={{ fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }}>
+                中文
+              </span>
+              <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
+            </Row>
+            <Row gap={10} align="baseline">
+              <span style={{ fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: 0.02, lineHeight: 1.1 }}>
+                {zh.text}
+              </span>
+              {zh.pronunciation && (
+                <span className="mono" style={{ fontSize: 11, color: "rgba(255,255,255,0.62)", letterSpacing: 0.02 }}>
+                  {zh.pronunciation}
+                </span>
+              )}
+            </Row>
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -0.005, lineHeight: 1.4 }}>
+              {zh.meaning}
+            </span>
+            {zh.note && (
+              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }}>
+                {zh.note}
+              </span>
+            )}
+          </Col>
+        ) : (
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.38)" }}>No Chinese phrases yet — add some to languages.md</span>
+        )}
+      </Col>
+    </GlassCard>
+  );
+}
+
 export function TabInspired({
-  quotes, brainDump, onBrainDump, artwork, songs, bookmarks, appleNotes,
+  quotes, brainDump, onBrainDump, artwork, songs, bookmarks, appleNotes, story, languages,
 }: {
   quotes: Quote[];
   brainDump: BrainDumpEntry[];
@@ -366,6 +505,8 @@ export function TabInspired({
   songs: Song[];
   bookmarks: Bookmark[];
   appleNotes: AppleNote[];
+  story: TodaysStory | null;
+  languages: LanguagesOfTheDay;
 }) {
   const dailyQuote = React.useMemo(() => pickDailyQuote(quotes), [quotes]);
   const feed = React.useMemo(
@@ -374,25 +515,28 @@ export function TabInspired({
   );
   return (
     <div className="surface" style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-      {/* Hero — Creative Spark with real art + quote */}
-      <div style={{ flex: "0 0 280px", display: "flex" }}>
+      {/* Hero — Creative Spark (rotating museums) with daily quote */}
+      <div style={{ flex: "0 0 260px", display: "flex" }}>
         <CreativeSparkHero artwork={artwork} quote={dailyQuote} />
       </div>
-      {/* 2-col × 3-row grid; BrainDump spans both columns on the last row */}
+      {/* 2-col × 3-row grid:
+            Row 1: Today in history    | Learn (FR + ZH)
+            Row 2: Apple Notes         | Music
+            Row 3: Bookmark Revival    | Brain Dump
+       */}
       <div style={{
         flex: 1, minHeight: 0,
         display: "grid",
-        gridTemplateColumns: "1.1fr 1fr",
+        gridTemplateColumns: "1.2fr 1fr",
         gridTemplateRows: "1fr 1fr 1fr",
         gap: 12,
       }}>
-        <QuotesFeedCard quotes={feed} />
-        <MusicCard songs={songs} />
+        <TodaysStoryCard story={story} />
+        <LanguagesCard languages={languages} />
         <AppleNotesCard notes={appleNotes} />
+        <MusicCard songs={songs} />
         <BookmarkRevivalCard bookmarks={bookmarks} />
-        <div style={{ gridColumn: "span 2" }}>
-          <BrainDumpCard entries={brainDump} onSubmit={onBrainDump} />
-        </div>
+        <BrainDumpCard entries={brainDump} onSubmit={onBrainDump} />
       </div>
     </div>
   );

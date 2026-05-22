@@ -31001,10 +31001,10 @@ __export(main_exports, {
   default: () => CommandCenterPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian16 = require("obsidian");
+var import_obsidian18 = require("obsidian");
 
 // src/view.tsx
-var import_obsidian14 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 var React15 = __toESM(require_react());
 var import_client = __toESM(require_client());
 
@@ -34458,6 +34458,72 @@ function notesAge(ms) {
   return `${Math.floor(ms / 864e5 / 30)}mo`;
 }
 
+// src/data-sources/today-story.ts
+var import_obsidian8 = require("obsidian");
+var CACHE_TTL_MS3 = 60 * 60 * 1e3;
+var cache3 = null;
+function dailyHash(date = /* @__PURE__ */ new Date()) {
+  const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  let h = 0;
+  for (let i = 0; i < key.length; i++)
+    h = h * 31 + key.charCodeAt(i) | 0;
+  return Math.abs(h);
+}
+async function loadTodaysStory() {
+  const now = /* @__PURE__ */ new Date();
+  const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  if (cache3 && cache3.dateKey === dateKey && Date.now() - cache3.fetchedAt < CACHE_TTL_MS3) {
+    return cache3.story;
+  }
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  try {
+    const res = await (0, import_obsidian8.requestUrl)({
+      url: `https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/${mm}/${dd}`,
+      throw: false
+    });
+    if (res.status >= 400) {
+      cache3 = { story: null, fetchedAt: Date.now(), dateKey };
+      return null;
+    }
+    const events = res.json?.selected ?? [];
+    const eligible = [];
+    for (const e of events) {
+      const pages = e.pages ?? [];
+      const withThumb = pages.find((p) => p.thumbnail?.source);
+      if (withThumb && withThumb.extract) {
+        eligible.push({ event: e, page: withThumb });
+      }
+    }
+    if (eligible.length === 0) {
+      cache3 = { story: null, fetchedAt: Date.now(), dateKey };
+      return null;
+    }
+    const picked = eligible[dailyHash(now) % eligible.length];
+    const story = {
+      year: String(picked.event.year ?? ""),
+      text: stripParenPictured(String(picked.event.text ?? "")).trim(),
+      subject: picked.page.titles?.normalized || picked.page.title || "",
+      extract: String(picked.page.extract ?? "").trim(),
+      thumbnail: picked.page.thumbnail?.source,
+      url: picked.page.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(picked.page.title || "")}`
+    };
+    cache3 = { story, fetchedAt: Date.now(), dateKey };
+    return story;
+  } catch (e) {
+    console.warn("[command-center] today-story load failed:", e);
+    return null;
+  }
+}
+function stripParenPictured(s) {
+  return s.replace(/\s*\(pictured\)\s*/gi, " ").replace(/\s{2,}/g, " ");
+}
+function upscaleWikiThumb(url, px = 600) {
+  if (!url)
+    return url;
+  return url.replace(/\/(\d+)px-/, `/${px}px-`);
+}
+
 // src/tab-inspired.tsx
 var import_jsx_runtime13 = __toESM(require_jsx_runtime());
 function CreativeSparkHero({ artwork, quote }) {
@@ -34479,7 +34545,8 @@ function CreativeSparkHero({ artwork, quote }) {
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "cc-art-caption", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.16, textTransform: "uppercase", color: "rgba(255,255,255,0.62)" }, children: [
-        "Met \xB7 ",
+        artwork.museum,
+        " \xB7 ",
         artwork.date
       ] }) })
     ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
@@ -34495,7 +34562,7 @@ function CreativeSparkHero({ artwork, quote }) {
     /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "cc-art-side", children: [
       /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Creative Spark \xB7 today" }),
-        artwork && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        artwork && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
           "a",
           {
             href: artwork.sourceUrl,
@@ -34503,7 +34570,10 @@ function CreativeSparkHero({ artwork, quote }) {
             rel: "noopener noreferrer",
             className: "mono",
             style: { fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 },
-            children: "metmuseum.org \u2197"
+            children: [
+              artwork.museum === "Met" ? "metmuseum.org" : artwork.museum === "Art Institute of Chicago" ? "artic.edu" : "clevelandart.org",
+              " \u2197"
+            ]
           }
         )
       ] }),
@@ -34551,56 +34621,6 @@ function CreativeSparkHero({ artwork, quote }) {
         ] })
       ] })
     ] })
-  ] });
-}
-function QuoteRow({ q }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 6, style: { padding: "14px 0", borderTop: "1px solid rgba(255,255,255,0.04)" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
-      fontSize: 14,
-      letterSpacing: -5e-3,
-      lineHeight: 1.45,
-      color: "rgba(255,255,255,0.86)",
-      fontFamily: "Georgia, 'Times New Roman', serif",
-      fontStyle: "italic"
-    }, children: [
-      '"',
-      q.text,
-      '"'
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, fontWeight: 500, color: "rgba(255,255,255,0.62)", letterSpacing: 0.02 }, children: q.author }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "rgba(255,255,255,0.16)" }, children: "\xB7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.38)", fontStyle: "italic" }, children: q.source }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1 } }),
-      q.tag && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.12, textTransform: "uppercase", color: "rgba(255,255,255,0.32)", padding: "2px 6px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 999 }, children: q.tag })
-    ] })
-  ] });
-}
-function QuotesFeedCard({ quotes }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 20, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 8 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 10, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Saved Highlights" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)" }, children: "command-center/quotes.md" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 6, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "pill ghost", style: { padding: "3px 10px", fontSize: 10 }, children: "all" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "pill ghost", style: { padding: "3px 10px", fontSize: 10 }, children: "books" })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "scroll", style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Col, { gap: 0, children: quotes.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
-      padding: "16px 12px",
-      border: "1px dashed rgba(255,255,255,0.08)",
-      borderRadius: 8,
-      fontSize: 11,
-      color: "rgba(255,255,255,0.38)",
-      textAlign: "center",
-      marginTop: 8
-    }, children: [
-      "No quotes yet. Edit ",
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", children: "command-center/quotes.md" }),
-      " in the vault."
-    ] }) : quotes.map((q, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(QuoteRow, { q }, i)) }) })
   ] });
 }
 function MusicCard({ songs }) {
@@ -34777,6 +34797,107 @@ function AppleNotesCard({ notes }) {
     )) })
   ] });
 }
+function TodaysStoryCard({ story }) {
+  if (!story) {
+    return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Today in history" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.42)" }, children: "Loading\u2026" })
+    ] });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 10 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Today in history" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "tabular", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", fontWeight: 600 }, children: story.year })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "a",
+        {
+          href: story.url,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          className: "mono",
+          style: { fontSize: 10, color: "rgba(255,255,255,0.32)", textDecoration: "none", letterSpacing: 0.04 },
+          children: "wikipedia \u2197"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 12, align: "start", style: { flex: 1, minHeight: 0 }, children: [
+      story.thumbnail && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("a", { href: story.url, target: "_blank", rel: "noopener noreferrer", style: { flexShrink: 0, lineHeight: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "img",
+        {
+          src: upscaleWikiThumb(story.thumbnail, 240),
+          alt: story.subject,
+          loading: "lazy",
+          style: {
+            width: 96,
+            height: 120,
+            objectFit: "cover",
+            borderRadius: 4,
+            border: "1px solid rgba(255,255,255,0.06)"
+          }
+        }
+      ) }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 6, style: { flex: 1, minWidth: 0, overflow: "hidden" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -5e-3, lineHeight: 1.3 }, children: story.subject }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+          fontSize: 12,
+          color: "rgba(255,255,255,0.78)",
+          letterSpacing: -5e-3,
+          lineHeight: 1.45,
+          display: "-webkit-box",
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden"
+        }, children: story.text }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+          fontSize: 11,
+          color: "rgba(255,255,255,0.58)",
+          letterSpacing: -5e-3,
+          lineHeight: 1.5,
+          fontStyle: "italic",
+          display: "-webkit-box",
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden"
+        }, children: story.extract })
+      ] })
+    ] })
+  ] });
+}
+function LanguagesCard({ languages }) {
+  const fr = languages.french[0];
+  const zh = languages.chinese[0];
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(GlassCard, { style: { padding: 16, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }, clickable: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { justify: "space-between", align: "center", style: { marginBottom: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Label, { children: "Learn \xB7 today" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: 0.04 }, children: "edit \xB7 languages.md" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 14, style: { flex: 1, minHeight: 0, justifyContent: "space-evenly" }, children: [
+      fr ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 4, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "Fran\xE7ais" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: -0.012, lineHeight: 1.2 }, children: fr.text }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4 }, children: fr.meaning }),
+        fr.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }, children: fr.note })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No French phrases yet \u2014 add some to languages.md" }),
+      zh ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Col, { gap: 4, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 8, align: "center", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 9, letterSpacing: 0.14, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", fontWeight: 600 }, children: "\u4E2D\u6587" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { flex: 1, height: 1, background: "rgba(255,255,255,0.06)" } })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { gap: 10, align: "baseline", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.96)", letterSpacing: 0.02, lineHeight: 1.1 }, children: zh.text }),
+          zh.pronunciation && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "mono", style: { fontSize: 11, color: "rgba(255,255,255,0.62)", letterSpacing: 0.02 }, children: zh.pronunciation })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.74)", letterSpacing: -5e-3, lineHeight: 1.4 }, children: zh.meaning }),
+        zh.note && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.42)", fontStyle: "italic" }, children: zh.note })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.38)" }, children: "No Chinese phrases yet \u2014 add some to languages.md" })
+    ] })
+  ] });
+}
 function TabInspired({
   quotes,
   brainDump,
@@ -34784,7 +34905,9 @@ function TabInspired({
   artwork,
   songs,
   bookmarks,
-  appleNotes
+  appleNotes,
+  story,
+  languages
 }) {
   const dailyQuote = React9.useMemo(() => pickDailyQuote(quotes), [quotes]);
   const feed = React9.useMemo(
@@ -34792,20 +34915,21 @@ function TabInspired({
     [quotes, dailyQuote]
   );
   return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "surface", style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 12 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { flex: "0 0 280px", display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CreativeSparkHero, { artwork, quote: dailyQuote }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { flex: "0 0 260px", display: "flex" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CreativeSparkHero, { artwork, quote: dailyQuote }) }),
     /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
       flex: 1,
       minHeight: 0,
       display: "grid",
-      gridTemplateColumns: "1.1fr 1fr",
+      gridTemplateColumns: "1.2fr 1fr",
       gridTemplateRows: "1fr 1fr 1fr",
       gap: 12
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(QuotesFeedCard, { quotes: feed }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(MusicCard, { songs }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(TodaysStoryCard, { story }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(LanguagesCard, { languages }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(AppleNotesCard, { notes: appleNotes }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(MusicCard, { songs }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BookmarkRevivalCard, { bookmarks }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { gridColumn: "span 2" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BrainDumpCard, { entries: brainDump, onSubmit: onBrainDump }) })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BrainDumpCard, { entries: brainDump, onSubmit: onBrainDump })
     ] })
   ] });
 }
@@ -34814,9 +34938,9 @@ function TabInspired({
 var React10 = __toESM(require_react());
 
 // src/data-sources/youtube.ts
-var import_obsidian8 = require("obsidian");
-var CACHE_TTL_MS3 = 10 * 60 * 1e3;
-var cache3 = null;
+var import_obsidian9 = require("obsidian");
+var CACHE_TTL_MS4 = 10 * 60 * 1e3;
+var cache4 = null;
 function normalizeHandle(input) {
   const s = input.trim();
   if (!s)
@@ -34827,7 +34951,7 @@ function normalizeHandle(input) {
 }
 async function fetchJSON(url) {
   try {
-    const res = await (0, import_obsidian8.requestUrl)({ url, throw: false });
+    const res = await (0, import_obsidian9.requestUrl)({ url, throw: false });
     if (res.status >= 400) {
       console.warn("[command-center] YouTube API error", res.status, res.text?.slice(0, 200));
       return null;
@@ -34841,8 +34965,8 @@ async function fetchJSON(url) {
 async function loadYouTubeChannel(apiKey, handleOrId) {
   if (!apiKey || !handleOrId)
     return null;
-  if (cache3 && Date.now() - cache3.fetchedAt < CACHE_TTL_MS3)
-    return cache3;
+  if (cache4 && Date.now() - cache4.fetchedAt < CACHE_TTL_MS4)
+    return cache4;
   const { handle, channelId } = normalizeHandle(handleOrId);
   const idParam = channelId ? `id=${encodeURIComponent(channelId)}` : `forHandle=${encodeURIComponent(handle)}`;
   const chData = await fetchJSON(
@@ -34885,7 +35009,7 @@ async function loadYouTubeChannel(apiKey, handleOrId) {
       };
     });
   }
-  cache3 = {
+  cache4 = {
     subs: parseInt(item.statistics?.subscriberCount ?? "0", 10),
     totalViews: parseInt(item.statistics?.viewCount ?? "0", 10),
     totalVideos: parseInt(item.statistics?.videoCount ?? "0", 10),
@@ -34894,7 +35018,7 @@ async function loadYouTubeChannel(apiKey, handleOrId) {
     recentUploads: uploads,
     fetchedAt: Date.now()
   };
-  return cache3;
+  return cache4;
 }
 function fmtCount(n) {
   if (!Number.isFinite(n))
@@ -35166,7 +35290,7 @@ var DEFAULT_STATE = {
 };
 
 // src/persistence.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 var TODOS_SIDE_PROJECT = "command-center/todos/side-project.md";
 var TODOS_EOD = "command-center/todos/eod.md";
 var MIT_FILE = "command-center/mit.md";
@@ -35199,9 +35323,9 @@ startedAt: "11:02"
 Edit /watch tutorial \u2014 final cut pass
 `;
 async function ensureFile4(app, path4, seed) {
-  const np = (0, import_obsidian9.normalizePath)(path4);
+  const np = (0, import_obsidian10.normalizePath)(path4);
   let f = app.vault.getAbstractFileByPath(np);
-  if (f instanceof import_obsidian9.TFile)
+  if (f instanceof import_obsidian10.TFile)
     return f;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
@@ -35233,9 +35357,9 @@ async function loadTodos(app, path4, seed) {
   return parseTodos(content);
 }
 async function saveTodos(app, path4, todos) {
-  const np = (0, import_obsidian9.normalizePath)(path4);
+  const np = (0, import_obsidian10.normalizePath)(path4);
   const file = app.vault.getAbstractFileByPath(np);
-  if (!(file instanceof import_obsidian9.TFile))
+  if (!(file instanceof import_obsidian10.TFile))
     return;
   const content = await app.vault.read(file);
   const lines = content.split(/\r?\n/);
@@ -35380,9 +35504,9 @@ async function loadTrunk(app) {
   return parseTrunk(content);
 }
 async function saveTrunk(app, items) {
-  const np = (0, import_obsidian9.normalizePath)(TRUNK_FILE);
+  const np = (0, import_obsidian10.normalizePath)(TRUNK_FILE);
   const file = app.vault.getAbstractFileByPath(np);
-  if (!(file instanceof import_obsidian9.TFile))
+  if (!(file instanceof import_obsidian10.TFile))
     return;
   await app.vault.modify(file, serializeTrunk(items));
 }
@@ -35432,7 +35556,7 @@ async function appendBrainDump(app, text) {
   await app.vault.modify(file, lines.join("\n"));
 }
 async function saveMIT(app, mit) {
-  const np = (0, import_obsidian9.normalizePath)(MIT_FILE);
+  const np = (0, import_obsidian10.normalizePath)(MIT_FILE);
   const file = app.vault.getAbstractFileByPath(np);
   const body = `---
 project: ${mit.project}
@@ -35442,7 +35566,7 @@ startedAt: "${mit.startedAt}"
 
 ${mit.title}
 `;
-  if (file instanceof import_obsidian9.TFile)
+  if (file instanceof import_obsidian10.TFile)
     await app.vault.modify(file, body);
   else {
     const folder = np.substring(0, np.lastIndexOf("/"));
@@ -36371,7 +36495,7 @@ async function loadTrendReport() {
 }
 
 // src/data-sources/manual.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 var MANUAL_FILE = "command-center/manual.md";
 var DEFAULT_MANUAL = {
   youtube: {
@@ -36507,9 +36631,9 @@ Leave \`token\` blank to hide the Slack card.
 - **lookbackHours** \u2014 how far back to scan (default 24).
 `;
 async function ensureFile5(app) {
-  const np = (0, import_obsidian10.normalizePath)(MANUAL_FILE);
+  const np = (0, import_obsidian11.normalizePath)(MANUAL_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian10.TFile)
+  if (existing instanceof import_obsidian11.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
@@ -36648,7 +36772,7 @@ async function loadManual(app) {
 }
 
 // src/data-sources/ical.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 function parseICalDate(s) {
   const clean = s.replace(/[^\dTZ]/g, "");
   if (clean.length === 8) {
@@ -36726,7 +36850,7 @@ async function fetchICalEvents(url, name) {
   if (!url)
     return [];
   try {
-    const res = await (0, import_obsidian11.requestUrl)({ url, throw: false });
+    const res = await (0, import_obsidian12.requestUrl)({ url, throw: false });
     if (res.status >= 400)
       return [];
     return parseICal(res.text, name);
@@ -36814,7 +36938,7 @@ async function deleteAppleCalendarEvent(calendar, uid) {
 }
 
 // src/data-sources/tweets.ts
-var import_obsidian12 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 var TWEETS_FILE = "command-center/tweets.md";
 var SEED5 = `# Tweets
 
@@ -36840,9 +36964,9 @@ var SEED5 = `# Tweets
 \u2014 @karpathy \xB7 2d \xB7 https://x.com/karpathy/status/example4
 `;
 async function ensureFile6(app) {
-  const np = (0, import_obsidian12.normalizePath)(TWEETS_FILE);
+  const np = (0, import_obsidian13.normalizePath)(TWEETS_FILE);
   const existing = app.vault.getAbstractFileByPath(np);
-  if (existing instanceof import_obsidian12.TFile)
+  if (existing instanceof import_obsidian13.TFile)
     return existing;
   const folder = np.substring(0, np.lastIndexOf("/"));
   if (folder && !app.vault.getAbstractFileByPath(folder)) {
@@ -36906,98 +37030,360 @@ async function loadTweets(app) {
 }
 
 // src/data-sources/art.ts
-var import_obsidian13 = require("obsidian");
-var CURATED_OBJECT_IDS = [
-  // Hokusai woodblock prints
+var import_obsidian14 = require("obsidian");
+var MET_IDS = [
+  // Hokusai
   45434,
-  // Hokusai — Under the Wave off Kanagawa (Great Wave)
+  // Under the Wave off Kanagawa (Great Wave)
   37362,
-  // Hokusai — Boy Viewing Mount Fuji
+  // Boy Viewing Mount Fuji
   // Van Gogh
   436532,
-  // Van Gogh — Self-Portrait with a Straw Hat (1887)
+  // Self-Portrait with a Straw Hat (1887)
   436535,
-  // Van Gogh — Cypresses (1889)
+  // Cypresses (1889)
   436528,
-  // Van Gogh — Wheat Field with Cypresses
+  // Wheat Field with Cypresses
   436529,
-  // Van Gogh — Sunflowers (1887)
+  // Sunflowers (1887)
   // Monet
   437133,
-  // Monet — Bridge over a Pond of Water Lilies
+  // Bridge over a Pond of Water Lilies
   438008,
-  // Monet — Garden at Sainte-Adresse
+  // Garden at Sainte-Adresse
   437127,
-  // Monet — Camille Monet on a Garden Bench
+  // Camille Monet on a Garden Bench
   // Cézanne
   435868,
-  // Cézanne — Mont Sainte-Victoire
   435882,
-  // Cézanne — Still Life with Apples
   // Vermeer
   437881,
-  // Vermeer — Young Woman with a Water Pitcher
   437879,
-  // Vermeer — Study of a Young Woman
-  // Renoir / Gauguin / Degas
+  // Renoir / Degas
   437429,
-  // Renoir — Madame Charpentier and Her Children
   438821,
-  // Renoir — Two Young Girls at the Piano
   438013,
-  // Degas — The Dance Class
   // Klimt
   436821,
-  // Klimt — Mäda Primavesi (1912)
-  // Caravaggio / Old Masters
+  // Caravaggio
   436577,
-  // Caravaggio — The Musicians
   // Sargent
   11788
-  // Sargent — Madame X
+  // Madame X
 ];
-function dailyIndex(len, date = /* @__PURE__ */ new Date()) {
+var ARTIC_IDS = [
+  16568,
+  // Seurat — A Sunday on La Grande Jatte
+  28560,
+  // Hopper — Nighthawks
+  111628,
+  // Wood — American Gothic
+  20684,
+  // Caillebotte — Paris Street; Rainy Day
+  28067,
+  // Degas — The Millinery Shop
+  16571,
+  // Renoir — Two Sisters (On the Terrace)
+  102611,
+  // Hokusai — Under the Wave (Artic also has it)
+  4884,
+  // O'Keeffe — Sky Above Clouds IV
+  64818,
+  // Picasso — The Old Guitarist
+  111456,
+  // Magritte — Time Transfixed
+  37833,
+  // Toulouse-Lautrec — At the Moulin Rouge
+  16487
+  // Cassatt — The Child's Bath
+];
+var CMA_IDS = [
+  151662,
+  // Caravaggio — The Crucifixion of Saint Andrew
+  93897,
+  // Monet — Water Lilies (Agapanthus)
+  92938,
+  // Picasso — La Vie
+  94979,
+  // Turner — The Burning of the Houses of Lords and Commons
+  92246,
+  // van Gogh — The Large Plane Trees (Road Menders at Saint-Rémy)
+  149860,
+  // Hokusai — A Tour of the Waterfalls of the Provinces
+  118454,
+  // Rodin — The Thinker
+  100997,
+  // Magritte — The Treachery of Images (variant)
+  133987,
+  // Klimt — drawings
+  124190
+  // Whistler — Nocturne in Black and Gold
+];
+var SOURCES = [
+  { key: "met", ids: MET_IDS },
+  { key: "artic", ids: ARTIC_IDS },
+  { key: "cma", ids: CMA_IDS }
+];
+var TOTAL_POOL = SOURCES.reduce((n, s) => n + s.ids.length, 0);
+function dailyHash2(date = /* @__PURE__ */ new Date()) {
   const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   let h = 0;
   for (let i = 0; i < key.length; i++)
     h = h * 31 + key.charCodeAt(i) | 0;
-  return Math.abs(h) % len;
+  return Math.abs(h);
+}
+function rotationOrder() {
+  const flat = [];
+  for (const s of SOURCES)
+    for (const id of s.ids)
+      flat.push({ key: s.key, id });
+  const start = dailyHash2() % flat.length;
+  return [...flat.slice(start), ...flat.slice(0, start)];
 }
 async function loadDailyArtwork() {
-  const start = dailyIndex(CURATED_OBJECT_IDS.length);
-  for (let i = 0; i < CURATED_OBJECT_IDS.length; i++) {
-    const id = CURATED_OBJECT_IDS[(start + i) % CURATED_OBJECT_IDS.length];
-    const art = await tryFetch(id);
+  const order = rotationOrder();
+  for (const entry of order) {
+    const art = await fetchOne(entry.key, entry.id);
     if (art)
       return art;
   }
   return null;
 }
-async function tryFetch(id) {
+async function fetchOne(key, id) {
+  if (key === "met")
+    return fetchMet(id);
+  if (key === "artic")
+    return fetchArtic(id);
+  if (key === "cma")
+    return fetchCMA(id);
+  return null;
+}
+async function fetchMet(id) {
   try {
-    const res = await (0, import_obsidian13.requestUrl)({
+    const res = await (0, import_obsidian14.requestUrl)({
       url: `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`,
       throw: false
     });
     if (res.status >= 400)
       return null;
     const d = res.json;
-    const small = d.primaryImageSmall || d.primaryImage;
-    if (!small)
+    const img = d.primaryImageSmall || d.primaryImage;
+    if (!img)
       return null;
     return {
-      id,
+      id: `met-${id}`,
       title: d.title || "(untitled)",
       artist: d.artistDisplayName || d.culture || "\u2014",
       date: d.objectDate || "\u2014",
       medium: d.medium || d.classification || "",
-      imageUrl: small,
+      imageUrl: img,
       imageUrlHighRes: d.primaryImage || void 0,
       sourceUrl: d.objectURL || `https://www.metmuseum.org/art/collection/search/${id}`,
-      culture: d.culture || void 0
+      culture: d.culture || void 0,
+      museum: "Met"
     };
   } catch {
     return null;
+  }
+}
+async function fetchArtic(id) {
+  try {
+    const fields = [
+      "id",
+      "title",
+      "artist_display",
+      "date_display",
+      "medium_display",
+      "image_id",
+      "is_public_domain",
+      "place_of_origin"
+    ].join(",");
+    const res = await (0, import_obsidian14.requestUrl)({
+      url: `https://api.artic.edu/api/v1/artworks/${id}?fields=${fields}`,
+      throw: false
+    });
+    if (res.status >= 400)
+      return null;
+    const d = res.json?.data;
+    if (!d?.image_id || d.is_public_domain === false)
+      return null;
+    const img = `https://www.artic.edu/iiif/2/${d.image_id}/full/843,/0/default.jpg`;
+    const hi = `https://www.artic.edu/iiif/2/${d.image_id}/full/1686,/0/default.jpg`;
+    return {
+      id: `artic-${id}`,
+      title: d.title || "(untitled)",
+      artist: d.artist_display || "\u2014",
+      date: d.date_display || "\u2014",
+      medium: d.medium_display || "",
+      imageUrl: img,
+      imageUrlHighRes: hi,
+      sourceUrl: `https://www.artic.edu/artworks/${id}`,
+      culture: d.place_of_origin || void 0,
+      museum: "Art Institute of Chicago"
+    };
+  } catch {
+    return null;
+  }
+}
+async function fetchCMA(id) {
+  try {
+    const res = await (0, import_obsidian14.requestUrl)({
+      url: `https://openaccess-api.clevelandart.org/api/artworks/${id}`,
+      throw: false
+    });
+    if (res.status >= 400)
+      return null;
+    const d = res.json?.data;
+    if (!d)
+      return null;
+    const img = d.images?.web?.url || d.images?.print?.url || d.images?.full?.url;
+    if (!img)
+      return null;
+    const hi = d.images?.print?.url || d.images?.full?.url || img;
+    return {
+      id: `cma-${id}`,
+      title: d.title || "(untitled)",
+      artist: d.creators?.[0]?.description || d.culture?.[0] || "\u2014",
+      date: d.creation_date || "\u2014",
+      medium: d.technique || d.type || "",
+      imageUrl: img,
+      imageUrlHighRes: hi,
+      sourceUrl: d.url || `https://www.clevelandart.org/art/${id}`,
+      culture: d.culture?.[0] || void 0,
+      museum: "Cleveland Museum of Art"
+    };
+  } catch {
+    return null;
+  }
+}
+
+// src/data-sources/languages.ts
+var import_obsidian15 = require("obsidian");
+var LANGUAGES_FILE = "command-center/languages.md";
+var SEED6 = `# Languages
+
+One phrase per line. Pipe-separated: \`phrase | meaning | optional note\`.
+Add as many as you want \u2014 the dashboard rotates a fresh pair daily.
+
+For Chinese, include the pinyin in parentheses after the characters so the
+dashboard can show pronunciation: \`\u4F60\u597D (n\u01D0 h\u01CEo) | hello | greeting\`.
+
+## French
+
+- bonjour | hello | greeting
+- merci beaucoup | thank you very much | polite
+- comment \xE7a va ? | how are you? | casual
+- je vais bien | I'm doing well | response
+- on y va | let's go | colloquial
+- \xE0 plus tard | see you later | parting
+- \xE7a marche | sounds good, that works | agreement
+- pas de souci | no worries | reassurance
+- je ne sais pas | I don't know | useful
+- au fait | by the way | conversation
+- du coup | so, therefore | filler
+- bien s\xFBr | of course | agreement
+- petit \xE0 petit | little by little | rhythm
+- \xE7a vaut le coup | it's worth it | reflective
+- se d\xE9brouiller | to manage, figure it out | verb
+- en fait | actually, in fact | filler
+- je vous en prie | you're welcome / please | formal
+- tant pis | too bad, oh well | acceptance
+- d'accord | okay, agreed | agreement
+- \xE0 tout \xE0 l'heure | see you in a bit | parting
+
+## Chinese
+
+- \u4F60\u597D (n\u01D0 h\u01CEo) | hello | greeting
+- \u8C22\u8C22 (xi\xE8 xie) | thank you | polite
+- \u4E0D\u5BA2\u6C14 (b\xFA k\xE8 qi) | you're welcome | response
+- \u52A0\u6CB9 (ji\u0101 y\xF3u) | keep going / go for it | motivational
+- \u6211\u4E0D\u77E5\u9053 (w\u01D2 b\xF9 zh\u012B d\xE0o) | I don't know | useful
+- \u6162\u6162\u6765 (m\xE0n m\xE0n l\xE1i) | take your time | calming
+- \u6CA1\u95EE\u9898 (m\xE9i w\xE8n t\xED) | no problem | reassurance
+- \u4E00\u6B65\u4E00\u6B65 (y\xED b\xF9 y\xED b\xF9) | step by step | rhythm
+- \u600E\u4E48\u4E86 (z\u011Bn me le) | what's up / what happened? | casual
+- \u771F\u7684\u5417 (zh\u0113n de ma) | really? | reaction
+- \u542C\u8D77\u6765\u4E0D\u9519 (t\u012Bng q\u01D0 l\xE1i b\xFA cu\xF2) | sounds good | agreement
+- \u6211\u540C\u610F (w\u01D2 t\xF3ng y\xEC) | I agree | useful
+- \u518D\u89C1 (z\xE0i ji\xE0n) | goodbye | parting
+- \u660E\u5929\u89C1 (m\xEDng ti\u0101n ji\xE0n) | see you tomorrow | parting
+- \u522B\u62C5\u5FC3 (bi\xE9 d\u0101n x\u012Bn) | don't worry | reassurance
+- \u6211\u61C2\u4E86 (w\u01D2 d\u01D2ng le) | I get it / I understand now | useful
+- \u52AA\u529B (n\u01D4 l\xEC) | to work hard, effort | virtue
+- \u52A0\u500D\u52AA\u529B (ji\u0101 b\xE8i n\u01D4 l\xEC) | redouble your efforts | motivational
+- \u4E07\u4E8B\u5F00\u5934\u96BE (w\xE0n sh\xEC k\u0101i t\xF3u n\xE1n) | all beginnings are hard | proverb
+- \u5343\u91CC\u4E4B\u884C\uFF0C\u59CB\u4E8E\u8DB3\u4E0B (qi\u0101n l\u01D0 zh\u012B x\xEDng, sh\u01D0 y\xFA z\xFA xi\xE0) | a thousand-mile journey begins with a single step | proverb
+`;
+async function ensureFile7(app) {
+  const np = (0, import_obsidian15.normalizePath)(LANGUAGES_FILE);
+  const existing = app.vault.getAbstractFileByPath(np);
+  if (existing instanceof import_obsidian15.TFile)
+    return existing;
+  const folder = np.substring(0, np.lastIndexOf("/"));
+  if (folder && !app.vault.getAbstractFileByPath(folder)) {
+    await app.vault.createFolder(folder).catch(() => {
+    });
+  }
+  return app.vault.create(np, SEED6);
+}
+function parseFile(text) {
+  const lines = text.split(/\r?\n/);
+  let section = null;
+  const french = [];
+  const chinese = [];
+  for (const raw of lines) {
+    const line = raw.trim();
+    const heading = line.match(/^##\s+(\w+)/i);
+    if (heading) {
+      const h = heading[1].toLowerCase();
+      if (h === "french")
+        section = "french";
+      else if (h === "chinese")
+        section = "chinese";
+      else
+        section = null;
+      continue;
+    }
+    if (!section)
+      continue;
+    const m = line.match(/^-\s+(.+)$/);
+    if (!m)
+      continue;
+    const parts = m[1].split("|").map((p) => p.trim());
+    if (parts.length < 2)
+      continue;
+    const phraseRaw = parts[0];
+    const meaning = parts[1];
+    const note = parts[2] || void 0;
+    let text2 = phraseRaw;
+    let pronunciation;
+    const pin = phraseRaw.match(/^(\S.*?)\s*\(([^)]+)\)\s*$/);
+    if (pin && section === "chinese") {
+      text2 = pin[1].trim();
+      pronunciation = pin[2].trim();
+    }
+    (section === "french" ? french : chinese).push({ text: text2, pronunciation, meaning, note });
+  }
+  return { french, chinese };
+}
+function dailyHash3(seed, date = /* @__PURE__ */ new Date()) {
+  const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${seed}`;
+  let h = 0;
+  for (let i = 0; i < key.length; i++)
+    h = h * 31 + key.charCodeAt(i) | 0;
+  return Math.abs(h);
+}
+async function loadLanguagesOfTheDay(app) {
+  try {
+    const file = await ensureFile7(app);
+    const text = await app.vault.read(file);
+    const { french, chinese } = parseFile(text);
+    const pickFr = french.length ? [french[dailyHash3("fr") % french.length]] : [];
+    const pickZh = chinese.length ? [chinese[dailyHash3("zh") % chinese.length]] : [];
+    return { french: pickFr, chinese: pickZh };
+  } catch (e) {
+    console.warn("[command-center] languages load failed:", e);
+    return { french: [], chinese: [] };
   }
 }
 
@@ -37018,6 +37404,8 @@ var EMPTY_LIVE = {
   youtube: null,
   slack: null,
   appleNotes: [],
+  todaysStory: null,
+  languages: { french: [], chinese: [] },
   activityToday: [],
   loadedAt: 0
 };
@@ -37045,14 +37433,18 @@ function CommandCenterApp({ bridge }) {
         loadTopSongs(8),
         loadBookmarks(bridge.app)
       ]);
-      const appleNotes = await loadAppleNotes(8);
+      const [appleNotes, todaysStory, languages] = await Promise.all([
+        loadAppleNotes(8),
+        loadTodaysStory(),
+        loadLanguagesOfTheDay(bridge.app)
+      ]);
       const [calendarEvents, youtube, slack] = await Promise.all([
         manual.calendar.icsUrl ? fetchICalEvents(manual.calendar.icsUrl, manual.calendar.targetCalendar || "calendar") : Promise.resolve([]),
         manual.youtube.apiKey ? loadYouTubeChannel(manual.youtube.apiKey, manual.youtube.handle) : Promise.resolve(null),
         manual.slack?.token && manual.slack?.channels?.length ? loadSlackBriefing(manual.slack.token, manual.slack.channels, manual.slack.lookbackHours ?? 24) : Promise.resolve(null)
       ]);
       const activityToday = await loadTodaysActivity(bridge.app);
-      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, activityToday, loadedAt: Date.now() });
+      setLive({ sessions, trending, quotes, manual, calendarEvents, news, reddit, tweets, artwork, songs, bookmarks, youtube, slack, appleNotes, todaysStory, languages, activityToday, loadedAt: Date.now() });
     } finally {
       setRefreshing(false);
     }
@@ -37533,7 +37925,7 @@ function CommandCenterApp({ bridge }) {
         currentTab === "Side Project" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabSideProject, { todos: sideTodos, toggleTodo: toggleSideTodo, trending: live.trending, manual: live.manual, news: live.news, reddit: live.reddit, tweets: live.tweets, slack: live.slack }),
         currentTab === "9-to-5" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabNineToFive, { eod: eodTodos, toggleEod, placedBlocks, onAddBlock, onRemoveBlock, manual: live.manual, calendarEvents: live.calendarEvents, activity: live.activityToday }),
         currentTab === "Health" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabHealth, { mode: healthMode, setMode: setHealthMode }),
-        currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks, appleNotes: live.appleNotes }),
+        currentTab === "Inspired" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabInspired, { quotes: live.quotes, brainDump, onBrainDump: submitBrainDump, artwork: live.artwork, songs: live.songs, bookmarks: live.bookmarks, appleNotes: live.appleNotes, story: live.todaysStory, languages: live.languages }),
         currentTab === "Social" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TabSocial, { manual: live.manual, youtube: live.youtube })
       ] }, currentTab)
     ] })
@@ -37543,7 +37935,7 @@ function CommandCenterApp({ bridge }) {
 // src/view.tsx
 var import_jsx_runtime19 = __toESM(require_jsx_runtime());
 var COMMAND_CENTER_VIEW = "command-center-view";
-var CommandCenterView = class extends import_obsidian14.ItemView {
+var CommandCenterView = class extends import_obsidian16.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.root = null;
@@ -37580,7 +37972,7 @@ var CommandCenterView = class extends import_obsidian14.ItemView {
 };
 
 // src/terminal-view.tsx
-var import_obsidian15 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 var React17 = __toESM(require_react());
 var import_client2 = __toESM(require_client());
 
@@ -37831,7 +38223,7 @@ function TabTerminal({ cwd }) {
 // src/terminal-view.tsx
 var import_jsx_runtime21 = __toESM(require_jsx_runtime());
 var COMMAND_CENTER_TERMINAL_VIEW = "command-center-terminal-view";
-var CommandCenterTerminalView = class extends import_obsidian15.ItemView {
+var CommandCenterTerminalView = class extends import_obsidian17.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.root = null;
@@ -38097,7 +38489,7 @@ function ensureXtermStyles() {
   el.textContent = xterm_default;
   document.head.appendChild(el);
 }
-var CommandCenterPlugin = class extends import_obsidian16.Plugin {
+var CommandCenterPlugin = class extends import_obsidian18.Plugin {
   async onload() {
     ensureXtermStyles();
     try {
