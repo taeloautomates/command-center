@@ -37,7 +37,7 @@ export function MITBanner({
   return (
     <GlassCard strong focus={active && !paused} style={{ height: 220, padding: "16px 24px", display: "flex", alignItems: "stretch" }}>
       {/* Front seat — physical metaphor for "this is what's buckled in" */}
-      <div style={{ flex: "0 0 180px", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: 8 }}>
+      <div style={{ flex: "0 0 210px", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: 8 }}>
         <FrontSeat
           ballLabel={seatLabel}
           fullTitle={task.title}

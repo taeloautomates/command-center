@@ -549,11 +549,13 @@
   animation: cc-ball-drop 480ms cubic-bezier(.22, .61, .36, 1) both;
 }
 
-/* Front seat — racing bucket seat holding the MIT ball. */
+/* Front seat — full racing-rig bucket seat holding the MIT ball.
+   Wider/taller container so the new 200×220 viewBox renders at proper
+   aspect (seat + frame, not letterboxed). */
 .cc-root .cc-seat {
   position: relative;
-  width: 158px;
-  height: 188px;
+  width: 192px;
+  height: 210px;
   flex-shrink: 0;
   transition: filter 240ms;
 }
@@ -581,19 +583,18 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.6))
-          drop-shadow(0 0 1px rgba(255, 255, 255, 0.16));
-  /* Sleek "ready to launch" pose — angled 3/4 view, tipped slightly forward,
-     leaned back into the cushion. perspective() gives the SVG a faux-3D depth
-     so the headrest reads as further from the camera than the base. */
-  transform: perspective(900px) rotateY(-22deg) rotateX(4deg) rotate(-3deg);
-  transform-origin: 55% 70%;
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.65))
+          drop-shadow(0 0 1px rgba(255, 255, 255, 0.18));
+  /* The 3/4 perspective is drawn into the SVG paths themselves now —
+     no more CSS perspective() squish. A subtle rotate + skew gives the
+     "leaning into the corner" feel without warping geometry. */
+  transform: rotate(-3deg) skewY(-1deg);
+  transform-origin: 50% 80%;
   transition: transform 320ms cubic-bezier(.22, .61, .36, 1);
 }
 .cc-root .cc-seat.launch.buckled .cc-seat-svg {
-  /* Slight forward dip when active — like the seat is reacting to acceleration */
-  transform: perspective(900px) rotateY(-26deg) rotateX(6deg) rotate(-4deg)
-             translateZ(2px);
+  /* Slight forward tilt when buckled — leans into the cushion */
+  transform: rotate(-4deg) skewY(-1.5deg) translateY(-2px);
 }
 .cc-root .cc-seat.drop-target {
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.32));
@@ -604,14 +605,18 @@
 }
 .cc-root .cc-seat-ball-slot {
   position: absolute;
-  left: 56%;
-  top: 60%;
+  /* Centered horizontally over the cushion (x=104/200 ≈ 52%), positioned
+     vertically just above the cushion top so the ball appears to sit IN
+     the seat (overlapping where backrest meets cushion). */
+  left: 52%;
+  top: 70%;
   transform: translate(-50%, -50%);
   width: 80px;
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
 .cc-root .cc-seatbelt {
   position: absolute;
