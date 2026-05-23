@@ -31773,287 +31773,186 @@ function FrontSeat({
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { className: "cc-seat-svg", viewBox: "0 0 200 220", "aria-hidden": "true", children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("defs", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-bolster-left", x1: "0", y1: "0", x2: "1", y2: "0", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.18)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.05)" })
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-seat-back-fill", x1: "0", y1: "0", x2: "1", y2: "0", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.08)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.22)" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-bolster-right", x1: "0", y1: "0", x2: "1", y2: "0", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.05)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.16)" })
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-seat-cushion-fill", x1: "0", y1: "0", x2: "0", y2: "1", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.20)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.06)" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-center-panel", x1: "0", y1: "0", x2: "0", y2: "1", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-seat-inset", x1: "0", y1: "0", x2: "0", y2: "1", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(0,0,0,0.55)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "50%", stopColor: "rgba(0,0,0,0.35)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(0,0,0,0.5)" })
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(0,0,0,0.30)" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-cushion", x1: "0", y1: "0", x2: "0", y2: "1", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.10)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.02)" })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-frame-metal", x1: "0", y1: "0", x2: "0", y2: "1", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.22)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "50%", stopColor: "rgba(255,255,255,0.08)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.18)" })
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-seat-frame", x1: "0", y1: "0", x2: "0", y2: "1", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.32)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.10)" })
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "path",
         {
-          d: "\n            M 62 28\n            Q 50 32 50 46\n            L 50 132\n            Q 50 140 56 144\n            L 84 148\n            L 88 56\n            Q 88 36 78 30\n            Q 70 26 62 28 Z\n          ",
-          fill: "url(#cc-bolster-left)",
-          stroke: "rgba(255,255,255,0.46)",
-          strokeWidth: "1.1",
+          d: "\n            M 96 12\n            Q 70 12 64 30\n            L 50 70\n            Q 42 100 50 140\n            L 60 168\n            Q 64 178 78 178\n            L 138 178\n            Q 152 178 152 168\n            L 152 158\n            Q 138 152 130 144\n            L 124 130\n            Q 120 100 124 70\n            L 120 38\n            Q 116 18 100 14\n            Q 98 12 96 12 Z\n          ",
+          fill: "url(#cc-seat-back-fill)",
+          stroke: "rgba(255,255,255,0.78)",
+          strokeWidth: "2",
           strokeLinejoin: "round"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "path",
         {
-          d: "\n            M 144 30\n            Q 158 34 158 48\n            L 158 132\n            Q 158 140 150 144\n            L 124 148\n            L 120 58\n            Q 120 38 130 32\n            Q 138 28 144 30 Z\n          ",
-          fill: "url(#cc-bolster-right)",
-          stroke: "rgba(255,255,255,0.38)",
-          strokeWidth: "1.1",
-          strokeLinejoin: "round"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
-        {
-          d: "\n            M 88 38\n            L 120 38\n            L 124 148\n            L 84 148 Z\n          ",
-          fill: "url(#cc-center-panel)",
-          stroke: "rgba(255,255,255,0.22)",
-          strokeWidth: "0.8"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "line",
-        {
-          x1: "96",
-          y1: "44",
-          x2: "96",
-          y2: "146",
-          stroke: "rgba(255,255,255,0.32)",
-          strokeWidth: "0.5",
-          strokeDasharray: "1.5 2.5"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "line",
-        {
-          x1: "112",
-          y1: "44",
-          x2: "112",
-          y2: "146",
-          stroke: "rgba(255,255,255,0.32)",
-          strokeWidth: "0.5",
-          strokeDasharray: "1.5 2.5"
+          d: "\n            M 96 24\n            Q 80 24 76 38\n            L 68 70\n            Q 62 100 68 138\n            L 74 162\n            Q 78 168 88 168\n            L 132 168\n            Q 138 168 136 160\n            L 130 144\n            Q 116 100 116 70\n            L 110 42\n            Q 106 28 96 24 Z\n          ",
+          fill: "url(#cc-seat-inset)"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "line",
         {
           x1: "88",
-          y1: "92",
-          x2: "120",
-          y2: "92",
-          stroke: "rgba(255,255,255,0.14)",
-          strokeWidth: "0.5",
-          strokeDasharray: "2 2"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
-        {
-          d: "\n            M 70 14\n            Q 60 14 58 24\n            L 62 38\n            L 88 36\n            L 90 18\n            Q 84 12 70 14 Z\n          ",
-          fill: "url(#cc-bolster-left)",
-          stroke: "rgba(255,255,255,0.52)",
-          strokeWidth: "1.0",
-          strokeLinejoin: "round"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
-        {
-          d: "\n            M 138 14\n            Q 148 14 150 24\n            L 146 38\n            L 120 36\n            L 118 18\n            Q 124 12 138 14 Z\n          ",
-          fill: "url(#cc-bolster-right)",
-          stroke: "rgba(255,255,255,0.40)",
-          strokeWidth: "1.0",
-          strokeLinejoin: "round"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
-        {
-          d: "\n            M 90 16\n            L 118 16\n            L 120 36\n            L 88 36 Z\n          ",
-          fill: "url(#cc-center-panel)",
-          stroke: "rgba(255,255,255,0.28)",
-          strokeWidth: "0.6"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "rect",
-        {
-          x: "94",
-          y: "22",
-          width: "20",
-          height: "3",
-          rx: "0.6",
-          fill: "rgba(255,255,255,0.22)",
+          y1: "34",
+          x2: "88",
+          y2: "162",
           stroke: "rgba(255,255,255,0.42)",
-          strokeWidth: "0.3"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
-        {
-          d: "\n            M 50 146\n            L 88 148\n            L 94 192\n            L 56 196\n            Q 46 196 46 184\n            L 50 146 Z\n          ",
-          fill: "url(#cc-bolster-left)",
-          stroke: "rgba(255,255,255,0.46)",
-          strokeWidth: "1.0",
-          strokeLinejoin: "round"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
-        {
-          d: "\n            M 158 146\n            L 120 148\n            L 114 192\n            L 152 196\n            Q 162 196 162 184\n            L 158 146 Z\n          ",
-          fill: "url(#cc-bolster-right)",
-          stroke: "rgba(255,255,255,0.38)",
-          strokeWidth: "1.0",
-          strokeLinejoin: "round"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
-        {
-          d: "\n            M 88 148\n            L 120 148\n            L 114 196\n            L 94 196 Z\n          ",
-          fill: "url(#cc-cushion)",
-          stroke: "rgba(255,255,255,0.30)",
           strokeWidth: "0.8",
+          strokeDasharray: "2.5 3"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "line",
+        {
+          x1: "108",
+          y1: "34",
+          x2: "108",
+          y2: "162",
+          stroke: "rgba(255,255,255,0.42)",
+          strokeWidth: "0.8",
+          strokeDasharray: "2.5 3"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "line",
+        {
+          x1: "74",
+          y1: "100",
+          x2: "124",
+          y2: "100",
+          stroke: "rgba(255,255,255,0.32)",
+          strokeWidth: "0.8",
+          strokeDasharray: "2 3"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "rect",
+        {
+          x: "86",
+          y: "34",
+          width: "22",
+          height: "4",
+          rx: "1",
+          fill: "rgba(255,255,255,0.42)",
+          stroke: "rgba(255,255,255,0.62)",
+          strokeWidth: "0.4"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "path",
+        {
+          d: "\n            M 56 172\n            L 152 172\n            Q 162 172 162 184\n            L 162 198\n            Q 160 206 150 206\n            L 58 206\n            Q 48 206 46 198\n            L 46 184\n            Q 46 172 56 172 Z\n          ",
+          fill: "url(#cc-seat-cushion-fill)",
+          stroke: "rgba(255,255,255,0.78)",
+          strokeWidth: "2",
           strokeLinejoin: "round"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "line",
+        "path",
         {
-          x1: "96",
-          y1: "154",
-          x2: "96",
-          y2: "194",
-          stroke: "rgba(255,255,255,0.28)",
-          strokeWidth: "0.5",
-          strokeDasharray: "1.5 2.5"
+          d: "\n            M 70 180\n            L 138 180\n            Q 144 180 144 188\n            L 144 196\n            Q 144 200 138 200\n            L 70 200\n            Q 64 200 64 196\n            L 64 188\n            Q 64 180 70 180 Z\n          ",
+          fill: "url(#cc-seat-inset)"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "line",
         {
-          x1: "112",
-          y1: "154",
-          x2: "112",
-          y2: "194",
-          stroke: "rgba(255,255,255,0.28)",
-          strokeWidth: "0.5",
-          strokeDasharray: "1.5 2.5"
+          x1: "88",
+          y1: "184",
+          x2: "88",
+          y2: "200",
+          stroke: "rgba(255,255,255,0.42)",
+          strokeWidth: "0.8",
+          strokeDasharray: "2 3"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "line",
         {
-          x1: "50",
-          y1: "148",
-          x2: "158",
-          y2: "148",
-          stroke: "rgba(255,255,255,0.22)",
+          x1: "108",
+          y1: "184",
+          x2: "108",
+          y2: "200",
+          stroke: "rgba(255,255,255,0.42)",
+          strokeWidth: "0.8",
+          strokeDasharray: "2 3"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "rect",
+        {
+          x: "32",
+          y: "210",
+          width: "138",
+          height: "6",
+          rx: "1",
+          fill: "url(#cc-seat-frame)",
+          stroke: "rgba(255,255,255,0.62)",
+          strokeWidth: "1.0"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "line",
+        {
+          x1: "36",
+          y1: "213",
+          x2: "166",
+          y2: "213",
+          stroke: "rgba(0,0,0,0.5)",
           strokeWidth: "0.6"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "rect",
         {
-          x: "38",
-          y: "198",
-          width: "132",
-          height: "6",
-          rx: "1.5",
-          fill: "url(#cc-frame-metal)",
-          stroke: "rgba(255,255,255,0.52)",
-          strokeWidth: "0.8"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "line",
-        {
-          x1: "40",
-          y1: "201",
-          x2: "168",
-          y2: "201",
-          stroke: "rgba(0,0,0,0.4)",
-          strokeWidth: "0.5"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "line",
-        {
-          x1: "56",
-          y1: "196",
-          x2: "44",
-          y2: "216",
-          stroke: "rgba(255,255,255,0.48)",
-          strokeWidth: "1.4",
-          strokeLinecap: "round"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "line",
-        {
-          x1: "152",
-          y1: "196",
-          x2: "164",
-          y2: "216",
-          stroke: "rgba(255,255,255,0.48)",
-          strokeWidth: "1.4",
-          strokeLinecap: "round"
+          x: "58",
+          y: "205",
+          width: "3",
+          height: "8",
+          fill: "rgba(255,255,255,0.32)"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "rect",
         {
-          x: "36",
-          y: "214",
-          width: "16",
-          height: "4",
-          rx: "1",
-          fill: "rgba(255,255,255,0.18)",
-          stroke: "rgba(255,255,255,0.42)",
-          strokeWidth: "0.8"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "rect",
-        {
-          x: "156",
-          y: "214",
-          width: "16",
-          height: "4",
-          rx: "1",
-          fill: "rgba(255,255,255,0.18)",
-          stroke: "rgba(255,255,255,0.42)",
-          strokeWidth: "0.8"
+          x: "142",
+          y: "205",
+          width: "3",
+          height: "8",
+          fill: "rgba(255,255,255,0.32)"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "circle",
         {
-          cx: "158",
-          cy: "166",
-          r: "3.4",
-          fill: "rgba(255,255,255,0.18)",
-          stroke: "rgba(255,255,255,0.52)",
-          strokeWidth: "0.8"
+          cx: "155",
+          cy: "186",
+          r: "4",
+          fill: "rgba(255,255,255,0.22)",
+          stroke: "rgba(255,255,255,0.78)",
+          strokeWidth: "1.0"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "158", cy: "166", r: "1.0", fill: "rgba(255,255,255,0.62)" })
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "155", cy: "186", r: "1.4", fill: "rgba(255,255,255,0.86)" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "cc-seat-ball-slot", ref: slotRef, children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(

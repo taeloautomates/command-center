@@ -133,256 +133,161 @@ export function FrontSeat({
       </svg>
 
       {/*
-        Racing bucket seat — modeled on a PRS1/Sparco-style sim rig seat.
-        3/4 view from front-right. Key structural pieces visible from this
-        angle, in z-order back-to-front:
-          1. Backrest center panel (recessed, slightly darker)
-          2. Two side bolsters wrapping forward
-          3. Two headrest "wings" at the top
-          4. Cushion — narrows toward the viewer, side bolsters wrap up
-          5. Aluminum-extrusion frame: horizontal rail + angled uprights
-        Light from upper-left → right side reads slightly darker.
-        Drawn at 3/4 view in the paths themselves; no CSS perspective hack.
+        Racing bucket seat — clean side profile, drawn like a Sparco/PRS1
+        icon. We see the seat from the right side: tall reclined backrest
+        on the left, horizontal cushion on the bottom-right, frame below.
+        Bold strokes, real fills, no perspective tricks. This is meant to
+        read as a seat in a single glance.
       */}
       <svg className="cc-seat-svg" viewBox="0 0 200 220" aria-hidden="true">
         <defs>
-          {/* Bolster shading — left bolster (closer to viewer in 3/4 view) is lit */}
-          <linearGradient id="cc-bolster-left" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"  stopColor="rgba(255,255,255,0.18)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
+          <linearGradient id="cc-seat-back-fill" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"  stopColor="rgba(255,255,255,0.08)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.22)" />
           </linearGradient>
-          {/* Right bolster — receding, slightly darker on its outer edge */}
-          <linearGradient id="cc-bolster-right" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"  stopColor="rgba(255,255,255,0.05)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.16)" />
+          <linearGradient id="cc-seat-cushion-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stopColor="rgba(255,255,255,0.20)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.06)" />
           </linearGradient>
-          {/* Center panel — dark inset fabric / center stitch column */}
-          <linearGradient id="cc-center-panel" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(0,0,0,0.55)" />
-            <stop offset="50%" stopColor="rgba(0,0,0,0.35)" />
-            <stop offset="100%" stopColor="rgba(0,0,0,0.5)" />
+          <linearGradient id="cc-seat-inset" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stopColor="rgba(0,0,0,0.55)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.30)" />
           </linearGradient>
-          {/* Cushion top — slight gradient front to back */}
-          <linearGradient id="cc-cushion" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.10)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
-          </linearGradient>
-          {/* Aluminum frame — brushed metal */}
-          <linearGradient id="cc-frame-metal" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.22)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.08)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.18)" />
+          <linearGradient id="cc-seat-frame" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stopColor="rgba(255,255,255,0.32)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.10)" />
           </linearGradient>
         </defs>
 
-        {/* ─── BACKREST ────────────────────────────────────────── */}
-
-        {/* Left side bolster — extends from below the wing down to where
-           it meets the cushion. Has a curved outer edge and a straight
-           inner edge along the center panel. */}
+        {/* ─── BACKREST ─────────────────────────────────────────
+           Tall reclined back. Outer silhouette is a single bold closed
+           path. Reclines ~10° from vertical, tallest at the top with the
+           headrest cap rounded forward. */}
         <path
           d="
-            M 62 28
-            Q 50 32 50 46
-            L 50 132
-            Q 50 140 56 144
-            L 84 148
-            L 88 56
-            Q 88 36 78 30
-            Q 70 26 62 28 Z
-          "
-          fill="url(#cc-bolster-left)"
-          stroke="rgba(255,255,255,0.46)"
-          strokeWidth="1.1"
-          strokeLinejoin="round"
-        />
-
-        {/* Right side bolster — mirror of the left, slightly thinner due
-           to receding 3/4 perspective. */}
-        <path
-          d="
-            M 144 30
-            Q 158 34 158 48
-            L 158 132
-            Q 158 140 150 144
-            L 124 148
-            L 120 58
-            Q 120 38 130 32
-            Q 138 28 144 30 Z
-          "
-          fill="url(#cc-bolster-right)"
-          stroke="rgba(255,255,255,0.38)"
-          strokeWidth="1.1"
-          strokeLinejoin="round"
-        />
-
-        {/* Center back panel — the dark recessed center between the bolsters.
-           Slightly trapezoidal: wider at top, narrower at the lumbar. */}
-        <path
-          d="
-            M 88 38
+            M 96 12
+            Q 70 12 64 30
+            L 50 70
+            Q 42 100 50 140
+            L 60 168
+            Q 64 178 78 178
+            L 138 178
+            Q 152 178 152 168
+            L 152 158
+            Q 138 152 130 144
+            L 124 130
+            Q 120 100 124 70
             L 120 38
-            L 124 148
-            L 84 148 Z
+            Q 116 18 100 14
+            Q 98 12 96 12 Z
           "
-          fill="url(#cc-center-panel)"
-          stroke="rgba(255,255,255,0.22)"
-          strokeWidth="0.8"
-        />
-
-        {/* Stitching — vertical pair down the center panel.
-           These two short-dash columns are the visible seams that
-           separate the center cushion section from the bolsters. */}
-        <line x1="96"  y1="44" x2="96"  y2="146"
-          stroke="rgba(255,255,255,0.32)" strokeWidth="0.5" strokeDasharray="1.5 2.5" />
-        <line x1="112" y1="44" x2="112" y2="146"
-          stroke="rgba(255,255,255,0.32)" strokeWidth="0.5" strokeDasharray="1.5 2.5" />
-
-        {/* Horizontal lumbar stitch — where the central section creases */}
-        <line x1="88" y1="92" x2="120" y2="92"
-          stroke="rgba(255,255,255,0.14)" strokeWidth="0.5" strokeDasharray="2 2" />
-
-        {/* ─── HEADREST WINGS ─────────────────────────────────── */}
-
-        {/* Left headrest wing — wraps forward toward the viewer */}
-        <path
-          d="
-            M 70 14
-            Q 60 14 58 24
-            L 62 38
-            L 88 36
-            L 90 18
-            Q 84 12 70 14 Z
-          "
-          fill="url(#cc-bolster-left)"
-          stroke="rgba(255,255,255,0.52)"
-          strokeWidth="1.0"
+          fill="url(#cc-seat-back-fill)"
+          stroke="rgba(255,255,255,0.78)"
+          strokeWidth="2"
           strokeLinejoin="round"
         />
 
-        {/* Right headrest wing */}
+        {/* Inset shadow inside the backrest — dark center where the
+           seat's padding recesses. Makes the silhouette read as 3D. */}
         <path
           d="
-            M 138 14
-            Q 148 14 150 24
-            L 146 38
-            L 120 36
-            L 118 18
-            Q 124 12 138 14 Z
+            M 96 24
+            Q 80 24 76 38
+            L 68 70
+            Q 62 100 68 138
+            L 74 162
+            Q 78 168 88 168
+            L 132 168
+            Q 138 168 136 160
+            L 130 144
+            Q 116 100 116 70
+            L 110 42
+            Q 106 28 96 24 Z
           "
-          fill="url(#cc-bolster-right)"
-          stroke="rgba(255,255,255,0.40)"
-          strokeWidth="1.0"
+          fill="url(#cc-seat-inset)"
+        />
+
+        {/* Center stitching — bold paired seams visible against the dark inset */}
+        <line x1="88"  y1="34" x2="88"  y2="162"
+          stroke="rgba(255,255,255,0.42)" strokeWidth="0.8" strokeDasharray="2.5 3" />
+        <line x1="108" y1="34" x2="108" y2="162"
+          stroke="rgba(255,255,255,0.42)" strokeWidth="0.8" strokeDasharray="2.5 3" />
+
+        {/* Lumbar horizontal seam — where the back panel folds */}
+        <line x1="74" y1="100" x2="124" y2="100"
+          stroke="rgba(255,255,255,0.32)" strokeWidth="0.8" strokeDasharray="2 3" />
+
+        {/* Headrest brand tag — small horizontal pill */}
+        <rect x="86" y="34" width="22" height="4" rx="1"
+          fill="rgba(255,255,255,0.42)"
+          stroke="rgba(255,255,255,0.62)" strokeWidth="0.4" />
+
+        {/* ─── CUSHION ──────────────────────────────────────────
+           Wide bowl-shaped cushion below the backrest. Side bolsters
+           rise up and meet the back. The MIT ball nests in the bowl. */}
+        <path
+          d="
+            M 56 172
+            L 152 172
+            Q 162 172 162 184
+            L 162 198
+            Q 160 206 150 206
+            L 58 206
+            Q 48 206 46 198
+            L 46 184
+            Q 46 172 56 172 Z
+          "
+          fill="url(#cc-seat-cushion-fill)"
+          stroke="rgba(255,255,255,0.78)"
+          strokeWidth="2"
           strokeLinejoin="round"
         />
 
-        {/* Headrest center — between the two wings, slightly recessed */}
+        {/* Dark inset on the cushion — the bowl where the ball nests */}
         <path
           d="
-            M 90 16
-            L 118 16
-            L 120 36
-            L 88 36 Z
+            M 70 180
+            L 138 180
+            Q 144 180 144 188
+            L 144 196
+            Q 144 200 138 200
+            L 70 200
+            Q 64 200 64 196
+            L 64 188
+            Q 64 180 70 180 Z
           "
-          fill="url(#cc-center-panel)"
-          stroke="rgba(255,255,255,0.28)"
-          strokeWidth="0.6"
+          fill="url(#cc-seat-inset)"
         />
 
-        {/* Logo strip on the headrest center — like the PRS1 brand tag */}
-        <rect x="94" y="22" width="20" height="3" rx="0.6"
+        {/* Cushion stitching */}
+        <line x1="88"  y1="184" x2="88"  y2="200"
+          stroke="rgba(255,255,255,0.42)" strokeWidth="0.8" strokeDasharray="2 3" />
+        <line x1="108" y1="184" x2="108" y2="200"
+          stroke="rgba(255,255,255,0.42)" strokeWidth="0.8" strokeDasharray="2 3" />
+
+        {/* ─── FRAME ────────────────────────────────────────────
+           Black aluminum-extrusion rail like the GT Elite reference.
+           Horizontal slotted bar + two angled struts + base feet. */}
+
+        {/* Horizontal main rail */}
+        <rect x="32" y="210" width="138" height="6" rx="1"
+          fill="url(#cc-seat-frame)"
+          stroke="rgba(255,255,255,0.62)" strokeWidth="1.0" />
+        {/* Slot groove */}
+        <line x1="36" y1="213" x2="166" y2="213"
+          stroke="rgba(0,0,0,0.5)" strokeWidth="0.6" />
+
+        {/* Vertical mounting posts from cushion to rail */}
+        <rect x="58" y="205" width="3" height="8"
+          fill="rgba(255,255,255,0.32)" />
+        <rect x="142" y="205" width="3" height="8"
+          fill="rgba(255,255,255,0.32)" />
+
+        {/* Tilt-adjuster knob on the right side of the cushion */}
+        <circle cx="155" cy="186" r="4"
           fill="rgba(255,255,255,0.22)"
-          stroke="rgba(255,255,255,0.42)" strokeWidth="0.3" />
-
-        {/* ─── CUSHION ────────────────────────────────────────── */}
-
-        {/* Cushion side bolsters (left + right) wrap up from the cushion
-           and join the backrest bolsters. Trapezoidal — narrower at the
-           front because of 3/4 perspective. */}
-        <path
-          d="
-            M 50 146
-            L 88 148
-            L 94 192
-            L 56 196
-            Q 46 196 46 184
-            L 50 146 Z
-          "
-          fill="url(#cc-bolster-left)"
-          stroke="rgba(255,255,255,0.46)"
-          strokeWidth="1.0"
-          strokeLinejoin="round"
-        />
-        <path
-          d="
-            M 158 146
-            L 120 148
-            L 114 192
-            L 152 196
-            Q 162 196 162 184
-            L 158 146 Z
-          "
-          fill="url(#cc-bolster-right)"
-          stroke="rgba(255,255,255,0.38)"
-          strokeWidth="1.0"
-          strokeLinejoin="round"
-        />
-
-        {/* Center cushion — the bowled seat surface between the bolsters.
-           The MIT ball nests on top of this (positioned via .cc-seat-ball-slot). */}
-        <path
-          d="
-            M 88 148
-            L 120 148
-            L 114 196
-            L 94 196 Z
-          "
-          fill="url(#cc-cushion)"
-          stroke="rgba(255,255,255,0.30)"
-          strokeWidth="0.8"
-          strokeLinejoin="round"
-        />
-
-        {/* Cushion stitching — paired vertical dashes flanking the seat ball */}
-        <line x1="96"  y1="154" x2="96"  y2="194"
-          stroke="rgba(255,255,255,0.28)" strokeWidth="0.5" strokeDasharray="1.5 2.5" />
-        <line x1="112" y1="154" x2="112" y2="194"
-          stroke="rgba(255,255,255,0.28)" strokeWidth="0.5" strokeDasharray="1.5 2.5" />
-
-        {/* Horizontal seam where backrest meets cushion */}
-        <line x1="50" y1="148" x2="158" y2="148"
-          stroke="rgba(255,255,255,0.22)" strokeWidth="0.6" />
-
-        {/* ─── ALUMINUM-EXTRUSION FRAME ───────────────────────── */}
-
-        {/* Front horizontal rail — closer to viewer, brighter */}
-        <rect x="38" y="198" width="132" height="6" rx="1.5"
-          fill="url(#cc-frame-metal)"
-          stroke="rgba(255,255,255,0.52)" strokeWidth="0.8" />
-        {/* Slot detail on the rail — single horizontal slit */}
-        <line x1="40" y1="201" x2="168" y2="201"
-          stroke="rgba(0,0,0,0.4)" strokeWidth="0.5" />
-
-        {/* Two angled uprights — left foot pad to the rail, right same */}
-        <line x1="56" y1="196" x2="44" y2="216"
-          stroke="rgba(255,255,255,0.48)" strokeWidth="1.4" strokeLinecap="round" />
-        <line x1="152" y1="196" x2="164" y2="216"
-          stroke="rgba(255,255,255,0.48)" strokeWidth="1.4" strokeLinecap="round" />
-
-        {/* Base pads */}
-        <rect x="36" y="214" width="16" height="4" rx="1"
-          fill="rgba(255,255,255,0.18)"
-          stroke="rgba(255,255,255,0.42)" strokeWidth="0.8" />
-        <rect x="156" y="214" width="16" height="4" rx="1"
-          fill="rgba(255,255,255,0.18)"
-          stroke="rgba(255,255,255,0.42)" strokeWidth="0.8" />
-
-        {/* Tilt-adjuster knob on the right side (the signature
-           recliner-knob detail visible on every racing seat) */}
-        <circle cx="158" cy="166" r="3.4"
-          fill="rgba(255,255,255,0.18)"
-          stroke="rgba(255,255,255,0.52)" strokeWidth="0.8" />
-        <circle cx="158" cy="166" r="1.0" fill="rgba(255,255,255,0.62)" />
+          stroke="rgba(255,255,255,0.78)" strokeWidth="1.0" />
+        <circle cx="155" cy="186" r="1.4" fill="rgba(255,255,255,0.86)" />
       </svg>
 
       {/* The MIT ball — nests in the cushion bolster area */}

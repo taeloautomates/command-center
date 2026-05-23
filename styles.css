@@ -585,16 +585,16 @@
   height: 100%;
   filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.65))
           drop-shadow(0 0 1px rgba(255, 255, 255, 0.18));
-  /* The 3/4 perspective is drawn into the SVG paths themselves now —
-     no more CSS perspective() squish. A subtle rotate + skew gives the
-     "leaning into the corner" feel without warping geometry. */
-  transform: rotate(-3deg) skewY(-1deg);
-  transform-origin: 50% 80%;
+  /* Clean upright stance — the seat reads as a seat first. No skew, no
+     perspective hack. A gentle 2° rotate gives subtle character; the
+     motion streaks behind the seat carry the "ready to launch" feel. */
+  transform: rotate(-2deg);
+  transform-origin: 50% 95%;
   transition: transform 320ms cubic-bezier(.22, .61, .36, 1);
 }
 .cc-root .cc-seat.launch.buckled .cc-seat-svg {
-  /* Slight forward tilt when buckled — leans into the cushion */
-  transform: rotate(-4deg) skewY(-1.5deg) translateY(-2px);
+  /* Slight forward lean when buckled — like the seat is reacting to acceleration */
+  transform: rotate(-3deg) translateY(-2px);
 }
 .cc-root .cc-seat.drop-target {
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.32));
@@ -605,11 +605,11 @@
 }
 .cc-root .cc-seat-ball-slot {
   position: absolute;
-  /* Centered horizontally over the cushion (x=104/200 ≈ 52%), positioned
-     vertically just above the cushion top so the ball appears to sit IN
-     the seat (overlapping where backrest meets cushion). */
-  left: 52%;
-  top: 70%;
+  /* Cushion center sits at ~y=190/220 ≈ 86% in the new viewBox. The ball
+     is 64px so we center it slightly above the cushion's true middle so
+     it visually overlaps the cushion bowl — like the ball is sitting in it. */
+  left: 51%;
+  top: 75%;
   transform: translate(-50%, -50%);
   width: 80px;
   height: 80px;
