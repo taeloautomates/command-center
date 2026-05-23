@@ -96,132 +96,145 @@ export function FrontSeat({
   const buckled = active && !paused && !done;
   return (
     <div className={
-      "cc-seat" +
+      "cc-seat launch" +
       (buckled ? " buckled" : "") +
       (done ? " done" : "") +
       (isDropTarget ? " drop-target" : "")
     }>
-      {/* Motion streaks behind the seat — implies forward movement */}
-      <svg className="cc-seat-streaks" viewBox="0 0 200 200" aria-hidden="true" preserveAspectRatio="none">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <line
-            key={i}
-            x1={4 + i * 4}
-            x2={28 + i * 6}
-            y1={40 + i * 14}
-            y2={40 + i * 14}
-            stroke={`rgba(255,255,255,${0.18 - i * 0.018})`}
-            strokeWidth={i === 0 ? 1.2 : 0.8}
-            strokeLinecap="round"
-          />
-        ))}
+      {/* Motion streaks behind the seat — long forward-fade lines that
+         intensify when buckled. Sit behind the seat in 3D space so the
+         perspective rotation makes them feel like genuine slipstream. */}
+      <svg className="cc-seat-streaks" viewBox="0 0 240 220" aria-hidden="true" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="cc-streak-fade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+            <stop offset="60%" stopColor="rgba(255,255,255,0.42)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.86)" />
+          </linearGradient>
+        </defs>
+        {Array.from({ length: 14 }).map((_, i) => {
+          const y = 30 + i * 12;
+          const len = 60 + (i % 3) * 30;
+          const opacity = 0.10 + (i % 4) * 0.05;
+          return (
+            <line
+              key={i}
+              x1={4}
+              x2={4 + len}
+              y1={y}
+              y2={y}
+              stroke="url(#cc-streak-fade)"
+              strokeWidth={i % 5 === 0 ? 1.4 : 0.7}
+              strokeLinecap="round"
+              opacity={opacity * 6}
+            />
+          );
+        })}
       </svg>
 
       <svg className="cc-seat-svg" viewBox="0 0 160 200" aria-hidden="true">
         <defs>
           <linearGradient id="cc-seat-shell" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.18)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.07)" />
+            <stop offset="0%" stopColor="rgba(255,255,255,0.22)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.08)" />
             <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
           </linearGradient>
           <linearGradient id="cc-seat-padding" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(0,0,0,0.6)" />
+            <stop offset="0%" stopColor="rgba(0,0,0,0.62)" />
             <stop offset="50%" stopColor="rgba(0,0,0,0.4)" />
             <stop offset="100%" stopColor="rgba(0,0,0,0.5)" />
           </linearGradient>
+          <linearGradient id="cc-seat-edge" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.92)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.32)" />
+          </linearGradient>
         </defs>
 
-        {/* === Outer white SHELL of the bucket seat ===
-           Side profile, slightly leaned back. Headrest wing wraps forward
-           at top; backrest has tall side bolster; cushion has front bolster. */}
+        {/* === SLEEK aero shell ===
+           Sharper, more aggressive silhouette: tall pinched headrest,
+           forward-swept side bolster, narrow waist, wide cushion lip. */}
         <path
           d="
-            M 96 6
-            Q 80 6 76 18
-            L 64 30
-            Q 56 38 56 48
-            L 56 70
-            Q 38 88 50 132
-            L 46 152
-            Q 38 162 50 168
-            L 134 168
-            Q 144 168 144 158
-            L 140 138
-            Q 152 96 130 60
-            L 124 44
-            Q 124 30 116 22
-            L 110 12
-            Q 108 6 96 6 Z
+            M 100 4
+            Q 76 4 72 16
+            L 56 28
+            Q 46 38 46 50
+            L 48 72
+            Q 32 92 44 134
+            L 40 154
+            Q 32 166 46 172
+            L 138 172
+            Q 150 172 150 160
+            L 144 138
+            Q 156 98 134 60
+            L 126 42
+            Q 126 26 116 18
+            L 110 8
+            Q 110 4 100 4 Z
           "
           fill="url(#cc-seat-shell)"
-          stroke="rgba(255,255,255,0.44)"
-          strokeWidth="1.6"
+          stroke="url(#cc-seat-edge)"
+          strokeWidth="1.4"
           strokeLinejoin="round"
         />
 
-        {/* === Inner DARK PADDING (the black fabric inset) === */}
+        {/* === Inner padding — slightly inset, hugs the new silhouette === */}
         <path
           d="
-            M 96 16
-            Q 84 16 80 26
-            L 70 38
-            Q 64 44 64 54
-            L 64 72
-            Q 50 90 60 128
-            L 58 148
-            Q 52 156 60 160
-            L 128 160
-            Q 134 160 134 154
-            L 132 138
-            Q 140 100 122 70
-            L 116 50
-            Q 116 38 110 30
-            L 106 22
-            Q 104 16 96 16 Z
+            M 100 14
+            Q 84 14 80 24
+            L 68 36
+            Q 60 44 60 54
+            L 60 74
+            Q 48 92 56 130
+            L 54 150
+            Q 50 158 60 162
+            L 132 162
+            Q 138 162 138 156
+            L 134 138
+            Q 142 100 124 70
+            L 118 50
+            Q 118 36 110 28
+            L 106 20
+            Q 104 14 100 14 Z
           "
           fill="url(#cc-seat-padding)"
         />
 
-        {/* Quilted-pattern hint — three short horizontal dashes on the backrest */}
-        <line x1="72" y1="60"  x2="116" y2="60"  stroke="rgba(255,255,255,0.10)" strokeWidth="0.7" />
-        <line x1="68" y1="78"  x2="120" y2="78"  stroke="rgba(255,255,255,0.10)" strokeWidth="0.7" />
-        <line x1="66" y1="96"  x2="122" y2="96"  stroke="rgba(255,255,255,0.10)" strokeWidth="0.7" />
-        <line x1="66" y1="114" x2="124" y2="114" stroke="rgba(255,255,255,0.10)" strokeWidth="0.7" />
+        {/* Carbon-fiber weave hints — short paired strokes, not the old
+           wide quilted dashes. Sleeker. */}
+        {[60, 76, 92, 108, 124].map((y, i) => (
+          <g key={i}>
+            <line x1="64" y1={y} x2="100" y2={y - 2}
+              stroke="rgba(255,255,255,0.07)" strokeWidth="0.5" />
+            <line x1="100" y1={y - 2} x2="134" y2={y}
+              stroke="rgba(255,255,255,0.07)" strokeWidth="0.5" />
+          </g>
+        ))}
 
-        {/* === Headrest wing detail === */}
-        <path
-          d="M 64 30 Q 56 38 56 48"
-          fill="none"
-          stroke="rgba(255,255,255,0.36)"
+        {/* Headrest accent — single bright line catches the light */}
+        <line x1="86" y1="22" x2="118" y2="22"
+          stroke="rgba(255,255,255,0.62)" strokeWidth="0.6" strokeLinecap="round" />
+
+        {/* === Frame: thin, low-profile carbon rail === */}
+        <rect x="30" y="174" width="108" height="4" rx="2"
+          fill="rgba(255,255,255,0.16)"
+          stroke="rgba(255,255,255,0.46)"
           strokeWidth="0.8"
         />
-        {/* Tiny "PLAY" tag on headrest */}
-        <rect x="84" y="24" width="22" height="5" rx="1"
-          fill="rgba(255,255,255,0.18)"
-          stroke="rgba(255,255,255,0.32)"
-          strokeWidth="0.4"
+        {/* Forward-angled struts — lean toward the front to suggest motion */}
+        <line x1="50" y1="172" x2="32" y2="194"
+          stroke="rgba(255,255,255,0.46)" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="124" y1="172" x2="140" y2="194"
+          stroke="rgba(255,255,255,0.46)" strokeWidth="1.4" strokeLinecap="round" />
+        {/* Tiny base pads */}
+        <rect x="22" y="192" width="16" height="4" rx="1.5"
+          fill="rgba(255,255,255,0.14)"
+          stroke="rgba(255,255,255,0.38)" strokeWidth="0.8"
         />
-
-        {/* === Tubular FRAME under the seat === */}
-        {/* Horizontal rail */}
-        <rect x="22" y="170" width="124" height="6" rx="3"
-          fill="rgba(255,255,255,0.10)"
-          stroke="rgba(255,255,255,0.42)"
-          strokeWidth="1.2"
-        />
-        {/* Vertical frame struts (the angled posts) */}
-        <line x1="56" y1="168" x2="44" y2="194" stroke="rgba(255,255,255,0.42)" strokeWidth="1.6" strokeLinecap="round" />
-        <line x1="116" y1="168" x2="128" y2="194" stroke="rgba(255,255,255,0.42)" strokeWidth="1.6" strokeLinecap="round" />
-        {/* Base feet */}
-        <rect x="34" y="192" width="22" height="5" rx="1.5"
-          fill="rgba(255,255,255,0.10)"
-          stroke="rgba(255,255,255,0.36)"
-          strokeWidth="1"
-        />
-        <rect x="118" y="192" width="22" height="5" rx="1.5"
-          fill="rgba(255,255,255,0.10)"
-          stroke="rgba(255,255,255,0.36)"
-          strokeWidth="1"
+        <rect x="134" y="192" width="16" height="4" rx="1.5"
+          fill="rgba(255,255,255,0.14)"
+          stroke="rgba(255,255,255,0.38)" strokeWidth="0.8"
         />
       </svg>
 
@@ -347,71 +360,84 @@ export function BallGhost({ drag }: { drag: BallDragState }) {
    Balls sit inside; the lid line angles up as if propped open. */
 
 export function TrunkCompartment({
-  children, count, trunkRef, isDropTarget,
+  children, count, trunkRef, isDropTarget, onClose,
 }: {
   children: React.ReactNode;
   count: number;
   trunkRef?: React.RefObject<HTMLDivElement | null>;
   isDropTarget?: boolean;
+  onClose?: () => void;
 }) {
   return (
-    <div className="cc-trunk-wrap">
+    <div className="cc-trunk-wrap cyborg">
       <div className="cc-trunk-label">
         <span className="label">Trunk</span>
-        <span className="mono tabular">{count} deferred</span>
+        <span className="mono tabular">{count} deferred · open</span>
+        {onClose && (
+          <button
+            type="button"
+            className="cc-trunk-close"
+            onClick={onClose}
+            title="Close trunk"
+            aria-label="Close trunk"
+          >
+            <span aria-hidden="true">▴</span>
+            <span>close</span>
+          </button>
+        )}
       </div>
       <div
-        className={"cc-trunk" + (isDropTarget ? " drop-target" : "")}
+        className={"cc-trunk cyborg" + (isDropTarget ? " drop-target" : "")}
         ref={trunkRef as React.RefObject<HTMLDivElement>}
       >
         <svg className="cc-trunk-svg" viewBox="0 0 600 110" preserveAspectRatio="none" aria-hidden="true">
           <defs>
-            <pattern id="cc-trunk-carpet" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
-              <rect width="6" height="6" fill="rgba(255,255,255,0.012)" />
-              <circle cx="1" cy="1" r="0.4" fill="rgba(255,255,255,0.05)" />
-              <circle cx="4" cy="3" r="0.4" fill="rgba(255,255,255,0.04)" />
+            {/* Scan-line hex weave — gives the floor a tech texture without color */}
+            <pattern id="cc-trunk-mesh" x="0" y="0" width="14" height="12" patternUnits="userSpaceOnUse">
+              <path d="M 0 6 L 7 0 L 14 6 L 7 12 Z"
+                fill="none" stroke="rgba(255,255,255,0.045)" strokeWidth="0.5" />
             </pattern>
-          </defs>
-          {/* Hinged lid — angled line up top, dashed for "propped open" */}
-          <path
-            d="M 8 14 Q 300 -4 592 14"
-            fill="none"
-            stroke="rgba(255,255,255,0.32)"
-            strokeWidth="1.4"
-            strokeDasharray="3 4"
-          />
-          <path
-            d="M 6 18 L 6 30"
-            stroke="rgba(255,255,255,0.20)"
-            strokeWidth="1"
-          />
-          <path
-            d="M 594 18 L 594 30"
-            stroke="rgba(255,255,255,0.20)"
-            strokeWidth="1"
-          />
-          {/* Trunk well — rounded rect floor */}
-          <rect
-            x="6" y="28" width="588" height="78" rx="10"
-            fill="rgba(0,0,0,0.32)"
-            stroke="rgba(255,255,255,0.14)"
-            strokeWidth="1"
-          />
-          <rect
-            x="6" y="28" width="588" height="78" rx="10"
-            fill="url(#cc-trunk-carpet)"
-          />
-          {/* Inner shadow at top to suggest depth */}
-          <rect
-            x="6" y="28" width="588" height="10"
-            fill="url(#cc-trunk-shade)"
-          />
-          <defs>
-            <linearGradient id="cc-trunk-shade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="rgba(0,0,0,0.55)" />
-              <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+            <linearGradient id="cc-trunk-rim" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.78)" />
+              <stop offset="40%" stopColor="rgba(255,255,255,0.28)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
+            </linearGradient>
+            <linearGradient id="cc-trunk-floor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(0,0,0,0.65)" />
+              <stop offset="100%" stopColor="rgba(0,0,0,0.22)" />
             </linearGradient>
           </defs>
+
+          {/* Chamfered (octagonal-ish) outer plate — angular, not rounded.
+             Eight-sided shape: small diagonal cuts at every corner. */}
+          <path
+            d="M 14 8 L 586 8 L 596 18 L 596 92 L 586 102 L 14 102 L 4 92 L 4 18 Z"
+            fill="url(#cc-trunk-floor)"
+            stroke="rgba(255,255,255,0.18)"
+            strokeWidth="1"
+          />
+          {/* Mesh overlay inside the chamfered plate */}
+          <path
+            d="M 14 8 L 586 8 L 596 18 L 596 92 L 586 102 L 14 102 L 4 92 L 4 18 Z"
+            fill="url(#cc-trunk-mesh)"
+          />
+
+          {/* Top accent rail — the "glowing" edge of an opened cyborg trunk */}
+          <rect x="14" y="6" width="572" height="2" fill="url(#cc-trunk-rim)" opacity="0.86" />
+          {/* Notches at the corners suggesting machined hinges */}
+          <rect x="14" y="8" width="6" height="6" fill="rgba(255,255,255,0.32)" />
+          <rect x="580" y="8" width="6" height="6" fill="rgba(255,255,255,0.32)" />
+          <rect x="14" y="96" width="6" height="6" fill="rgba(255,255,255,0.18)" />
+          <rect x="580" y="96" width="6" height="6" fill="rgba(255,255,255,0.18)" />
+
+          {/* Vertical scanlines — every 60px, very faint */}
+          {[100, 200, 300, 400, 500].map((x) => (
+            <line key={x} x1={x} y1="14" x2={x} y2="96"
+              stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+          ))}
+
+          {/* Center status tick — pulses when isDropTarget */}
+          <circle cx="300" cy="98" r="1.6" fill="rgba(255,255,255,0.62)" />
         </svg>
 
         <div className="cc-trunk-content">

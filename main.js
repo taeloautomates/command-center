@@ -1100,7 +1100,7 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useRef(initialValue);
         }
-        function useEffect11(create, deps) {
+        function useEffect12(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useEffect(create, deps);
         }
@@ -1883,7 +1883,7 @@ var require_react_development = __commonJS({
         exports.useContext = useContext;
         exports.useDebugValue = useDebugValue;
         exports.useDeferredValue = useDeferredValue;
-        exports.useEffect = useEffect11;
+        exports.useEffect = useEffect12;
         exports.useId = useId2;
         exports.useImperativeHandle = useImperativeHandle;
         exports.useInsertionEffect = useInsertionEffect;
@@ -31744,115 +31744,164 @@ function FrontSeat({
   ballDragging
 }) {
   const buckled = active && !paused && !done;
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "cc-seat" + (buckled ? " buckled" : "") + (done ? " done" : "") + (isDropTarget ? " drop-target" : ""), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("svg", { className: "cc-seat-streaks", viewBox: "0 0 200 200", "aria-hidden": "true", preserveAspectRatio: "none", children: Array.from({ length: 8 }).map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-      "line",
-      {
-        x1: 4 + i * 4,
-        x2: 28 + i * 6,
-        y1: 40 + i * 14,
-        y2: 40 + i * 14,
-        stroke: `rgba(255,255,255,${0.18 - i * 0.018})`,
-        strokeWidth: i === 0 ? 1.2 : 0.8,
-        strokeLinecap: "round"
-      },
-      i
-    )) }),
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "cc-seat launch" + (buckled ? " buckled" : "") + (done ? " done" : "") + (isDropTarget ? " drop-target" : ""), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { className: "cc-seat-streaks", viewBox: "0 0 240 220", "aria-hidden": "true", preserveAspectRatio: "none", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-streak-fade", x1: "0", y1: "0", x2: "1", y2: "0", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "60%", stopColor: "rgba(255,255,255,0.42)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.86)" })
+      ] }) }),
+      Array.from({ length: 14 }).map((_, i) => {
+        const y = 30 + i * 12;
+        const len = 60 + i % 3 * 30;
+        const opacity = 0.1 + i % 4 * 0.05;
+        return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "line",
+          {
+            x1: 4,
+            x2: 4 + len,
+            y1: y,
+            y2: y,
+            stroke: "url(#cc-streak-fade)",
+            strokeWidth: i % 5 === 0 ? 1.4 : 0.7,
+            strokeLinecap: "round",
+            opacity: opacity * 6
+          },
+          i
+        );
+      })
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { className: "cc-seat-svg", viewBox: "0 0 160 200", "aria-hidden": "true", children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("defs", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-seat-shell", x1: "0", y1: "0", x2: "1", y2: "1", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.18)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "50%", stopColor: "rgba(255,255,255,0.07)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.22)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "50%", stopColor: "rgba(255,255,255,0.08)" }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.02)" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-seat-padding", x1: "0", y1: "0", x2: "0", y2: "1", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(0,0,0,0.6)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(0,0,0,0.62)" }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "50%", stopColor: "rgba(0,0,0,0.4)" }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(0,0,0,0.5)" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-seat-edge", x1: "0", y1: "0", x2: "1", y2: "1", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.92)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.32)" })
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "path",
         {
-          d: "\n            M 96 6\n            Q 80 6 76 18\n            L 64 30\n            Q 56 38 56 48\n            L 56 70\n            Q 38 88 50 132\n            L 46 152\n            Q 38 162 50 168\n            L 134 168\n            Q 144 168 144 158\n            L 140 138\n            Q 152 96 130 60\n            L 124 44\n            Q 124 30 116 22\n            L 110 12\n            Q 108 6 96 6 Z\n          ",
+          d: "\n            M 100 4\n            Q 76 4 72 16\n            L 56 28\n            Q 46 38 46 50\n            L 48 72\n            Q 32 92 44 134\n            L 40 154\n            Q 32 166 46 172\n            L 138 172\n            Q 150 172 150 160\n            L 144 138\n            Q 156 98 134 60\n            L 126 42\n            Q 126 26 116 18\n            L 110 8\n            Q 110 4 100 4 Z\n          ",
           fill: "url(#cc-seat-shell)",
-          stroke: "rgba(255,255,255,0.44)",
-          strokeWidth: "1.6",
+          stroke: "url(#cc-seat-edge)",
+          strokeWidth: "1.4",
           strokeLinejoin: "round"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "path",
         {
-          d: "\n            M 96 16\n            Q 84 16 80 26\n            L 70 38\n            Q 64 44 64 54\n            L 64 72\n            Q 50 90 60 128\n            L 58 148\n            Q 52 156 60 160\n            L 128 160\n            Q 134 160 134 154\n            L 132 138\n            Q 140 100 122 70\n            L 116 50\n            Q 116 38 110 30\n            L 106 22\n            Q 104 16 96 16 Z\n          ",
+          d: "\n            M 100 14\n            Q 84 14 80 24\n            L 68 36\n            Q 60 44 60 54\n            L 60 74\n            Q 48 92 56 130\n            L 54 150\n            Q 50 158 60 162\n            L 132 162\n            Q 138 162 138 156\n            L 134 138\n            Q 142 100 124 70\n            L 118 50\n            Q 118 36 110 28\n            L 106 20\n            Q 104 14 100 14 Z\n          ",
           fill: "url(#cc-seat-padding)"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "72", y1: "60", x2: "116", y2: "60", stroke: "rgba(255,255,255,0.10)", strokeWidth: "0.7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "68", y1: "78", x2: "120", y2: "78", stroke: "rgba(255,255,255,0.10)", strokeWidth: "0.7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "66", y1: "96", x2: "122", y2: "96", stroke: "rgba(255,255,255,0.10)", strokeWidth: "0.7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "66", y1: "114", x2: "124", y2: "114", stroke: "rgba(255,255,255,0.10)", strokeWidth: "0.7" }),
+      [60, 76, 92, 108, 124].map((y, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("g", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "line",
+          {
+            x1: "64",
+            y1: y,
+            x2: "100",
+            y2: y - 2,
+            stroke: "rgba(255,255,255,0.07)",
+            strokeWidth: "0.5"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "line",
+          {
+            x1: "100",
+            y1: y - 2,
+            x2: "134",
+            y2: y,
+            stroke: "rgba(255,255,255,0.07)",
+            strokeWidth: "0.5"
+          }
+        )
+      ] }, i)),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "path",
+        "line",
         {
-          d: "M 64 30 Q 56 38 56 48",
-          fill: "none",
-          stroke: "rgba(255,255,255,0.36)",
-          strokeWidth: "0.8"
+          x1: "86",
+          y1: "22",
+          x2: "118",
+          y2: "22",
+          stroke: "rgba(255,255,255,0.62)",
+          strokeWidth: "0.6",
+          strokeLinecap: "round"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "rect",
         {
-          x: "84",
-          y: "24",
-          width: "22",
-          height: "5",
-          rx: "1",
-          fill: "rgba(255,255,255,0.18)",
-          stroke: "rgba(255,255,255,0.32)",
-          strokeWidth: "0.4"
+          x: "30",
+          y: "174",
+          width: "108",
+          height: "4",
+          rx: "2",
+          fill: "rgba(255,255,255,0.16)",
+          stroke: "rgba(255,255,255,0.46)",
+          strokeWidth: "0.8"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "line",
+        {
+          x1: "50",
+          y1: "172",
+          x2: "32",
+          y2: "194",
+          stroke: "rgba(255,255,255,0.46)",
+          strokeWidth: "1.4",
+          strokeLinecap: "round"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "line",
+        {
+          x1: "124",
+          y1: "172",
+          x2: "140",
+          y2: "194",
+          stroke: "rgba(255,255,255,0.46)",
+          strokeWidth: "1.4",
+          strokeLinecap: "round"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "rect",
         {
           x: "22",
-          y: "170",
-          width: "124",
-          height: "6",
-          rx: "3",
-          fill: "rgba(255,255,255,0.10)",
-          stroke: "rgba(255,255,255,0.42)",
-          strokeWidth: "1.2"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "56", y1: "168", x2: "44", y2: "194", stroke: "rgba(255,255,255,0.42)", strokeWidth: "1.6", strokeLinecap: "round" }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "116", y1: "168", x2: "128", y2: "194", stroke: "rgba(255,255,255,0.42)", strokeWidth: "1.6", strokeLinecap: "round" }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        "rect",
-        {
-          x: "34",
           y: "192",
-          width: "22",
-          height: "5",
+          width: "16",
+          height: "4",
           rx: "1.5",
-          fill: "rgba(255,255,255,0.10)",
-          stroke: "rgba(255,255,255,0.36)",
-          strokeWidth: "1"
+          fill: "rgba(255,255,255,0.14)",
+          stroke: "rgba(255,255,255,0.38)",
+          strokeWidth: "0.8"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         "rect",
         {
-          x: "118",
+          x: "134",
           y: "192",
-          width: "22",
-          height: "5",
+          width: "16",
+          height: "4",
           rx: "1.5",
-          fill: "rgba(255,255,255,0.10)",
-          stroke: "rgba(255,255,255,0.36)",
-          strokeWidth: "1"
+          fill: "rgba(255,255,255,0.14)",
+          stroke: "rgba(255,255,255,0.38)",
+          strokeWidth: "0.8"
         }
       )
     ] }),
@@ -31960,92 +32009,92 @@ function TrunkCompartment({
   children,
   count,
   trunkRef,
-  isDropTarget
+  isDropTarget,
+  onClose
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "cc-trunk-wrap", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "cc-trunk-wrap cyborg", children: [
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "cc-trunk-label", children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "label", children: "Trunk" }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "mono tabular", children: [
         count,
-        " deferred"
-      ] })
+        " deferred \xB7 open"
+      ] }),
+      onClose && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+        "button",
+        {
+          type: "button",
+          className: "cc-trunk-close",
+          onClick: onClose,
+          title: "Close trunk",
+          "aria-label": "Close trunk",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { "aria-hidden": "true", children: "\u25B4" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "close" })
+          ]
+        }
+      )
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
       "div",
       {
-        className: "cc-trunk" + (isDropTarget ? " drop-target" : ""),
+        className: "cc-trunk cyborg" + (isDropTarget ? " drop-target" : ""),
         ref: trunkRef,
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { className: "cc-trunk-svg", viewBox: "0 0 600 110", preserveAspectRatio: "none", "aria-hidden": "true", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("pattern", { id: "cc-trunk-carpet", x: "0", y: "0", width: "6", height: "6", patternUnits: "userSpaceOnUse", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("rect", { width: "6", height: "6", fill: "rgba(255,255,255,0.012)" }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "1", cy: "1", r: "0.4", fill: "rgba(255,255,255,0.05)" }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "4", cy: "3", r: "0.4", fill: "rgba(255,255,255,0.04)" })
-            ] }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("defs", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("pattern", { id: "cc-trunk-mesh", x: "0", y: "0", width: "14", height: "12", patternUnits: "userSpaceOnUse", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                "path",
+                {
+                  d: "M 0 6 L 7 0 L 14 6 L 7 12 Z",
+                  fill: "none",
+                  stroke: "rgba(255,255,255,0.045)",
+                  strokeWidth: "0.5"
+                }
+              ) }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-trunk-rim", x1: "0", y1: "0", x2: "0", y2: "1", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(255,255,255,0.78)" }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "40%", stopColor: "rgba(255,255,255,0.28)" }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.05)" })
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-trunk-floor", x1: "0", y1: "0", x2: "0", y2: "1", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(0,0,0,0.65)" }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(0,0,0,0.22)" })
+              ] })
+            ] }),
             /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
               "path",
               {
-                d: "M 8 14 Q 300 -4 592 14",
-                fill: "none",
-                stroke: "rgba(255,255,255,0.32)",
-                strokeWidth: "1.4",
-                strokeDasharray: "3 4"
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-              "path",
-              {
-                d: "M 6 18 L 6 30",
-                stroke: "rgba(255,255,255,0.20)",
+                d: "M 14 8 L 586 8 L 596 18 L 596 92 L 586 102 L 14 102 L 4 92 L 4 18 Z",
+                fill: "url(#cc-trunk-floor)",
+                stroke: "rgba(255,255,255,0.18)",
                 strokeWidth: "1"
               }
             ),
             /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
               "path",
               {
-                d: "M 594 18 L 594 30",
-                stroke: "rgba(255,255,255,0.20)",
-                strokeWidth: "1"
+                d: "M 14 8 L 586 8 L 596 18 L 596 92 L 586 102 L 14 102 L 4 92 L 4 18 Z",
+                fill: "url(#cc-trunk-mesh)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-              "rect",
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("rect", { x: "14", y: "6", width: "572", height: "2", fill: "url(#cc-trunk-rim)", opacity: "0.86" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("rect", { x: "14", y: "8", width: "6", height: "6", fill: "rgba(255,255,255,0.32)" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("rect", { x: "580", y: "8", width: "6", height: "6", fill: "rgba(255,255,255,0.32)" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("rect", { x: "14", y: "96", width: "6", height: "6", fill: "rgba(255,255,255,0.18)" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("rect", { x: "580", y: "96", width: "6", height: "6", fill: "rgba(255,255,255,0.18)" }),
+            [100, 200, 300, 400, 500].map((x) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              "line",
               {
-                x: "6",
-                y: "28",
-                width: "588",
-                height: "78",
-                rx: "10",
-                fill: "rgba(0,0,0,0.32)",
-                stroke: "rgba(255,255,255,0.14)",
-                strokeWidth: "1"
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-              "rect",
-              {
-                x: "6",
-                y: "28",
-                width: "588",
-                height: "78",
-                rx: "10",
-                fill: "url(#cc-trunk-carpet)"
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-              "rect",
-              {
-                x: "6",
-                y: "28",
-                width: "588",
-                height: "10",
-                fill: "url(#cc-trunk-shade)"
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "cc-trunk-shade", x1: "0", y1: "0", x2: "0", y2: "1", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "rgba(0,0,0,0.55)" }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "rgba(0,0,0,0)" })
-            ] }) })
+                x1: x,
+                y1: "14",
+                x2: x,
+                y2: "96",
+                stroke: "rgba(255,255,255,0.04)",
+                strokeWidth: "0.5"
+              },
+              x
+            )),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "300", cy: "98", r: "1.6", fill: "rgba(255,255,255,0.62)" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "cc-trunk-content", children })
         ]
@@ -35591,8 +35640,13 @@ function TrunkStrip({
   onPointerDownBall,
   draggingId
 }) {
+  const [open, setOpen] = React11.useState(false);
   const [composing, setComposing] = React11.useState(false);
   const [draft, setDraft] = React11.useState("");
+  React11.useEffect(() => {
+    if (isDropTarget && !open)
+      setOpen(true);
+  }, [isDropTarget, open]);
   const submit = () => {
     const t = draft.trim();
     if (t)
@@ -35600,64 +35654,96 @@ function TrunkStrip({
     setDraft("");
     setComposing(false);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(TrunkCompartment, { count: items.length, trunkRef, isDropTarget, children: [
-    items.map((it) => {
-      const label = ballLabel({ title: it.title, project: it.project });
-      return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "cc-trunk-ball-wrap", title: it.title, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-          TaskBall,
-          {
-            label,
-            title: it.title,
-            size: 52,
-            tone: "default",
-            onClick: () => onPromote(it.id),
-            onPointerDown: (e) => onPointerDownBall?.({ id: it.id, label, title: it.title }, e),
-            onRemove: () => onRemove(it.id),
-            dragging: draggingId === it.id
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-ball-title", children: it.title })
-      ] }, it.id);
-    }),
-    composing ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-      "form",
-      {
-        onSubmit: (e) => {
-          e.preventDefault();
-          submit();
-        },
-        style: { display: "flex", alignItems: "center", flexShrink: 0 },
-        children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-          "input",
-          {
-            autoFocus: true,
-            value: draft,
-            onChange: (e) => setDraft(e.target.value),
-            onBlur: submit,
-            onKeyDown: (e) => {
-              if (e.key === "Escape") {
-                setDraft("");
-                setComposing(false);
-              }
-            },
-            placeholder: "What's deferred?",
-            className: "trunk-compose"
-          }
-        )
-      }
-    ) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+  if (!open) {
+    return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "cc-trunk-latch-wrap", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
       "button",
       {
         type: "button",
-        className: "cc-trunk-add-ball",
-        onClick: () => setComposing(true),
-        "aria-label": "Add deferred task",
-        title: "Add a deferred task to the trunk",
-        children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "+" })
+        className: "cc-trunk-latch" + (isDropTarget ? " drop-target" : ""),
+        onClick: () => setOpen(true),
+        ref: trunkRef,
+        title: items.length > 0 ? `Pop trunk \u2014 ${items.length} deferred` : "Trunk is empty",
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-latch-corner left", "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-latch-label", children: "Trunk" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-latch-count mono tabular", children: items.length }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-latch-divider", "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("span", { className: "cc-trunk-latch-action", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-latch-glyph", "aria-hidden": "true", children: "\u25BE" }),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "pop" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-latch-corner right", "aria-hidden": "true" })
+        ]
       }
-    )
-  ] });
+    ) });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
+    TrunkCompartment,
+    {
+      count: items.length,
+      trunkRef,
+      isDropTarget,
+      onClose: () => setOpen(false),
+      children: [
+        items.map((it) => {
+          const label = ballLabel({ title: it.title, project: it.project });
+          return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "cc-trunk-ball-wrap", title: it.title, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+              TaskBall,
+              {
+                label,
+                title: it.title,
+                size: 52,
+                tone: "default",
+                onClick: () => onPromote(it.id),
+                onPointerDown: (e) => onPointerDownBall?.({ id: it.id, label, title: it.title }, e),
+                onRemove: () => onRemove(it.id),
+                dragging: draggingId === it.id
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "cc-trunk-ball-title", children: it.title })
+          ] }, it.id);
+        }),
+        composing ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+          "form",
+          {
+            onSubmit: (e) => {
+              e.preventDefault();
+              submit();
+            },
+            style: { display: "flex", alignItems: "center", flexShrink: 0 },
+            children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+              "input",
+              {
+                autoFocus: true,
+                value: draft,
+                onChange: (e) => setDraft(e.target.value),
+                onBlur: submit,
+                onKeyDown: (e) => {
+                  if (e.key === "Escape") {
+                    setDraft("");
+                    setComposing(false);
+                  }
+                },
+                placeholder: "What's deferred?",
+                className: "trunk-compose"
+              }
+            )
+          }
+        ) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+          "button",
+          {
+            type: "button",
+            className: "cc-trunk-add-ball",
+            onClick: () => setComposing(true),
+            "aria-label": "Add deferred task",
+            title: "Add a deferred task to the trunk",
+            children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "+" })
+          }
+        )
+      ]
+    }
+  );
 }
 
 // src/voice-intent.ts

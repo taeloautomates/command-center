@@ -559,31 +559,41 @@
 }
 .cc-root .cc-seat-streaks {
   position: absolute;
-  left: -38px;
-  top: 0;
-  width: 60px;
-  height: 100%;
+  left: -80px;
+  top: -8px;
+  width: 110px;
+  height: 110%;
   pointer-events: none;
-  opacity: 0;
+  opacity: 0.32;
   transition: opacity 280ms;
 }
 .cc-root .cc-seat.buckled .cc-seat-streaks {
   opacity: 1;
-  animation: cc-streak 1.6s ease-in-out infinite;
+  animation: cc-streak 1.4s ease-out infinite;
 }
 @keyframes cc-streak {
-  0%   { transform: translateX(0); opacity: 0.9; }
-  50%  { transform: translateX(-6px); opacity: 1; }
-  100% { transform: translateX(0); opacity: 0.9; }
+  0%   { transform: translateX(0)   scaleX(1); opacity: 0.7; }
+  50%  { transform: translateX(-14px) scaleX(1.12); opacity: 1; }
+  100% { transform: translateX(0)   scaleX(1); opacity: 0.7; }
 }
 .cc-root .cc-seat-svg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.55));
-  transform: rotate(-2deg);
-  transform-origin: 50% 90%;
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.6))
+          drop-shadow(0 0 1px rgba(255, 255, 255, 0.16));
+  /* Sleek "ready to launch" pose — angled 3/4 view, tipped slightly forward,
+     leaned back into the cushion. perspective() gives the SVG a faux-3D depth
+     so the headrest reads as further from the camera than the base. */
+  transform: perspective(900px) rotateY(-22deg) rotateX(4deg) rotate(-3deg);
+  transform-origin: 55% 70%;
+  transition: transform 320ms cubic-bezier(.22, .61, .36, 1);
+}
+.cc-root .cc-seat.launch.buckled .cc-seat-svg {
+  /* Slight forward dip when active — like the seat is reacting to acceleration */
+  transform: perspective(900px) rotateY(-26deg) rotateX(6deg) rotate(-4deg)
+             translateZ(2px);
 }
 .cc-root .cc-seat.drop-target {
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.32));
@@ -641,10 +651,147 @@
   pointer-events: none;
 }
 
-/* Trunk — open compartment holding deferred-task balls. */
+/* ─── Trunk · cyborg ─────────────────────────────────────────────
+   Collapsed by default. A latch bar shows the count + a "pop" button;
+   clicking opens the angular compartment below. */
+
+/* Collapsed latch */
+.cc-root .cc-trunk-latch-wrap {
+  display: flex;
+  justify-content: stretch;
+  padding: 2px 0;
+}
+.cc-root .cc-trunk-latch {
+  position: relative;
+  flex: 1;
+  height: 32px;
+  background:
+    linear-gradient(90deg,
+      rgba(255,255,255,0.04) 0%,
+      rgba(255,255,255,0.07) 50%,
+      rgba(255,255,255,0.04) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  /* Chamfered corners using clip-path — same octagonal shape as the open trunk */
+  clip-path: polygon(
+    14px 0%, calc(100% - 14px) 0%, 100% 50%,
+    calc(100% - 14px) 100%, 14px 100%, 0% 50%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: inherit;
+  padding: 0 28px;
+  transition: background 200ms, color 200ms;
+}
+.cc-root .cc-trunk-latch:hover,
+.cc-root .cc-trunk-latch.drop-target {
+  background:
+    linear-gradient(90deg,
+      rgba(255,255,255,0.06) 0%,
+      rgba(255,255,255,0.14) 50%,
+      rgba(255,255,255,0.06) 100%);
+  color: rgba(255, 255, 255, 0.96);
+}
+.cc-root .cc-trunk-latch.drop-target {
+  animation: cc-latch-pulse 900ms ease-in-out infinite;
+}
+@keyframes cc-latch-pulse {
+  0%, 100% { box-shadow: inset 0 0 0 0 rgba(255,255,255,0); }
+  50%      { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.42); }
+}
+.cc-root .cc-trunk-latch-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+}
+.cc-root .cc-trunk-latch:hover .cc-trunk-latch-label {
+  color: rgba(255, 255, 255, 0.86);
+}
+.cc-root .cc-trunk-latch-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  min-width: 18px;
+  text-align: center;
+}
+.cc-root .cc-trunk-latch-divider {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.cc-root .cc-trunk-latch-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+}
+.cc-root .cc-trunk-latch:hover .cc-trunk-latch-action {
+  color: rgba(255, 255, 255, 0.96);
+}
+.cc-root .cc-trunk-latch-glyph {
+  display: inline-block;
+  font-size: 11px;
+  transition: transform 200ms;
+}
+.cc-root .cc-trunk-latch:hover .cc-trunk-latch-glyph {
+  transform: translateY(2px);
+}
+/* Corner tick marks — small "machined" accents at each end */
+.cc-root .cc-trunk-latch-corner {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.32);
+  transform: translateY(-50%);
+}
+.cc-root .cc-trunk-latch-corner.left  { left: 6px; }
+.cc-root .cc-trunk-latch-corner.right { right: 6px; }
+
+/* Close button shown inside the open trunk header */
+.cc-root .cc-trunk-close {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.42);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 200ms;
+}
+.cc-root .cc-trunk-close:hover {
+  color: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Cyborg trunk wrap — open state */
 .cc-root .cc-trunk-wrap {
   position: relative;
   margin-top: 0;
+  animation: cc-trunk-pop 280ms cubic-bezier(.22, .61, .36, 1);
+}
+@keyframes cc-trunk-pop {
+  from { opacity: 0; transform: scaleY(0.85); transform-origin: top; }
+  to   { opacity: 1; transform: scaleY(1);    transform-origin: top; }
 }
 .cc-root .cc-trunk-label {
   display: flex;
